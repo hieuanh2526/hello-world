@@ -1,0 +1,386 @@
+\documentclass[t]{beamer}
+
+% ============================================================
+%  FPT UNIVERSITY – BEAMER PRESENTATION TEMPLATE
+%  Adapted for academic lecturers at FPT University, Vietnam
+% ============================================================
+
+% --- Theme ---
+\usetheme{Madrid}
+
+% --- FPT Brand Colors ---
+\definecolor{FPTOrange}{RGB}{240, 90, 34}    % Primary brand orange
+\definecolor{FPTDark}{RGB}{30, 30, 30}       % Near-black for text
+\definecolor{FPTGray}{RGB}{100, 100, 100}    % Muted gray for captions
+
+% Apply FPT orange to all structural elements
+\usecolortheme[named=FPTOrange]{structure}
+
+% Footer palette
+\setbeamercolor{palette primary}{bg=FPTOrange, fg=white}
+\setbeamercolor{palette secondary}{bg=FPTOrange!80!black, fg=white}
+\setbeamercolor{palette tertiary}{bg=FPTOrange!60!black, fg=white}
+
+% Block colors
+\setbeamercolor{block title}{bg=FPTOrange, fg=white}
+\setbeamercolor{block body}{bg=FPTOrange!10!white, fg=FPTDark}
+\setbeamercolor{block title alerted}{bg=FPTDark, fg=white}
+\setbeamercolor{block body alerted}{bg=FPTDark!10!white, fg=FPTDark}
+
+% Font sizes
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries}
+
+% ============================================================
+%  PACKAGES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T5,T1]{fontenc}         % Vietnamese font encoding
+\usepackage[vietnamese,english]{babel}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{booktabs}               % Professional tables
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{array}                  % Better column control
+\usepackage{ragged2e}               % Justified text in blocks
+
+% ============================================================
+%  LAYOUT: CONTENT SLIDES (auto logo on every frametitle)
+% ============================================================
+\addtobeamertemplate{frametitle}{}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % FPT logo – white version for orange header
+        \node[anchor=north east, xshift=-0.25cm, yshift=0.0cm, inner sep=0pt]
+            at (current page.north east) {
+            \includegraphics[height=0.85cm, keepaspectratio]{logo_fpt_white.png}
+        };
+    \end{tikzpicture}%
+}
+
+% ============================================================
+%  LAYOUT: TITLE PAGE & FINAL PAGE
+% ============================================================
+\newcommand{\TitleFinalPageLayout}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        % Colored logo for light background
+        \node[anchor=north east, xshift=-0.25cm, yshift=0.0cm, inner sep=0pt]
+            at (current page.north east) {
+            \includegraphics[height=0.85cm, keepaspectratio]{logo_fpt_color.png}
+        };
+        % University full name – bottom left
+        \node[anchor=south west, xshift=0.5cm, yshift=0.4cm]
+            at (current page.south west) {
+            \textcolor{FPTOrange}{\footnotesize FPT University – Trường Đại học FPT}
+        };
+    \end{tikzpicture}%
+}
+
+% ============================================================
+%  HELPER COMMANDS
+% ============================================================
+
+% Highlighted box (orange accent)
+\newcommand{\highlightbox}[1]{%
+    \begin{block}{}
+        \RaggedRight #1
+    \end{block}
+}
+
+% Key finding / result box
+\newcommand{\findingbox}[2]{%
+    \begin{block}{#1}
+        \RaggedRight #2
+    \end{block}
+}
+
+% ============================================================
+%  PRESENTATION METADATA
+% ============================================================
+\title[Short Title]{Full Title of Your Lecture / Presentation}
+\subtitle{Course Code – Course Name}
+\author{Lecturer's Full Name}
+\institute[FPT University]{%
+    Department of \textit{Your Department}\\
+    FPT University, Vietnam
+}
+\date{\today}
+
+% ============================================================
+%  DOCUMENT
+% ============================================================
+\begin{document}
+
+% ----------------------------------------------------------
+%  SLIDE 1 – TITLE PAGE
+% ----------------------------------------------------------
+\begin{frame}
+    \TitleFinalPageLayout
+    \titlepage
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 2 – TABLE OF CONTENTS
+% ----------------------------------------------------------
+\begin{frame}{Table of Contents}
+    \begin{itemize}
+        \setlength\itemsep{0.4em}
+        \item Motivation \& Objectives
+        \item Theoretical Background
+        \item Methodology
+        \item Results \& Discussion
+        \item Case Study
+        \item Summary \& Further Research
+        \item Q\&A
+    \end{itemize}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 3 – MOTIVATION & OBJECTIVES
+% ----------------------------------------------------------
+\begin{frame}{Motivation \& Objectives}
+    \begin{itemize}
+        \item \textbf{Context:} Describe the broader academic or industry context.
+
+        \vspace{0.25cm}
+        \footnotesize\textit{(Supporting evidence, statistics, or a brief anecdote can go here.)}
+        \normalsize
+        \vspace{0.25cm}
+
+        \item \textbf{Problem statement:} What specific problem does this lecture address?
+        \begin{itemize}
+            \item Sub-point A
+            \item Sub-point B
+        \end{itemize}
+
+        \item \textbf{Learning outcomes:} After this session, students will be able to:
+        \begin{itemize}
+            \item \textbf{LO1:} Understand...
+            \item \textbf{LO2:} Apply...
+            \item \textbf{LO3:} Evaluate...
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 4 – THEORETICAL BACKGROUND
+% ----------------------------------------------------------
+\begin{frame}{Theoretical Background}
+    \begin{itemize}
+        \item Key concept or theory your lecture builds on.
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \findingbox{Core Definition}{%
+        \textbf{Concept X} is defined as the relationship between $A$ and $B$,
+        formally expressed as:
+        \[
+            Y = f(X_1, X_2, \ldots, X_n)
+        \]
+        where each $X_i$ represents an independent variable of interest.
+    }
+
+    \vspace{0.2cm}
+    \begin{itemize}
+        \item Cite relevant literature: \citet{author2020} showed that \ldots
+        \item Key assumption: \ldots
+    \end{itemize}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 5 – METHODOLOGY
+% ----------------------------------------------------------
+\begin{frame}{Methodology}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Research Design}
+            \begin{itemize}
+                \item Approach: Quantitative / Qualitative
+                \item Sample: $n = $ XXX
+                \item Period: YYYY -- YYYY
+                \item Data source: \ldots
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Analytical Framework}
+            \begin{itemize}
+                \item Step 1: Data collection
+                \item Step 2: Pre-processing
+                \item Step 3: Model estimation
+                \item Step 4: Robustness check
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.4cm}
+    \highlightbox{%
+        \textbf{Main equation:}
+        \[
+            Y_{it} = \alpha + \beta_1 X_{it} + \beta_2 Z_{it} + \mu_i + \varepsilon_{it}
+        \]
+    }
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 6 – DATA / SUMMARY STATISTICS  (example table)
+% ----------------------------------------------------------
+\begin{frame}{Data \& Summary Statistics}
+    \begin{itemize}
+        \item Dataset covers \textbf{XX countries} over \textbf{YYYY--YYYY}.
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \begin{table}[h!]
+        \centering
+        \caption{Summary Statistics of Key Variable}
+        \label{tab:stats}
+        \footnotesize
+        \begin{tabular}{lrrrr}
+            \toprule
+            \textbf{Variable} & \textbf{Obs.} & \textbf{Mean} & \textbf{Min} & \textbf{Max} \\
+            \midrule
+            Variable A & 500 & 3.42 & 1.10 & 7.80 \\
+            Variable B & 500 & 0.67 & 0.20 & 1.00 \\
+            Variable C & 498 & 12.3 & 5.50 & 24.6 \\
+            Variable D & 500 & 0.45 & 0.00 & 0.95 \\
+            \bottomrule
+            \multicolumn{5}{@{}l}{\tiny Source: Authors' calculations based on [Database name].}
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 7 – RESULTS & DISCUSSION  (example regression table)
+% ----------------------------------------------------------
+\begin{frame}{Results \& Discussion}
+    \begin{table}[h!]
+        \centering
+        \caption{Regression Results – Dependent Variable: $Y$}
+        \label{tab:results}
+        \footnotesize
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Variable} & \textbf{Model (1)} & \textbf{Model (2)} \\
+            \midrule
+            $X_1$              & 0.312***  & 0.289*** \\
+                               & (0.045)   & (0.041)  \\
+            $X_2$              & $-$0.118* & $-$0.103 \\
+                               & (0.062)   & (0.058)  \\
+            Controls           & No        & Yes      \\
+            Observations       & 500       & 498      \\
+            $R^2$              & 0.34      & 0.41     \\
+            \bottomrule
+            \multicolumn{3}{@{}l}{\tiny Notes: Standard errors in parentheses. * $p<0.1$, ** $p<0.05$, *** $p<0.01$.}
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 8 – FIGURE / VISUALISATION
+% ----------------------------------------------------------
+\begin{frame}{Results – Visual Evidence}
+    \begin{itemize}
+        \item Figure \ref{fig:main} illustrates the main finding.
+    \end{itemize}
+
+    \begin{figure}
+        \caption{Title of the Figure}
+        \label{fig:main}
+        % Replace with your actual figure file
+        \includegraphics[width=8cm]{example_figure.pdf}
+
+        {\tiny Source: Authors' calculations.}
+    \end{figure}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 9 – CASE STUDY (FPT-relevant context)
+% ----------------------------------------------------------
+\begin{frame}{Case Study}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \textbf{Context:}
+            \begin{itemize}
+                \item Industry / Company: \ldots
+                \item Period: \ldots
+                \item Key challenge: \ldots
+            \end{itemize}
+
+            \vspace{0.3cm}
+            \textbf{Application of theory:}
+            \begin{itemize}
+                \item Step 1: \ldots
+                \item Step 2: \ldots
+                \item Outcome: \ldots
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.42\textwidth}
+            \findingbox{Key Takeaway}{%
+                Summarise the practical lesson from this case in 2--3 sentences.
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 10 – SUMMARY & FURTHER RESEARCH
+% ----------------------------------------------------------
+\begin{frame}{Summary \& Further Research}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Main Findings}
+            \begin{itemize}
+                \item Finding 1: \ldots
+                \item Finding 2: \ldots
+                \item Finding 3: \ldots
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{Limitations \& Future Work}
+            \begin{itemize}
+                \item Limitation 1: \ldots
+                \item Limitation 2: \ldots
+                \item Future direction: \ldots
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.5cm}
+    \highlightbox{%
+        \textbf{Policy / Practice implication:} One concise take-away
+        message for students and practitioners.
+    }
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 11 – REFERENCES
+% ----------------------------------------------------------
+\begin{frame}[allowframebreaks]{References}
+    \tiny
+    \bibliography{references}
+    \bibliographystyle{apalike}
+\end{frame}
+
+% ----------------------------------------------------------
+%  SLIDE 12 – FINAL / THANK YOU PAGE
+% ----------------------------------------------------------
+\begin{frame}[c]
+    \TitleFinalPageLayout
+    \centering
+
+    \Huge \textcolor{FPTOrange}{\textbf{Thank you!}}
+
+    \vspace{0.4cm}
+    \large \textcolor{FPTGray}{Questions \& Discussion}
+
+    \vspace{1.2cm}
+    \normalsize
+    \textbf{Lecturer's Full Name} \\[0.2cm]
+    \href{mailto:lecturername@fe.edu.vn}{\textcolor{FPTOrange}{lecturername@fe.edu.vn}} \\[0.2cm]
+    \textcolor{FPTGray}{\small Department of \textit{Your Department}, FPT University}
+\end{frame}
+
+\end{document}
