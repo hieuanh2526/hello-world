@@ -1,0 +1,209 @@
+% =====================================================================
+%  beamerthemeLLCTFPT.sty — Lớp thiết kế KHÓA cho slide LLCT (PTTE)
+%  đặt trên 8 theme nền đã duyệt.
+%  Tác giả thiết kế: ThS. Nguyễn Trung Hiếu — FPT University HCMC
+%  Phiên bản: 2.0 (2026-09-24)
+%    v1.0  khóa trên Madrid (MLN111 S05)
+%    v1.1  tên trường màu vàng cam #F7941D
+%    v2.0  hỗ trợ 8 theme nền qua tùy chọn base=
+%  Dùng:   \documentclass[aspectratio=169,11pt]{beamer}
+%          \usetheme[base=Madrid]{LLCTFPT}
+%  base ∈ {Madrid (mặc định), CambridgeUS, Warsaw, Metropolis, Focus,
+%          Frankfurt, Berkeley, Boadilla}
+%  Biên dịch: XeLaTeX.
+%  QUY TẮC KHÓA: file bài giảng chỉ chứa nội dung. Màu/font lấy nguyên
+%  từ theme nền; lớp khóa chỉ quy định bìa, mục lục, thanh tiêu đề và
+%  môi trường PTTE. Thay đổi thiết kế -> sửa file này, tăng version.
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeLLCTFPT}[2026/09/24 v2.0 Locked LLCT design on 8 base themes]
+\mode<presentation>
+
+% ---------- 0. Chọn theme nền ----------
+\def\PTTE@base{Madrid}
+\DeclareOptionBeamer{base}{\def\PTTE@base{#1}}
+\ProcessOptionsBeamer
+
+\def\PTTE@kind{classic}% classic | metropolis | focus
+\def\PTTE@tmp{Metropolis}\ifx\PTTE@base\PTTE@tmp\def\PTTE@base{metropolis}\fi
+\def\PTTE@tmp{Focus}\ifx\PTTE@base\PTTE@tmp\def\PTTE@base{focus}\fi
+\def\PTTE@tmp{metropolis}\ifx\PTTE@base\PTTE@tmp\def\PTTE@kind{metropolis}\fi
+\def\PTTE@tmp{focus}\ifx\PTTE@base\PTTE@tmp\def\PTTE@kind{focus}\fi
+
+% ---------- 1. Nền + tiếng Việt ----------
+\RequirePackage{fontspec}
+\def\PTTE@tmp{focus}
+\ifx\PTTE@kind\PTTE@tmp
+  \usetheme[nofirafonts]{focus}% nạp Fira qua fontspec bên dưới (tránh T1 hỏng tiếng Việt)
+  \IfFontExistsTF{Fira Sans}{\setsansfont{Fira Sans}}{}%
+\else
+  \usetheme{\PTTE@base}
+\fi
+\def\PTTE@tmp{metropolis}
+\ifx\PTTE@kind\PTTE@tmp
+  \metroset{sectionpage=none,block=fill}% khóa: không chèn trang chương, block có nền
+\fi
+
+% Khoảng cách dòng trong khối nội dung: gọn hơn cho theme có headline/sidebar cao
+\newlength{\PTTE@itemsep}\setlength{\PTTE@itemsep}{\itemsep}
+\newif\ifPTTE@compact
+\def\PTTE@tmp{Warsaw}\ifx\PTTE@base\PTTE@tmp\PTTE@compacttrue\fi
+\def\PTTE@tmp{Berkeley}\ifx\PTTE@base\PTTE@tmp\PTTE@compacttrue
+  \setbeamersize{sidebar width left=2.1cm}\fi
+\def\PTTE@tmp{metropolis}\ifx\PTTE@base\PTTE@tmp\PTTE@compacttrue
+  \setlength{\metropolis@frametitle@padding}{1.3ex}\fi
+% Theme gọn (Warsaw, Berkeley, Metropolis): headline/sidebar/đệm chiếm chỗ -> thân khối cỡ \small
+\ifPTTE@compact
+  \setbeamerfont{block body}{size=\small}
+  \setbeamerfont{block body example}{size=\small}
+  \setbeamerfont{block body alerted}{size=\small}
+\fi
+\def\PTTE@tmp{focus}
+\ifx\PTTE@kind\PTTE@tmp
+  \AtBeginSection{}% khóa: không chèn trang chương
+  \setbeamerfont{title}{size=\Large}
+  \setbeamerfont{subtitle}{size=\normalsize}
+  \setbeamerfont{author}{family=\sffamily,shape=\upshape}
+  \setbeamerfont{institute}{family=\sffamily,shape=\upshape}
+  \setbeamerfont{date}{family=\sffamily,shape=\upshape}
+\fi
+\RequirePackage{tikz}
+\RequirePackage{polyglossia}
+\setmainlanguage{vietnamese}
+
+% ---------- 2. Khóa chrome ----------
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+% Nội dung thanh tiêu đề: dòng mục lệch TRÁI ở TRÊN, tiêu đề căn GIỮA, ĐẬM ở DƯỚI.
+\newcommand{\PTTE@titlelines}{%
+  \ifx\insertframesubtitle\@empty\else
+    {\rightskip=0pt plus 1fil\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle\strut\par}%
+  \fi
+  {\centering\usebeamerfont{frametitle}\strut\insertframetitle\strut\par}}
+
+\def\PTTE@tmp{classic}
+\ifx\PTTE@kind\PTTE@tmp
+  % Theme gốc của Beamer (Madrid, CambridgeUS, Warsaw, Frankfurt, Berkeley, Boadilla)
+  \setbeamertemplate{frametitle}{%
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth\advance\@tempdima by\beamer@leftmargin\advance\@tempdima by\beamer@rightmargin
+    \begin{beamercolorbox}[sep=0.3cm,left,wd=\the\@tempdima]{frametitle}
+      \vbox{}\vskip-1ex\PTTE@titlelines\vskip-1ex%
+    \end{beamercolorbox}}
+\fi
+% Berkeley (sidebar): tiêu đề nằm trong vùng head, cạnh sidebar
+\def\PTTE@tmp{Berkeley}
+\ifx\PTTE@base\PTTE@tmp
+  \setbeamertemplate{frametitle}{%
+    \nointerlineskip
+    \ifbeamer@plainframe
+      \hbox{\usebeamercolor[bg]{frametitle}%
+        \@tempdima\paperwidth\advance\@tempdima-\beamer@sidebarwidth
+        \hskip-\beamer@leftmargin\vrule height\beamer@headheight width\@tempdima\hskip-\beamer@rightmargin}%
+      \nointerlineskip
+    \fi
+    \vskip-\beamer@headheight
+    \vbox to \beamer@headheight{%
+      \vfil
+      \ifx\insertframesubtitle\@empty\else
+        {\leftskip=-\beamer@leftmargin\advance\leftskip by0.3cm
+         \rightskip=-\beamer@rightmargin\advance\rightskip by0.3cm plus1fil
+         \usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\strut\insertframesubtitle\par}%
+      \fi
+      {\leftskip=-\beamer@leftmargin\advance\leftskip by0.3cm plus1fil
+       \rightskip=-\beamer@rightmargin\advance\rightskip by0.3cm plus1fil\parfillskip=0pt
+       \usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\par}%
+      \vbox{}\vskip-1em\vfil}}
+\fi
+\def\PTTE@tmp{metropolis}
+\ifx\PTTE@kind\PTTE@tmp
+  \setbeamertemplate{frametitle}{%
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,sep=0pt,leftskip=\metropolis@frametitle@padding,
+        rightskip=\metropolis@frametitle@padding]{frametitle}%
+      \vspace{\metropolis@frametitle@padding}\PTTE@titlelines\vspace{\metropolis@frametitle@padding}%
+    \end{beamercolorbox}}
+\fi
+\def\PTTE@tmp{focus}
+\ifx\PTTE@kind\PTTE@tmp
+  % Focus đặt lại template [focus] trước mỗi frame -> gắn thêm hook chạy SAU hook của Focus.
+  \defbeamertemplate{frametitle}{pttefocus}{%
+    \ifnum\value{realframenumber}>0%
+      \vspace{-1pt}%
+      \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.55cm,rightskip=0.55cm,sep=0.2cm]{frametitle}%
+        \PTTE@titlelines
+      \end{beamercolorbox}%
+    \fi}
+  \BeforeBeginEnvironment{frame}{\setbeamertemplate{frametitle}[pttefocus]}
+\fi
+
+% ---------- 3. Trang bìa ----------
+\definecolor{PTTEUniversityColor}{HTML}{F7941D}% vàng cam
+\newcommand{\PTTEUniversityName}{TRƯỜNG ĐẠI HỌC FPT}
+\newcommand{\PTTEUniversity}[1]{\renewcommand{\PTTEUniversityName}{#1}}
+
+% \PTTESession[tiêu đề ngắn]{Chương/Phần/Mục (\\ xuống dòng)}{SESSION xx: TÊN BÀI}
+\newcommand{\PTTESession}[3][]{%
+  \def\PTTE@short{#1}%
+  \ifx\PTTE@short\@empty
+    \title{\texorpdfstring{{\usebeamerfont{subtitle}#2\par}\vspace{0.4em}#3}{#3}}%
+  \else
+    \title[#1]{\texorpdfstring{{\usebeamerfont{subtitle}#2\par}\vspace{0.4em}#3}{#3}}%
+  \fi}
+
+\newcommand{\PTTE@university}{{\color{PTTEUniversityColor}\large\bfseries\PTTEUniversityName\par}}
+\def\PTTE@tmp{classic}
+\ifx\PTTE@kind\PTTE@tmp
+  \newcommand{\PTTECoverFrame}{%
+    \begin{frame}[t]
+      \vspace{0.3em}
+      \begin{center}{\color{PTTEUniversityColor}\large\bfseries\PTTEUniversityName\par}\end{center}
+      \vspace{-0.6em}
+      \titlepage
+    \end{frame}}
+\else
+  % Metropolis/Focus: trang bìa toàn khung -> đặt tên trường bằng lớp phủ ở mép trên, giữa
+  \newcommand{\PTTECoverFrame}{%
+    \begin{frame}
+      \titlepage
+      \begin{tikzpicture}[overlay,remember picture]
+        \node[anchor=north,yshift=-0.3cm] at (current page.north) {\PTTE@university};
+      \end{tikzpicture}%
+    \end{frame}}
+\fi
+
+\newcommand{\PTTEContentsTitle}{Nội dung}
+\newcommand{\PTTEContentsFrame}{%
+  \begin{frame}{\PTTEContentsTitle}
+    \tableofcontents
+  \end{frame}}
+
+% ---------- 4. Môi trường ngữ nghĩa PTTE ----------
+\providecommand{\PTTELabelKeyClaim}{LUẬN ĐIỂM CHÍNH}
+\providecommand{\PTTELabelPrimarySource}{TRÍCH DẪN}
+\providecommand{\PTTELabelConcept}{KHÁI NIỆM}
+\providecommand{\PTTELabelEvidence}{MINH CHỨNG}
+\providecommand{\PTTELabelMisconception}{NGỘ NHẬN}
+\providecommand{\PTTELabelCQ}{CÂU HỎI CỐT LÕI}
+\providecommand{\PTTELabelActivity}{HOẠT ĐỘNG}
+\providecommand{\PTTELabelAssessment}{ĐÁNH GIÁ}
+\providecommand{\PTTELabelMethodologicalMeaning}{Ý NGHĨA PHƯƠNG PHÁP LUẬN}
+\providecommand{\PTTELabelTakeaway}{ĐIỂM GHI NHỚ}
+\newenvironment{KeyClaim}{\begin{block}{\PTTELabelKeyClaim}}{\end{block}}
+\newenvironment{PrimarySource}{\begin{exampleblock}{\PTTELabelPrimarySource}}{\end{exampleblock}}
+\newenvironment{Concept}{\begin{block}{\PTTELabelConcept}}{\end{block}}
+\newenvironment{Evidence}{\begin{exampleblock}{\PTTELabelEvidence}}{\end{exampleblock}}
+\newenvironment{Misconception}{\begin{alertblock}{\PTTELabelMisconception}}{\end{alertblock}}
+\newenvironment{CQ}{\begin{block}{\PTTELabelCQ}}{\end{block}}
+\newenvironment{Activity}{\begin{block}{\PTTELabelActivity}}{\end{block}}
+\newenvironment{Assessment}{\begin{block}{\PTTELabelAssessment}}{\end{block}}
+\newenvironment{MethodologicalMeaning}{\begin{block}{\PTTELabelMethodologicalMeaning}}{\end{block}}
+\newenvironment{Takeaway}{\begin{exampleblock}{\PTTELabelTakeaway}}{\end{exampleblock}}
+
+% ---------- 5. Khối nội dung chuẩn ----------
+\newenvironment{PTTEPoints}[1]{\begin{block}{#1}\begin{itemize}\ifPTTE@compact\setlength{\itemsep}{0pt}\fi}{\end{itemize}\end{block}}
+\newcommand{\PTTEPoint}[2]{\item \textbf{#1:} #2}
+\newcommand{\PTTESpeaker}[1]{\par\hfill\textbf{#1}}
+
+\mode<all>
