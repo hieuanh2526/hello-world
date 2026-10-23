@@ -1,0 +1,141 @@
+\documentclass[t]{beamer}
+
+% --- Theme ---
+\usetheme{Madrid}
+
+% --- FPT Brand Colors ---
+\definecolor{FPTOrange}{RGB}{240, 90, 34}
+\definecolor{FPTDark}{RGB}{30, 30, 30}
+\definecolor{FPTGray}{RGB}{100, 100, 100}
+
+\usecolortheme[named=FPTOrange]{structure}
+\setbeamercolor{palette primary}{bg=FPTOrange, fg=white}
+\setbeamercolor{palette secondary}{bg=FPTOrange!80!black, fg=white}
+\setbeamercolor{palette tertiary}{bg=FPTOrange!60!black, fg=white}
+\setbeamercolor{block title}{bg=FPTOrange, fg=white}
+\setbeamercolor{block body}{bg=FPTOrange!10!white, fg=FPTDark}
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+
+% --- Logo on content slides ---
+\addtobeamertemplate{frametitle}{}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north east, xshift=-0.3cm, yshift=0cm, inner sep=0pt]
+            at (current page.north east) {
+            % Placeholder orange badge for logo
+            \tikz \fill[FPTOrange!20, rounded corners=3pt]
+                (0,0) rectangle (1.8cm, 0.75cm)
+                node[midway, text=FPTOrange, font=\bfseries\small] {FPT Univ.};
+        };
+    \end{tikzpicture}%
+}
+
+% --- Title/Final page decoration ---
+\newcommand{\TitleFinalPageLayout}{%
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north east, xshift=-0.3cm, yshift=0cm, inner sep=0pt]
+            at (current page.north east) {
+            \tikz \fill[FPTOrange, rounded corners=3pt]
+                (0,0) rectangle (1.8cm, 0.75cm)
+                node[midway, text=white, font=\bfseries\small] {FPT Univ.};
+        };
+        \node[anchor=south west, xshift=0.5cm, yshift=0.4cm]
+            at (current page.south west) {
+            \textcolor{FPTOrange}{\footnotesize FPT University -- Trường Đại học FPT}
+        };
+    \end{tikzpicture}%
+}
+
+\newcommand{\findingbox}[2]{%
+    \begin{block}{#1}
+        \RaggedRight #2
+    \end{block}
+}
+
+% --- Metadata ---
+\title[Kinh tế lượng ứng dụng]{Kinh tế lượng ứng dụng trong\\Phân tích Dữ liệu Doanh nghiệp}
+\subtitle{ECO301 -- Applied Econometrics}
+\author{TS. Nguyễn Văn A}
+\institute[FPT University]{Khoa Kinh tế -- Trường Đại học FPT}
+\date{Tháng 10, 2026}
+
+\begin{document}
+
+% ======================
+%  SLIDE 1 – TITLE PAGE
+% ======================
+\begin{frame}
+    \TitleFinalPageLayout
+    \titlepage
+\end{frame}
+
+% ======================
+%  SLIDE 2 – CONTENT
+% ======================
+\begin{frame}{Mô hình Hồi quy Tuyến tính Bội}
+    \begin{columns}[T]
+        \begin{column}{0.52\textwidth}
+            \textbf{Phương trình cơ bản}
+            \[
+                Y_i = \beta_0 + \sum_{k=1}^{K} \beta_k X_{ki} + \varepsilon_i
+            \]
+            \vspace{0.15cm}
+            \begin{itemize}
+                \item $Y_i$ -- Biến phụ thuộc (doanh thu)
+                \item $X_{ki}$ -- Biến độc lập thứ $k$
+                \item $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.45\textwidth}
+            \findingbox{Kết quả ước lượng OLS}{%
+                \footnotesize
+                \begin{tabular}{lcc}
+                    \toprule
+                    Biến & $\hat{\beta}$ & $p$-value \\
+                    \midrule
+                    $X_1$ & 0.31*** & 0.001 \\
+                    $X_2$ & -0.12*  & 0.082 \\
+                    $R^2$ & \multicolumn{2}{c}{0.68} \\
+                    \bottomrule
+                \end{tabular}
+            }
+        \end{column}
+    \end{columns}
+
+    \vspace{0.3cm}
+    \begin{block}{Learning Outcome}
+        \RaggedRight
+        Sau bài học này, sinh viên có thể \textbf{giải thích} hệ số hồi quy
+        và \textbf{kiểm định} ý nghĩa thống kê ở mức $\alpha = 5\%$.
+    \end{block}
+\end{frame}
+
+% ======================
+%  SLIDE 3 – FINAL PAGE
+% ======================
+\begin{frame}[c]
+    \TitleFinalPageLayout
+    \centering
+
+    \Huge \textcolor{FPTOrange}{\textbf{Cảm ơn các bạn!}}
+
+    \vspace{0.5cm}
+    \large \textcolor{FPTGray}{Câu hỏi \& Thảo luận}
+
+    \vspace{1.2cm}
+    \normalsize
+    \textbf{TS. Nguyễn Văn A} \\[0.2cm]
+    \href{mailto:anv@fe.edu.vn}{\textcolor{FPTOrange}{anv@fe.edu.vn}} \\[0.2cm]
+    \textcolor{FPTGray}{\small Khoa Kinh tế, FPT University}
+\end{frame}
+
+\end{document}
