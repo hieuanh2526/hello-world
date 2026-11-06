@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quản lý dự án nghiên cứu</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1d2330;--mute:#667085;--line:#e3e6ec;--acc:#2f5fd0;--ok:#1e8e5a;--warn:#c27a00;--bad:#c0392b}
+@media(prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1d222b;--fg:#e8ebf1;--mute:#98a1b3;--line:#2c3340;--acc:#6b93f5;--ok:#4cc38a;--warn:#e0a53a;--bad:#ef6b5b}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--fg);display:flex;min-height:100vh}
+aside{width:260px;background:var(--card);border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:8px}
+main{flex:1;padding:20px;min-width:0}
+h1{font-size:17px;margin:0 0 8px}h2{font-size:16px;margin:0 0 10px}
+button,input,select,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+button{cursor:pointer}button.p{background:var(--acc);color:#fff;border-color:var(--acc)}button.x{color:var(--bad)}
+textarea{width:100%;min-height:70px;resize:vertical}input,select{max-width:100%}
+.proj{padding:8px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent}.proj:hover{background:var(--bg)}.proj.on{border-color:var(--acc);background:var(--bg)}
+.proj small{display:block;color:var(--mute)}
+.tabs{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}.tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>.grow{flex:1;min-width:140px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:800px){body{flex-direction:column}aside{width:auto}.cols{grid-template-columns:1fr}}
+.tag{font-size:12px;padding:1px 8px;border-radius:10px;border:1px solid var(--line);color:var(--mute)}
+.late{color:var(--bad)}.done{text-decoration:line-through;color:var(--mute)}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.stats b{font-size:22px;display:block}
+.mute{color:var(--mute)}
+</style>
+</head>
+<body>
+<aside>
+  <h1>📚 Dự án nghiên cứu</h1>
+  <div id="plist"></div>
+  <button class="p" id="addp">+ Dự án mới</button>
+  <div style="margin-top:auto" class="row">
+    <button id="exp">Xuất JSON</button>
+    <button id="imp">Nhập JSON</button>
+    <input type="file" id="file" accept=".json" hidden>
+  </div>
+</aside>
+<main id="main"></main>
+
+<script>
+const KEY = 'research-pm-v1';
+const STATUS = {todo:'Cần làm', doing:'Đang làm', done:'Xong'};
+const PSTAT = ['Ý tưởng','Đang thực hiện','Chờ phản biện','Hoàn thành','Tạm dừng'];
+const RSTAT = {unread:'Chưa đọc', reading:'Đang đọc', read:'Đã đọc'};
+const uid = () => Math.random().toString(36).slice(2, 10);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => new Date().toISOString().slice(0, 10);
+
+let db, cur = null, tab = 'overview';
+try { db = JSON.parse(localStorage.getItem(KEY)) } catch { db = null }
+if (!db || !Array.isArray(db.projects)) db = {projects: []};
+cur = db.projects[0]?.id ?? null;
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)) } catch {} render(); };
+const P = () => db.projects.find(p => p.id === cur);
+const $ = id => document.getElementById(id);
+
+function render() {
+  $('plist').innerHTML = db.projects.map(p =>
+    `<div class="proj ${p.id === cur ? 'on' : ''}" data-id="${p.id}">${esc(p.title)}<small>${esc(p.status)}${p.deadline ? ' · hạn ' + esc(p.deadline) : ''}</small></div>`).join('')
+    || '<p class="mute">Chưa có dự án.</p>';
+  const p = P();
+  if (!p) { $('main').innerHTML = '<p class="mute">Tạo dự án đầu tiên ở thanh bên.</p>'; return; }
+  const tabs = {overview:'Tổng quan', tasks:'Công việc', refs:'Tài liệu', milestones:'Mốc', notes:'Nhật ký'};
+  $('main').innerHTML = `<div class="row"><h1 class="grow" style="font-size:20px">${esc(p.title)}</h1>
+    <button class="x" data-act="delproj">Xóa dự án</button></div>
+    <div class="tabs">${Object.entries(tabs).map(([k, v]) => `<button data-tab="${k}" class="${k === tab ? 'on' : ''}">${v}</button>`).join('')}</div>
+    <div id="view"></div>`;
+  ({overview, tasks, refs, milestones, notes})[tab](p, $('view'));
+}
+
+function overview(p, el) {
+  const t = p.tasks, d = t.filter(x => x.status === 'done').length;
+  const pct = t.length ? Math.round(100 * d / t.length) : 0;
+  const late = t.filter(x => x.status !== 'done' && x.due && x.due < today()).length;
+  const unread = p.refs.filter(r => r.status !== 'read').length;
+  const next = p.milestones.filter(m => !m.done).sort((a, b) => a.date.localeCompare(b.date))[0];
+  el.innerHTML = `<div class="card"><div class="row"><label class="grow">Tên<br><input data-f="title" value="${esc(p.title)}" style="width:100%"></label>
+    <label>Trạng thái<br><select data-f="status">${PSTAT.map(s => `<option ${s === p.status ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
+    <label>Hạn chót<br><input type="date" data-f="deadline" value="${esc(p.deadline)}"></label></div>
+    <p><label>Câu hỏi nghiên cứu<br><textarea data-f="question">${esc(p.question)}</textarea></label></p>
+    <label>Phương pháp / dữ liệu<br><textarea data-f="method">${esc(p.method)}</textarea></label></div>
+    <div class="stats">
+      <div class="card"><b>${pct}%</b>công việc xong<div class="bar"><i style="width:${pct}%"></i></div></div>
+      <div class="card"><b class="${late ? 'late' : ''}">${late}</b>việc trễ hạn</div>
+      <div class="card"><b>${unread}</b>tài liệu chưa đọc xong</div>
+      <div class="card"><b style="font-size:16px">${next ? esc(next.title) : '—'}</b>${next ? esc(next.date) : 'chưa có mốc'}</div>
+    </div>`;
+}
+
+function tasks(p, el) {
+  el.innerHTML = `<form class="card row" data-form="task"><input name="title" class="grow" placeholder="Công việc mới…" required>
+    <input type="date" name="due"><select name="status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
+    <button class="p">Thêm</button></form>
+    <div class="cols">${Object.entries(STATUS).map(([k, v]) => `<div><h2>${v} (${p.tasks.filter(t => t.status === k).length})</h2>
+      ${p.tasks.filter(t => t.status === k).map(t => `<div class="card"><div class="${k === 'done' ? 'done' : ''}">${esc(t.title)}</div>
+        <div class="row"><span class="tag ${t.due && t.due < today() && k !== 'done' ? 'late' : ''}">${t.due ? esc(t.due) : 'không hạn'}</span>
+        <select data-tstat="${t.id}">${Object.entries(STATUS).map(([a, b]) => `<option value="${a}" ${a === k ? 'selected' : ''}>${b}</option>`).join('')}</select>
+        <button class="x" data-del="tasks:${t.id}">✕</button></div></div>`).join('')}</div>`).join('')}</div>`;
+}
+
+function refs(p, el) {
+  el.innerHTML = `<form class="card" data-form="ref"><div class="row"><input name="title" class="grow" placeholder="Tên tài liệu" required>
+    <input name="author" placeholder="Tác giả"><input name="year" placeholder="Năm" size="5">
+    <input name="tags" placeholder="Thẻ (cách nhau dấu phẩy)"><button class="p">Thêm</button></div>
+    <p><input name="url" placeholder="Liên kết / DOI (tuỳ chọn)" style="width:100%"></p></form>
+    ${p.refs.map(r => `<div class="card"><div class="row"><b class="grow">${esc(r.title)}</b>
+      <select data-rstat="${r.id}">${Object.entries(RSTAT).map(([a, b]) => `<option value="${a}" ${a === r.status ? 'selected' : ''}>${b}</option>`).join('')}</select>
+      <button class="x" data-del="refs:${r.id}">✕</button></div>
+      <div class="mute">${esc(r.author)}${r.year ? ' (' + esc(r.year) + ')' : ''} ${/^https?:\/\//.test(r.url) ? `· <a href="${esc(r.url)}" target="_blank" rel="noopener">liên kết</a>` : esc(r.url)}</div>
+      <div>${r.tags.map(t => `<span class="tag">${esc(t)}</span> `).join('')}</div>
+      <textarea data-rnote="${r.id}" placeholder="Ghi chú, trích dẫn chính…">${esc(r.note)}</textarea></div>`).join('') || '<p class="mute">Chưa có tài liệu.</p>'}`;
+}
+
+function milestones(p, el) {
+  const ms = [...p.milestones].sort((a, b) => a.date.localeCompare(b.date));
+  el.innerHTML = `<form class="card row" data-form="ms"><input name="title" class="grow" placeholder="Mốc (vd: nộp bản thảo)" required>
+    <input type="date" name="date" required><button class="p">Thêm</button></form>
+    ${ms.map(m => `<div class="card row"><input type="checkbox" data-mdone="${m.id}" ${m.done ? 'checked' : ''}>
+      <span class="grow ${m.done ? 'done' : ''}">${esc(m.title)}</span>
+      <span class="tag ${!m.done && m.date < today() ? 'late' : ''}">${esc(m.date)}</span><button class="x" data-del="milestones:${m.id}">✕</button></div>`).join('') || '<p class="mute">Chưa có mốc.</p>'}`;
+}
+
+function notes(p, el) {
+  el.innerHTML = `<form class="card" data-form="note"><textarea name="text" placeholder="Hôm nay làm gì, phát hiện gì, vướng gì…" required></textarea>
+    <p><button class="p">Ghi lại</button></p></form>
+    ${[...p.notes].reverse().map(n => `<div class="card"><div class="row"><span class="tag">${esc(n.date)}</span><span class="grow"></span>
+      <button class="x" data-del="notes:${n.id}">✕</button></div><div style="white-space:pre-wrap">${esc(n.text)}</div></div>`).join('') || '<p class="mute">Chưa có ghi chú.</p>'}`;
+}
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('.proj')) { cur = t.closest('.proj').dataset.id; tab = 'overview'; render(); }
+  else if (t.id === 'addp') {
+    const title = prompt('Tên dự án nghiên cứu:'); if (!title?.trim()) return;
+    const p = {id: uid(), title: title.trim(), status: PSTAT[0], deadline: '', question: '', method: '', tasks: [], refs: [], milestones: [], notes: []};
+    db.projects.push(p); cur = p.id; tab = 'overview'; save();
+  }
+  else if (t.dataset.tab) { tab = t.dataset.tab; render(); }
+  else if (t.dataset.act === 'delproj') {
+    if (confirm('Xóa dự án này và toàn bộ dữ liệu?')) { db.projects = db.projects.filter(p => p.id !== cur); cur = db.projects[0]?.id ?? null; save(); }
+  }
+  else if (t.dataset.del) { const [k, id] = t.dataset.del.split(':'); P()[k] = P()[k].filter(x => x.id !== id); save(); }
+  else if (t.id === 'exp') {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], {type: 'application/json'}));
+    a.download = `research-pm-${today()}.json`; a.click(); URL.revokeObjectURL(a.href);
+  }
+  else if (t.id === 'imp') $('file').click();
+});
+
+document.addEventListener('submit', e => {
+  const f = e.target.dataset.form; if (!f) return;
+  e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)), p = P();
+  if (f === 'task') p.tasks.push({id: uid(), title: d.title, due: d.due, status: d.status});
+  if (f === 'ref') p.refs.push({id: uid(), title: d.title, author: d.author, year: d.year, url: d.url, status: 'unread', note: '',
+    tags: d.tags.split(',').map(s => s.trim()).filter(Boolean)});
+  if (f === 'ms') p.milestones.push({id: uid(), title: d.title, date: d.date, done: false});
+  if (f === 'note') p.notes.push({id: uid(), date: today(), text: d.text});
+  save();
+});
+
+document.addEventListener('change', e => {
+  const t = e.target, p = P(), d = t.dataset; if (!p) return;
+  if (d.f) { p[d.f] = t.value; save(); }
+  else if (d.tstat) { p.tasks.find(x => x.id === d.tstat).status = t.value; save(); }
+  else if (d.rstat) { p.refs.find(x => x.id === d.rstat).status = t.value; save(); }
+  else if (d.rnote) { p.refs.find(x => x.id === d.rnote).note = t.value; try { localStorage.setItem(KEY, JSON.stringify(db)) } catch {} }
+  else if (d.mdone) { p.milestones.find(x => x.id === d.mdone).done = t.checked; save(); }
+  else if (t.id === 'file' && t.files[0]) {
+    t.files[0].text().then(s => {
+      try {
+        const j = JSON.parse(s); if (!Array.isArray(j.projects)) throw 0;
+        if (confirm('Thay toàn bộ dữ liệu hiện tại bằng tệp này?')) { db = j; cur = db.projects[0]?.id ?? null; save(); }
+      } catch { alert('Tệp không hợp lệ.'); }
+    });
+    t.value = '';
+  }
+});
+
+render();
+</script>
+</body>
+</html>
