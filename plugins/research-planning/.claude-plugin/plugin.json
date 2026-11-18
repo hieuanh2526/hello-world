@@ -1,0 +1,9 @@
+{
+  "name": "research-planning",
+  "version": "0.1.0",
+  "description": "Chọn, đánh giá và gỡ rối đề tài nghiên cứu kinh tế học và Lý luận chính trị trước khi viết bản thảo. Chuyển thể từ skill scientific-problem-selection (anthropics/knowledge-work-plugins, Apache-2.0).",
+  "author": {
+    "name": "hieuanh2526"
+  },
+  "license": "Apache-2.0"
+}
