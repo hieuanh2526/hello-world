@@ -1,0 +1,15 @@
+research-planning plugin
+
+Skill "research-problem-selection" là tác phẩm phái sinh của skill
+"scientific-problem-selection" trong plugin "bio-research" của
+anthropics/knowledge-work-plugins (https://github.com/anthropics/knowledge-work-plugins),
+phát hành theo Apache License 2.0 (xem LICENSE).
+
+Thay đổi so với bản gốc: dịch sang tiếng Việt; thay toàn bộ ví dụ sinh học bằng
+ví dụ kinh tế học và Lý luận chính trị; thêm loại rủi ro C (công bố/môi trường),
+máy bơm trực giác #8–#9, bẫy #6–#7, khung đánh giá Lý luận chính trị, ánh xạ
+sang thuyết minh đề tài Việt Nam, ranh giới HARKing ở module 7; bỏ tích hợp
+PubMed, thay bằng nguồn tài liệu kinh tế học và chính trị học; rút gọn module 9.
+
+Khung gốc: Fischbach, M. A., & Walsh, C. T. (2024). Problem choice and decision
+trees in science and engineering. Cell, 187(8), 1828–1833.

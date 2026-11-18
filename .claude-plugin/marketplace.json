@@ -1,0 +1,14 @@
+{
+  "name": "hello-world",
+  "description": "Plugin hỗ trợ nghiên cứu kinh tế học và Lý luận chính trị.",
+  "owner": {
+    "name": "hieuanh2526"
+  },
+  "plugins": [
+    {
+      "name": "research-planning",
+      "source": "./plugins/research-planning",
+      "description": "Chọn, đánh giá và gỡ rối đề tài nghiên cứu kinh tế học và Lý luận chính trị."
+    }
+  ]
+}
