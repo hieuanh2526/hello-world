@@ -17,7 +17,7 @@
 | **1 hoat-hinh-3d**：炭黑底、光面立体物件、杂志分栏。适合讲科学原理、实验过程<br>![hoat-hinh-3d](docs/1_hoat-hinh-3d.gif) | **2 cong-nghe-nen-den**：近黑底、暖金细线、衬线字由虚到实。适合讲高端科技概念、历史趋势<br>![cong-nghe-nen-den](docs/2_cong-nghe-nen-den.gif) |
 | **3 cat-dan-sieu-thuc**：米灰海报、特粗衬线大标题、一个大比喻。适合讲思维方式、认知<br>![cat-dan-sieu-thuc](docs/3_cat-dan-sieu-thuc.gif) | **4 cat-giay**：皱纸上一层层剪纸，定格跳动。适合有态度的观点<br>![cat-giay](docs/4_cat-giay.gif) |
 | **5 bao-co**：整版报纸，往下潜进深蓝插图区。适合科普解读、专题报道<br>![bao-co](docs/5_bao-co.gif) | **6 so-do-phang**：奶油底、琥珀标题带、编号横向流程。适合讲步骤、原理、因果链<br>![so-do-phang](docs/6_so-do-phang.gif) |
-| **7 ve-tay**：米白纸、墨蓝钢笔线稿 + 一种橙，逐笔描、逐字写。适合讲概念拆解、观察记录<br>![ve-tay](docs/7_ve-tay.gif) | 每套的 3 张高清截图在 `styles/<风格>/anh-tinh/`，配色、字体、动效写在 `styles/<风格>/风格卡.md`。 |
+| **7 ve-tay**：米白纸、墨蓝钢笔线稿 + 一种橙，逐笔描、逐字写。适合讲概念拆解、观察记录<br>![ve-tay](docs/7_ve-tay.gif) | 每套的 3 张高清截图在 `styles/<风格>/anh-tinh/`，配色、字体、动效写在 `styles/<风格>/the-phong-cach.md`。 |
 
 ## 三种用法
 
@@ -51,7 +51,7 @@ git clone https://github.com/chuspeeism/dashi-animationstyle.git ~/.claude/skill
 | 位置 | 内容 |
 |---|---|
 | `SKILL.md` | 给 Claude 读的完整说明：三种用法的步骤、规矩、做不到的事 |
-| `styles/<风格>/` | 每套风格：`风格卡.md`（配色、字体、构图、动效、踩过的坑）、`模板.html`（新作品从它改）、`示例_Token.html`（例子的完整页面）、`anh-tinh/` |
+| `styles/<风格>/` | 每套风格：`the-phong-cach.md`（配色、字体、构图、动效、踩过的坑）、`mau.html`（新作品从它改）、`vi-du_Token.html`（例子的完整页面）、`anh-tinh/` |
 | `pipeline/` | 自检、新建作品、转写字幕、生成时间线、渲染、取色、丰富度检查、共用动效部件 |
 | `knowledge/` | 风格词典（27 种风格）、讲解动画通用规则（字号、对比度、安全区、动效时长，带出处）、动效和画面变化、做 11 套样片的经验、风格卡模板 |
 | `examples/token/` | 自带例子：21 秒口播「AI 怎么读懂一句话」的音频、字幕、分镜、时间线 |
@@ -70,6 +70,6 @@ git clone https://github.com/chuspeeism/dashi-animationstyle.git ~/.claude/skill
 
 代码和文档：MIT（见 `LICENSE`）。
 
-`examples/token/口播.wav` 是作者本人的声音，取自 B 站视频《【告别AI文盲】5分钟速通AI黑话！》（BV1tMHYzkEnY），只供试用这个 skill，不要用在别的作品里。
+`examples/token/giong-doc.wav` 是作者本人的声音，取自 B 站视频《【告别AI文盲】5分钟速通AI黑话！》（BV1tMHYzkEnY），只供试用这个 skill，不要用在别的作品里。
 
 skill 不带任何字体和第三方图片；用法二里你给的参考图只放在你自己的作品目录里，版权由你自己负责，成片里不出现原图。

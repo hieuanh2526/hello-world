@@ -4,8 +4,8 @@
 // 每次运行：调试端口由系统随机分配（--remote-debugging-port=0），Chrome 配置和临时文件放在自己的临时目录，
 // 所以多个渲染可以同时跑，互不干扰。用法见 SKILL.md，或 `node render.mjs --help`。
 // 出处：我们做风格测试时的共用 render.mjs（10-07）；skill 版（10-08）改了：口播和输出默认从作品目录的
-// 作品.json 读、没有就找页面旁边的 口播.wav；Chrome 自动找；--no-subtitle；开头检查 Node 版本和 ffmpeg。
-// v1.1（10-08 晚，按观众实测改）：--no-subtitle 的输出一律带「_无字幕」（给了 -o 也加）；--scan 扫片拼图、--check-marks 关键词前后帧拼图；
+// du-an.json 读、没有就找页面旁边的 giong-doc.wav；Chrome 自动找；--no-subtitle；开头检查 Node 版本和 ffmpeg。
+// v1.1（10-08 晚，按观众实测改）：--no-subtitle 的输出一律带「_khong-phu-de」（给了 -o 也加）；--scan 扫片拼图、--check-marks 关键词前后帧拼图；
 // --stills 出图前把同一前缀的旧静帧挪进 旧anh-tinh/。
 
 import { spawn, execFileSync } from 'node:child_process';
@@ -22,16 +22,16 @@ const HELP = `用法：
   node render.mjs <作品目录/index.html> --stills 2.1,7.5,12.6  静帧：按给定秒数导出 1920×1080 PNG，外加一张 480 宽的检查图
   node render.mjs <作品目录/index.html> --scan --check-marks   检查图（不出片，十几秒）：扫片拼图 + 关键词前后帧拼图
 
-默认值从页面旁边的 作品.json 读（新建作品.mjs 会写好）：口播用其中的 audio，输出用其中的 output；
-没有 作品.json 时，口播找页面旁边的 口播.wav，输出是「页面所在文件夹名.mp4」放在页面旁边。
+默认值从页面旁边的 du-an.json 读（tao-du-an.mjs 会写好）：口播用其中的 audio，输出用其中的 output；
+没有 du-an.json 时，口播找页面旁边的 giong-doc.wav，输出是「页面所在文件夹名.mp4」放在页面旁边。
 
 选项：
-  -o, --out <文件>        输出 mp4（预览默认在文件名后加「_预览」）
+  -o, --out <文件>        输出 mp4（预览默认在文件名后加「_xem-truoc」）
   --audio <文件>          音频（默认见上）；--no-audio 不要声音
-  --config <作品.json>    指定作品配置（默认用页面旁边的 作品.json）
+  --config <du-an.json>    指定作品配置（默认用页面旁边的 du-an.json）
   --no-subtitle           不画字幕（页面地址加 ?nosub=1，页面里的 NOSUB 开关生效；回剪映统一加字幕时用）。
-                          输出文件名自动加「_无字幕」（给了 -o 也加，名字里已经有「无字幕」就不再加），
-                          不会覆盖带字幕的成片；静帧、检查图的文件名也加「_无字幕」
+                          输出文件名自动加「_khong-phu-de」（给了 -o 也加，名字里已经有「无字幕」就不再加），
+                          不会覆盖带字幕的成片；静帧、检查图的文件名也加「_khong-phu-de」
   --check-determinism auto|秒,秒  确定性检查（v1.3，不出片）：每个时刻在新打开的页面里单独截一张，再先跳到片尾附近、
                           倒回来截一张，比两张是否逐像素相同。不同 = 画面跟 seek 的先后有关（常见原因：画布的 lineCap、
                           lineJoin、setLineDash、globalAlpha 等状态没复位，漏到了下一帧），按时间顺序出片时不一定看得出。
@@ -241,15 +241,15 @@ async function killChrome(proc, userDir) {
 
 // ---------------- 页面 ----------------
 async function openPage(cdp, htmlPath, query = '') {
-  // v1.2：页面引了 动效部件.js、旁边没有（老作品目录、手动 cp 模板时），就从 pipeline 复制一份过去
+  // v1.2：页面引了 hieu-ung.js、旁边没有（老作品目录、手动 cp 模板时），就从 pipeline 复制一份过去
   // v1.3：页面在 skill 自己的文件夹里时不复制（不往 skill 里写东西）
   const SKILL_DIR = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
   const inSkill = path.resolve(htmlPath).startsWith(SKILL_DIR + path.sep);
   if (!inSkill) try {
-    const fx = path.join(path.dirname(path.resolve(htmlPath)), '动效部件.js');
-    if (!fs.existsSync(fx) && fs.readFileSync(htmlPath, 'utf8').includes('src="动效部件.js"')) {
-      fs.copyFileSync(fileURLToPath(new URL('./动效部件.js', import.meta.url)), fx);
-      console.log(`  已把 动效部件.js 复制到页面旁边：${fx}`);
+    const fx = path.join(path.dirname(path.resolve(htmlPath)), 'hieu-ung.js');
+    if (!fs.existsSync(fx) && fs.readFileSync(htmlPath, 'utf8').includes('src="hieu-ung.js"')) {
+      fs.copyFileSync(fileURLToPath(new URL('./hieu-ung.js', import.meta.url)), fx);
+      console.log(`  已把 hieu-ung.js 复制到页面旁边：${fx}`);
     }
   } catch { /* 复制不了也照常打开：页面里没调用 动效 就不影响 */ }
   const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
@@ -344,8 +344,8 @@ async function main() {
   if (!fs.existsSync(html)) die(`找不到页面：${html}`);
   const pageDir = path.dirname(html);
   const baseName = path.basename(pageDir);
-  // 作品配置：--config 指定，或页面旁边的 作品.json；里面的相对路径都相对于配置文件所在目录
-  const cfgPath = opts.config ? path.resolve(opts.config) : path.join(pageDir, '作品.json');
+  // 作品配置：--config 指定，或页面旁边的 du-an.json；里面的相对路径都相对于配置文件所在目录
+  const cfgPath = opts.config ? path.resolve(opts.config) : path.join(pageDir, 'du-an.json');
   let cfg = {};
   if (fs.existsSync(cfgPath)) {
     try { cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch (e) { die(`作品配置读不了（${cfgPath}）：${e.message}`); }
@@ -355,17 +355,17 @@ async function main() {
   if (opts.stills && (opts.scan || opts.checkMarks)) die('--stills 和 --scan / --check-marks 分两次跑');
   if (opts.determinism && (opts.stills || opts.scan || opts.checkMarks)) die('--check-determinism 单独跑');
   const mode = opts.determinism ? 'determinism' : opts.stills ? 'stills' : (opts.scan || opts.checkMarks) ? 'check' : opts.preview ? 'preview' : 'final';
-  const nsTag = opts.noSub ? '_无字幕' : '';   // 不画字幕时，所有输出文件名都带「_无字幕」，不覆盖带字幕的版本
+  const nsTag = opts.noSub ? '_khong-phu-de' : '';   // 不画字幕时，所有输出文件名都带「_khong-phu-de」，不覆盖带字幕的版本
   const fps = opts.fps || (mode === 'preview' ? 10 : 30);
   const scale = opts.scale || (mode === 'preview' ? 0.5 : 1);
   const format = opts.format || cfg.format || 'png';
   const quality = opts.quality || 92;
   const crf = opts.crf ?? (mode === 'preview' ? 26 : 18);
-  const defAudio = fromCfg('audio') || path.join(pageDir, '口播.wav');
+  const defAudio = fromCfg('audio') || path.join(pageDir, 'giong-doc.wav');
   let audio = opts.noAudio ? null : (opts.audio ? path.resolve(opts.audio) : defAudio);
   if (audio && !fs.existsSync(audio)) {
     if (opts.audio || cfg.audio) die(`找不到音频：${audio}`);
-    if (mode === 'final' || mode === 'preview') console.log(`  页面旁边没有 作品.json 也没有 口播.wav，输出不带声音（要声音用 --audio <文件>）`);
+    if (mode === 'final' || mode === 'preview') console.log(`  页面旁边没有 du-an.json 也没有 giong-doc.wav，输出不带声音（要声音用 --audio <文件>）`);
     audio = null;
   }
   const query = opts.noSub ? '?nosub=1' : '';
@@ -433,7 +433,7 @@ async function main() {
       const prefix = nsTag && !prefix0.includes('无字幕') ? prefix0 + nsTag : prefix0;
       // 同一前缀的旧静帧、旧检查图先挪走（不删），文件夹里只留这一批，免得新旧混在一起
       const esc = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const oldRe = new RegExp(`^${esc}_(静帧_-?\\d+(\\.\\d+)?s\\.(png|jpg)|480宽检查\\.png)$`);
+      const oldRe = new RegExp(`^${esc}_(anh-tinh_-?\\d+(\\.\\d+)?s\\.(png|jpg)|kiem-tra-480\\.png)$`);
       const isOld = (f) => oldRe.test(f);
       const olds = fs.readdirSync(outdir).filter(isOld);
       if (olds.length) {
@@ -447,13 +447,13 @@ async function main() {
       for (const t of opts.stills) {
         const jpg = opts.format === 'jpeg';   // v1.3：命令行写了 --format jpeg 就出 jpg（风格文件夹的 anh-tinh/ 用 jpg）
         const buf = await seekAndShoot(S, errors, t, jpg ? { format: 'jpeg', quality: opts.quality || 90, scale: 1 } : { format: 'png', scale: 1 });
-        const f = path.join(outdir, `${prefix}_静帧_${t.toFixed(2)}s.${jpg ? 'jpg' : 'png'}`);
+        const f = path.join(outdir, `${prefix}_anh-tinh_${t.toFixed(2)}s.${jpg ? 'jpg' : 'png'}`);
         fs.writeFileSync(f, buf);
         files.push(f);
         console.log(`  ✓ ${f}`);
       }
       // 480 宽检查图：把静帧缩到 480 像素宽竖排（手机竖屏看横屏视频的宽度），看字幕和关键字是否还读得清
-      const sheet = path.join(outdir, `${prefix}_480宽检查.png`);
+      const sheet = path.join(outdir, `${prefix}_kiem-tra-480.png`);
       const inputs = files.flatMap((f) => ['-i', f]);
       const filter = files.map((_, i) => `[${i}:v]scale=480:-1:flags=area[s${i}]`).join(';') + ';' + files.map((_, i) => `[s${i}]`).join('') + (files.length > 1 ? `vstack=inputs=${files.length}` : 'null');
       execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...inputs, '-filter_complex', filter, '-frames:v', '1', '-update', '1', sheet]);
@@ -496,18 +496,18 @@ async function main() {
       }
       if (opts.checkMarks) {
         const marks = Object.entries(await evaluate(S, `(window.TL && window.TL.marks) || {}`)).map(([name, m]) => ({ name, start: m.start })).filter((m) => Number.isFinite(m.start)).sort((a, b) => a.start - b.start);
-        if (!marks.length) console.log('  TL.marks 里没有关键词，不出卡点拼图（分镜.json 的 marks 是空的？）');
+        if (!marks.length) console.log('  TL.marks 里没有关键词，不出卡点拼图（phan-canh.json 的 marks 是空的？）');
         else {
           const times = marks.flatMap((m) => [m.start - 0.1, m.start + 0.35]);
-          const lines = [`关键词前后帧（卡点${nsTag}.png）：每格 480×270；一行两个词，顺序是「词1 前、词1 后、词2 前、词2 后」；前 = 开始说之前 0.1 秒，后 = 开始说之后 0.35 秒。`,
+          const lines = [`关键词前后帧（diem-khop${nsTag}.png）：每格 480×270；一行两个词，顺序是「词1 前、词1 后、词2 前、词2 后」；前 = 开始说之前 0.1 秒，后 = 开始说之后 0.35 秒。`,
             '要看的是：「前」那格还没有这个词对应的动作，「后」那格已经开始出现（手写、逐字浮现的风格这时可能只写了一两个字，开始出现就算对上）。', ''];
           for (let r = 0; r * 2 < marks.length; r++) {
             const a = marks[r * 2], b = marks[r * 2 + 1];
             lines.push(`第 ${String(r + 1).padStart(2)} 行：左 ${a.name}（${a.start.toFixed(2)} 秒）` + (b ? `　右 ${b.name}（${b.start.toFixed(2)} 秒）` : ''));
           }
-          await sheetOf(times, 4, path.join(outdir, `卡点${nsTag}.png`));
-          fs.writeFileSync(path.join(outdir, `卡点${nsTag}_说明.txt`), lines.join('\n') + '\n');
-          console.log(`  ✓ ${path.join(outdir, `卡点${nsTag}_说明.txt`)}\n  ${lines.slice(3).join('\n  ')}`);
+          await sheetOf(times, 4, path.join(outdir, `diem-khop${nsTag}.png`));
+          fs.writeFileSync(path.join(outdir, `diem-khop${nsTag}_ghi-chu.txt`), lines.join('\n') + '\n');
+          console.log(`  ✓ ${path.join(outdir, `diem-khop${nsTag}_ghi-chu.txt`)}\n  ${lines.slice(3).join('\n  ')}`);
         }
       }
       console.log(`[${bjTime()}] 完成，出了 ${nSheet} 张拼图，用时 ${fmtS(Date.now() - T0)}`);
@@ -522,11 +522,11 @@ async function main() {
     if (!(to > from)) fail(`时间段不对：--from ${from} --to ${to}`);
     const nFrames = Math.ceil((to - from) * fps - 1e-6);
     const outLen = nFrames / fps;
-    const suffix = `${mode === 'preview' ? '_预览' : ''}${nsTag}${opts.from !== undefined || opts.to !== undefined ? `_${from}-${to}s` : ''}`;
+    const suffix = `${mode === 'preview' ? '_xem-truoc' : ''}${nsTag}${opts.from !== undefined || opts.to !== undefined ? `_${from}-${to}s` : ''}`;
     const cfgOut = fromCfg('output');
     const defOut = cfgOut ? cfgOut.replace(/\.mp4$/i, '') + suffix + '.mp4' : path.join(pageDir, `${baseName}${suffix}.mp4`);
     let out = path.resolve(opts.out || defOut);
-    // --no-subtitle 时就算 -o 给的是带字幕成片的名字，也加「_无字幕」，不覆盖带字幕的那版
+    // --no-subtitle 时就算 -o 给的是带字幕成片的名字，也加「_khong-phu-de」，不覆盖带字幕的那版
     if (nsTag && !path.basename(out).includes('无字幕')) { const ext = path.extname(out); out = out.slice(0, out.length - ext.length) + nsTag + (ext || '.mp4'); }
     fs.mkdirSync(path.dirname(out), { recursive: true });
     part = out.replace(/\.mp4$/i, '') + '.rendering.mp4';
@@ -581,6 +581,6 @@ async function main() {
   }
 }
 
-// 只有直接运行时才跑（自检.mjs 会 import 这里的 findChrome）
+// 只有直接运行时才跑（tu-kiem-tra.mjs 会 import 这里的 findChrome）
 const realp = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
 if (process.argv[1] && realp(process.argv[1]) === realp(fileURLToPath(import.meta.url))) main();

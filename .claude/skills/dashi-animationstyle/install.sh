@@ -29,7 +29,7 @@ fi
 echo "ok: node $(node -v), $(ffmpeg -version | head -1 | cut -d' ' -f1-3)"
 
 say "2/4 Font tiếng Việt / tiếng Anh"
-node "$SKILL/pipeline/装字体.mjs"
+node "$SKILL/pipeline/cai-font.mjs"
 
 if [ "$WANT_WHISPER" = 1 ]; then
   say "3/4 whisper-cli"
@@ -58,4 +58,4 @@ if [ "$GLOBAL" = 1 ]; then
 fi
 
 say "Tự kiểm tra"
-node "$SKILL/pipeline/自检.mjs" || true
+node "$SKILL/pipeline/tu-kiem-tra.mjs" || true

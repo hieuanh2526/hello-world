@@ -14,4 +14,4 @@ Tất cả là font mã nguồn mở theo SIL Open Font License 1.1 (xem `OFL.tx
 | Montserrat | cat-dan-sieu-thuc (nhãn nhỏ) |
 | Cormorant Garamond | cong-nghe-nen-den (chữ Latin thanh mảnh) |
 
-Cài: `node pipeline/装字体.mjs`. Trên macOS font được chép vào ~/Library/Fonts, trên Linux vào ~/.local/share/fonts/dashi.
+Cài: `node pipeline/cai-font.mjs`. Trên macOS font được chép vào ~/Library/Fonts, trên Linux vào ~/.local/share/fonts/dashi.

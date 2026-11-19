@@ -1,4 +1,4 @@
-// 自动生成，不要手改：改 字幕.json 或 分镜.json 后重跑 node 生成timeline.mjs <作品目录>
+// 自动生成，不要手改：改 phu-de.json 或 phan-canh.json 后重跑 node tao-timeline.mjs <作品目录>
 // 页面里用 <script src="timeline.js"></script> 引入（和页面放在同一个文件夹），得到 window.TL。时间单位秒。
 window.TL = {
  "duration": 21.17,
