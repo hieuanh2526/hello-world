@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // tao-du-an.mjs：建一个作品目录（一段口播 + 一套风格 = 一个作品），后面的转写、分镜、页面、渲染都在这个目录里做。
 //
-// 用法：
-//   node tao-du-an.mjs <作品目录> --style ve-tay --example token     用自带的 Token 例子（第一次用：确认电脑能出片）
-//   node tao-du-an.mjs <作品目录> --style ve-tay --audio 我的口播.m4a [--script loi-thoai.txt] --lang vi|en   自己的口播（只做越南语、英语）
-//   node tao-du-an.mjs --list                                            列出有哪些风格
-// 作品目录里会有：du-an.json（配置）、giong-doc.wav、index.html（从风格文件夹复制来的页面）、hieu-ung.js（v1.2，转场和次要动作）；Token 例子还有字幕、分镜、timeline.js。
-// 作品目录已经存在时只补缺的文件，不覆盖已有的（要覆盖页面加 --force）。
+// Cách dùng:
+//   node tao-du-an.mjs <thư-mục-dự-án> --style ve-tay --example token     dùng ví dụ Token có sẵn (lần đầu: kiểm tra máy render được)
+//   node tao-du-an.mjs <thư-mục-dự-án> --style ve-tay --audio giong-cua-toi.m4a [--script loi-thoai.txt] --lang vi|en   lời thoại của bạn (chỉ tiếng Việt, tiếng Anh)
+//   node tao-du-an.mjs --list                                              liệt kê các phong cách
+// Thư mục dự án sẽ có: du-an.json (cấu hình), giong-doc.wav, index.html (trang chép từ thư mục phong cách), hieu-ung.js (chuyển cảnh, chuyển động phụ).
+// Nếu thư mục đã có thì chỉ thêm file còn thiếu, không ghi đè (muốn ghi đè trang thì thêm --force).
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -21,7 +21,7 @@ const styleNames = () => fs.readdirSync(STYLES).filter((n) => fs.existsSync(path
 const args = process.argv.slice(2);
 const o = { _: [] };
 for (let i = 0; i < args.length; i++) {
-  const a = args[i], v = () => args[++i] ?? die(`参数 ${a} 后面缺值`);
+  const a = args[i], v = () => args[++i] ?? die(`Thiếu giá trị sau tham số ${a}`);
   if (a === '--style') o.style = v();
   else if (a === '--example') o.example = v();
   else if (a === '--audio') o.audio = v();
@@ -30,9 +30,20 @@ for (let i = 0; i < args.length; i++) {
   else if (a === '--force') o.force = true;
   else if (a === '--list') o.list = true;
   else if (a === '-h' || a === '--help') o.help = true;
-  else if (a.startsWith('-')) die(`不认识的参数：${a}`);
+  else if (a.startsWith('-')) die(`Không hiểu tham số: ${a}`);
   else o._.push(a);
 }
+// Mô tả tiếng Việt cho --list: [trông thế nào, hợp để nói về gì]
+const VI_DESC = {
+  'so-do-phang': ['Sơ đồ phẳng: nền kem, dải tiêu đề màu hổ phách, quy trình đánh số theo hàng ngang.', 'Hợp với: các bước, nguyên lý, chuỗi nguyên nhân – kết quả.'],
+  've-tay': ['Vẽ tay: giấy trắng ngà, nét bút mực xanh đen + một màu cam, vẽ từng nét, viết từng chữ.', 'Hợp với: giải thích khái niệm, ghi chép quan sát.'],
+  'bao-co': ['Báo cũ: cả trang báo, ống kính lặn xuống vùng minh họa xanh đậm.', 'Hợp với: phổ biến kiến thức, bài chuyên đề.'],
+  'cat-giay': ['Cắt giấy cổ điển: các lớp giấy cắt trên nền giấy nhàu, chuyển động giật kiểu stop-motion.', 'Hợp với: quan điểm, góc nhìn có thái độ.'],
+  'cat-dan-sieu-thuc': ['Cắt dán siêu thực: áp phích nền xám be, tiêu đề chữ có chân siêu đậm, một hình ảnh so sánh lớn.', 'Hợp với: cách tư duy, nhận thức, tâm lý.'],
+  'hoat-hinh-3d': ['Hoạt hình 3D: nền than chì, vật thể khối bóng bẩy, bố cục chia cột kiểu tạp chí.', 'Hợp với: nguyên lý khoa học, quá trình thí nghiệm.'],
+  'cong-nghe-nen-den': ['Công nghệ nền đen: nền gần đen, đường mảnh vàng ấm, chữ có chân hiện dần từ mờ sang rõ.', 'Hợp với: khái niệm công nghệ cao, xu hướng, lịch sử.'],
+  'neon-cyber': ['Neon cyber: phong cách thử nghiệm, chưa có mẫu chung.', 'Chỉ dùng khi muốn tự phát triển thêm.'],
+};
 if (o.list) {
   // 每套两行：看起来什么样（风格卡第一段的第一句）、适合讲什么（「适合」那句，到分号为止）；整句打印，不截半句
   for (const n of styleNames()) {
@@ -43,11 +54,12 @@ if (o.list) {
     const look = sents[0] ? sents[0] + '。' : '';
     const fit = (sents.find((x) => x.startsWith('适合')) || '').split('；')[0];
     const grade = (md.match(/\*\*分级：([AB])\*\*/) || [])[1];
-    const tpl = fs.existsSync(path.join(STYLES, n, 'mau.html')) ? '' : '（没有 mau.html）';
-    console.log(`  ${n.padEnd(6, '　')}  ${grade ? grade + ' 级' : ''}${tpl}  ${look}`);
-    if (fit) console.log(`  ${''.padEnd(6, '　')}        ${fit}。`);
+    const tpl = fs.existsSync(path.join(STYLES, n, 'mau.html')) ? '' : ' (chưa có mau.html)';
+    const vi = VI_DESC[n];
+    console.log(`  ${n.padEnd(18)} ${grade ? 'hạng ' + grade : ''}${tpl}  ${vi ? vi[0] : look}`);
+    if (vi || fit) console.log(`  ${''.padEnd(18)}         ${vi ? vi[1] : fit + '。'}`);
   }
-  console.log('\nA 级：底座直接用，换内容只写场景；B 级：版式和 Token 的比喻绑在一起，要先重排版式或想新比喻（多花 15–20 分钟）。每套的样子看 styles/<风格>/anh-tinh/ 里的 3 张图。');
+  console.log('\nHạng A: dùng nền có sẵn, đổi nội dung chỉ cần vẽ lại cảnh. Hạng B: bố cục gắn với ví dụ Token, phải xếp lại bố cục hoặc nghĩ hình ảnh so sánh mới (thêm 15–20 phút). Xem 3 ảnh mẫu của mỗi phong cách trong styles/<phong-cách>/anh-tinh/.');
   process.exit(0);
 }
 if (o.help || !o._.length || !o.style) {
@@ -63,15 +75,15 @@ if (o.style) { const zh = Object.keys(ALIAS).find((k) => k === o.style || k.incl
   : o.style.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').trim().toLowerCase().replace(/[\s_]+/g, '-'); }
 const style = names.find((n) => n === o.style) || names.find((n) => n.includes(o.style)) ||
   names.find((n) => (fs.readFileSync(path.join(STYLES, n, 'vi-du_Token.html'), 'utf8').slice(0, 600)).includes(o.style));
-if (!style) die(`没有「${o.style}」这套风格。现有：${names.join('、')}`);
+if (!style) die(`Không có phong cách «${o.style}». Hiện có: ${names.join(', ')}`);
 const sdir = path.join(STYLES, style);
 
 const dir = path.resolve(o._[0]);
-if (dir.startsWith(SKILL + path.sep)) die('作品目录不要放在 skill 文件夹里面，放到用户自己的项目或桌面上');
+if (dir.startsWith(SKILL + path.sep)) die('Đừng đặt thư mục dự án bên trong thư mục skill; hãy đặt trong dự án của bạn hoặc trên Desktop');
 fs.mkdirSync(dir, { recursive: true });
 const put = (src, name, force = false) => {
   const dst = path.join(dir, name);
-  if (fs.existsSync(dst) && !force) { console.log(`  已有 ${name}，不覆盖`); return; }
+  if (fs.existsSync(dst) && !force) { console.log(`  Đã có ${name}, không ghi đè`); return; }
   fs.copyFileSync(src, dst); fs.chmodSync(dst, 0o644); console.log(`  ✓ ${name}`);   // v1.3：skill 文件夹是只读的时候，复制出来的页面也会是只读，改成可写
 };
 
@@ -79,41 +91,41 @@ const cfg = { style, audio: 'giong-doc.wav', subtitles: 'phu-de.json', storyboar
 const fast = /hoat-hinh-3d|cat-dan-sieu-thuc|cat-giay|cong-nghe-nen-den/.test(style);   // 满屏颗粒的几套，PNG 截图慢，默认用 jpeg 截图
 if (fast) cfg.format = 'jpeg';
 // 口播语言：这一版只做越南语（vi）和英语（en）；自带的 Token 例子是中文，只用来确认电脑能出片
-if (o.lang && !['vi', 'en'].includes(o.lang)) die(`--lang 只能是 vi 或 en，现在是 ${o.lang}`);
-if (!o.example) { if (!o.lang) die('自己的口播要写 --lang vi（越南语）或 --lang en（英语）'); cfg.lang = o.lang; }
+if (o.lang && !['vi', 'en'].includes(o.lang)) die(`--lang chỉ nhận vi hoặc en, đang là ${o.lang}`);
+if (!o.example) { if (!o.lang) die('Với lời thoại của bạn, cần ghi --lang vi (tiếng Việt) hoặc --lang en (tiếng Anh)'); cfg.lang = o.lang; }
 
 if (o.example) {
   const ex = path.join(SKILL, 'examples', o.example);
-  if (!fs.existsSync(ex)) die(`没有这个例子：${o.example}（有：${fs.readdirSync(path.join(SKILL, 'examples')).join('、')}）`);
+  if (!fs.existsSync(ex)) die(`Không có ví dụ: ${o.example} (hiện có: ${fs.readdirSync(path.join(SKILL, 'examples')).join(', ')})`);
   for (const f of ['giong-doc.wav', 'phu-de.json', 'phu-de.srt', 'phan-canh.json', 'phan-canh.md', 'loi-thoai.txt']) if (fs.existsSync(path.join(ex, f))) put(path.join(ex, f), f);
   put(path.join(sdir, 'vi-du_Token.html'), 'index.html', o.force);
 } else {
   if (o.audio) {
     const src = path.resolve(o.audio);
-    if (!fs.existsSync(src)) die(`找不到口播文件：${src}`);
+    if (!fs.existsSync(src)) die(`Không tìm thấy file giọng đọc: ${src}`);
     const dst = path.join(dir, 'giong-doc.wav');
-    if (fs.existsSync(dst) && !o.force) console.log('  已有 giong-doc.wav，不覆盖');
+    if (fs.existsSync(dst) && !o.force) console.log('  Đã có giong-doc.wav, không ghi đè');
     else {
       // 统一转成 44.1 kHz 立体声 16 位 wav（wav、m4a、mp3、mov 都行）
       execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', src, '-vn', '-ar', '44100', '-ac', '2', '-c:a', 'pcm_s16le', dst]);
       const d = +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', dst], { encoding: 'utf8' }).trim();
-      console.log(`  ✓ giong-doc.wav（${d.toFixed(2)} 秒）${d > 65 ? '  注意：超过 60 秒，建议分段做' : ''}`);
+      console.log(`  ✓ giong-doc.wav (${d.toFixed(2)} giây)${d > 65 ? '  Lưu ý: dài hơn 60 giây, nên chia thành nhiều đoạn' : ''}`);
     }
   }
   if (o.script) put(path.resolve(o.script), 'loi-thoai.txt');
   const tpl = fs.existsSync(path.join(sdir, 'mau.html')) ? 'mau.html' : 'vi-du_Token.html';
   put(path.join(sdir, tpl), 'index.html', o.force);
-  if (tpl === 'vi-du_Token.html') console.log('  这套还没有通用模板：index.html 是 Token 例子的页面，按 the-phong-cach.md「换内容时怎么改」保留底座、重写场景');
+  if (tpl === 'vi-du_Token.html') console.log('  Phong cách này chưa có mẫu chung: index.html là trang của ví dụ Token; giữ phần nền và vẽ lại cảnh theo the-phong-cach.md');
 }
 put(path.join(HERE, 'hieu-ung.js'), 'hieu-ung.js');   // v1.2：转场和次要动作的共用部件，模板里的 fxBefore / fxAfter 调它
 const cfgPath = path.join(dir, 'du-an.json');
 if (!fs.existsSync(cfgPath) || o.force) fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2) + '\n');
-console.log(`  ✓ du-an.json（风格 ${style}${fast ? '，截图用 jpeg' : ''}）`);
+console.log(`  ✓ du-an.json (phong cách ${style}${fast ? ', chụp ảnh bằng jpeg' : ''})`);
 
 if (fs.existsSync(path.join(dir, 'phu-de.json')) && fs.existsSync(path.join(dir, 'phan-canh.json'))) {
   execFileSync(process.execPath, [path.join(HERE, 'tao-timeline.mjs'), dir], { stdio: 'inherit' });
 }
-console.log(`\n作品目录：${dir}\n风格卡：${path.join(sdir, 'the-phong-cach.md')}`);
+console.log(`\nThư mục dự án: ${dir}\nThẻ phong cách: ${path.join(sdir, 'the-phong-cach.md')}`);
 console.log(o.example
-  ? `下一步：node "${path.join(HERE, 'render.mjs')}" "${path.join(dir, 'index.html')}"`
-  : '下一步：转写出 phu-de.json → 写 phan-canh.json → node tao-timeline.mjs <作品目录> → 照风格卡改 index.html（见 SKILL.md 用法一）');
+  ? `Bước tiếp: node "${path.join(HERE, 'render.mjs')}" "${path.join(dir, 'index.html')}"`
+  : 'Bước tiếp: tạo phu-de.json → viết phan-canh.json → node tao-timeline.mjs <thư-mục-dự-án> → sửa index.html theo thẻ phong cách (xem SKILL.md)');

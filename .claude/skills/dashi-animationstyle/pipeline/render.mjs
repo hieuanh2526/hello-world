@@ -6,7 +6,7 @@
 // 出处：我们做风格测试时的共用 render.mjs（10-07）；skill 版（10-08）改了：口播和输出默认从作品目录的
 // du-an.json 读、没有就找页面旁边的 giong-doc.wav；Chrome 自动找；--no-subtitle；开头检查 Node 版本和 ffmpeg。
 // v1.1（10-08 晚，按观众实测改）：--no-subtitle 的输出一律带「_khong-phu-de」（给了 -o 也加）；--scan 扫片拼图、--check-marks 关键词前后帧拼图；
-// --stills 出图前把同一前缀的旧静帧挪进 旧anh-tinh/。
+// --stills 出图前把同一前缀的旧静帧挪进 anh-tinh-cu/。
 
 import { spawn, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -16,43 +16,43 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const W = 1920, H = 1080;
 
-const HELP = `用法：
-  node render.mjs <作品目录/index.html> [选项]                 成片：30 帧/秒逐帧渲染，合上口播，出 mp4
-  node render.mjs <作品目录/index.html> --preview              预览：10 帧/秒、960×540，快
-  node render.mjs <作品目录/index.html> --stills 2.1,7.5,12.6  静帧：按给定秒数导出 1920×1080 PNG，外加一张 480 宽的检查图
-  node render.mjs <作品目录/index.html> --scan --check-marks   检查图（不出片，十几秒）：扫片拼图 + 关键词前后帧拼图
+const HELP = `Cách dùng:
+  node render.mjs <thư-mục-dự-án/index.html> [tùy chọn]                 video hoàn chỉnh: render từng khung 30 fps, ghép giọng đọc, ra mp4
+  node render.mjs <thư-mục-dự-án/index.html> --preview              xem trước: 10 fps, 960×540, nhanh
+  node render.mjs <thư-mục-dự-án/index.html> --stills 2.1,7.5,12.6  ảnh tĩnh: xuất PNG 1920×1080 tại các giây đã cho, kèm một ảnh kiểm tra rộng 480
+  node render.mjs <thư-mục-dự-án/index.html> --scan --check-marks   ảnh kiểm tra (không ra video, vài chục giây): ảnh ghép quét toàn bài + ảnh trước/sau từng từ khóa
 
-默认值从页面旁边的 du-an.json 读（tao-du-an.mjs 会写好）：口播用其中的 audio，输出用其中的 output；
-没有 du-an.json 时，口播找页面旁边的 giong-doc.wav，输出是「页面所在文件夹名.mp4」放在页面旁边。
+Giá trị mặc định đọc từ du-an.json cạnh trang (tao-du-an.mjs đã ghi sẵn): giọng đọc lấy từ audio, file ra lấy từ output;
+không có du-an.json thì dùng giong-doc.wav cạnh trang, file ra là «tên-thư-mục.mp4» đặt cạnh trang.
 
-选项：
-  -o, --out <文件>        输出 mp4（预览默认在文件名后加「_xem-truoc」）
-  --audio <文件>          音频（默认见上）；--no-audio 不要声音
-  --config <du-an.json>    指定作品配置（默认用页面旁边的 du-an.json）
-  --no-subtitle           不画字幕（页面地址加 ?nosub=1，页面里的 NOSUB 开关生效；回剪映统一加字幕时用）。
-                          输出文件名自动加「_khong-phu-de」（给了 -o 也加，名字里已经有「无字幕」就不再加），
-                          不会覆盖带字幕的成片；静帧、检查图的文件名也加「_khong-phu-de」
-  --check-determinism auto|秒,秒  确定性检查（v1.3，不出片）：每个时刻在新打开的页面里单独截一张，再先跳到片尾附近、
-                          倒回来截一张，比两张是否逐像素相同。不同 = 画面跟 seek 的先后有关（常见原因：画布的 lineCap、
-                          lineJoin、setLineDash、globalAlpha 等状态没复位，漏到了下一帧），按时间顺序出片时不一定看得出。
-                          auto = 取片长的 25%、50%、75%
-  --scan                  扫片拼图：每秒 3 帧、每格 480×270、一张 4×8 格（约 10.7 秒），按片长出几张
-                          （kiem-tra/扫片_1.png …，旧的同名扫片先删掉），看截断、叠字、空白、换镜头
-  --check-marks           关键词前后帧拼图：每个关键词开始前 0.1 秒、后 0.35 秒各一帧，一行两个词（前、后、前、后），
-                          出 kiem-tra/卡点.png 和 卡点_说明.txt（第几行是哪个词）；手写类风格「后」那帧字可能还没写完，看有没有开始出现
-                          这两个只截检查用的小图、不出片；可以和 --no-subtitle、--outdir 一起用
-  --fps <n>               帧率（成片默认 30，预览默认 10）
-  --scale <x>             截图缩放（成片 1，预览 0.5）
-  --duration <秒>         时长（默认依次取 window.DURATION、window.TL.duration、音频时长）
-  --from <秒> --to <秒>   只渲染一段（音频同步截取），用于局部检查
-  --format png|jpeg       截图格式（默认 png，无损）；--quality <n> jpeg 质量（默认 92）。和 --stills 一起用时出 jpg 静帧（质量默认 90）
-  --crf <n>               x264 质量（成片默认 18，预览 26）
-  --outdir <目录>         --stills 的输出目录（默认页面旁边）；--scan / --check-marks 的输出目录（默认页面旁边的 kiem-tra/）
-  --prefix <名>           静帧文件名前缀（默认页面所在文件夹名）。出静帧前，同一目录里同一前缀的旧静帧和旧 480 宽检查图
-                          会先挪进 旧anh-tinh/<前缀_时分秒>/，文件夹里只留这一批；调试用的静帧换个前缀（例如 --prefix 调试）就不会互相挪
-  --gpu                   允许 Chrome 用 GPU（默认关，软件渲染更稳定、并行时不抢显卡）
-  --keep                  保留临时目录（调试用）；--tmp <目录> 临时目录放哪（默认系统临时目录）
-  --chrome <路径>         Chrome 可执行文件（默认自动找：环境变量 CHROME_PATH → Google Chrome → Chromium → Edge → Brave）
+Tùy chọn:
+  -o, --out <file>        file mp4 ra (xem trước thì mặc định thêm «_xem-truoc» vào tên)
+  --audio <file>          âm thanh (mặc định như trên); --no-audio: không có tiếng
+  --config <du-an.json>   chỉ định file cấu hình dự án (mặc định du-an.json cạnh trang)
+  --no-subtitle           không vẽ phụ đề (thêm ?nosub=1 vào địa chỉ trang, công tắc NOSUB trong trang có tác dụng; dùng khi tự thêm phụ đề lúc dựng).
+                          Tên file ra tự thêm «_khong-phu-de» (kể cả khi có -o; tên đã có thì không thêm nữa),
+                          nên không ghi đè bản có phụ đề; ảnh tĩnh và ảnh kiểm tra cũng thêm «_khong-phu-de»
+  --check-determinism auto|giây,giây  kiểm tra tính ổn định (không ra video): ở mỗi thời điểm, chụp một ảnh trong trang mới mở, rồi nhảy
+                          gần cuối video và quay lại chụp lần nữa, so hai ảnh có giống từng điểm ảnh không. Khác nhau = hình phụ thuộc thứ tự
+                          seek (thường do trạng thái canvas như lineCap, lineJoin, setLineDash, globalAlpha chưa được đặt lại).
+                          auto = lấy 25%, 50%, 75% độ dài video
+  --scan                  ảnh ghép quét: 3 khung mỗi giây, mỗi ô 480×270, một ảnh 4×8 ô (khoảng 10,7 giây), độ dài video quyết định số ảnh
+                          (kiem-tra/quet_1.png …, ảnh cũ cùng tên bị xóa trước) — để tìm chữ bị cắt, chữ chồng, khoảng trống, chỗ đổi cảnh
+  --check-marks           ảnh trước/sau từ khóa: mỗi từ khóa chụp 0,1 giây trước và 0,35 giây sau khi bắt đầu nói, mỗi hàng hai từ (trước, sau, trước, sau),
+                          ra kiem-tra/diem-khop.png và diem-khop_ghi-chu.txt (hàng nào là từ nào); kiểu viết tay thì ô «sau» có thể mới viết vài nét, bắt đầu hiện là được
+                          Hai tùy chọn này chỉ chụp ảnh nhỏ để kiểm tra, không ra video; dùng được cùng --no-subtitle, --outdir
+  --fps <n>               số khung/giây (video mặc định 30, xem trước 10)
+  --scale <x>             tỉ lệ chụp (video 1, xem trước 0.5)
+  --duration <giây>       thời lượng (mặc định lần lượt: window.DURATION, window.TL.duration, độ dài âm thanh)
+  --from <giây> --to <giây>   chỉ render một đoạn (cắt âm thanh theo), để kiểm tra cục bộ
+  --format png|jpeg       định dạng ảnh chụp (mặc định png, không mất chất lượng); --quality <n> chất lượng jpeg (mặc định 92). Dùng cùng --stills thì ra ảnh tĩnh jpg (mặc định 90)
+  --crf <n>               chất lượng x264 (video mặc định 18, xem trước 26)
+  --outdir <thư-mục>      nơi lưu --stills (mặc định cạnh trang); nơi lưu --scan / --check-marks (mặc định kiem-tra/ cạnh trang)
+  --prefix <tên>          tiền tố tên ảnh tĩnh (mặc định là tên thư mục của trang). Trước khi xuất, ảnh tĩnh và ảnh kiểm tra 480 cũ cùng tiền tố
+                          được chuyển vào anh-tinh-cu/<tiền-tố_giờphútgiây>/, thư mục chỉ còn đợt mới; ảnh thử nghiệm thì đổi tiền tố (vd --prefix thu) để không lẫn
+  --gpu                   cho Chrome dùng GPU (mặc định tắt, render phần mềm ổn định hơn và không tranh card đồ họa khi chạy song song)
+  --keep                  giữ thư mục tạm (để gỡ lỗi); --tmp <thư-mục> nơi đặt thư mục tạm (mặc định thư mục tạm của hệ thống)
+  --chrome <đường-dẫn>    file chạy Chrome (mặc định tự tìm: biến môi trường CHROME_PATH → Google Chrome → Chromium → Edge → Brave)
 `;
 
 // ---------------- 参数 ----------------
@@ -60,7 +60,7 @@ function parseArgs(argv) {
   const o = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    const val = () => { if (i + 1 >= argv.length) die(`参数 ${a} 后面缺值`); return argv[++i]; };
+    const val = () => { if (i + 1 >= argv.length) die(`Thiếu giá trị sau tham số ${a}`); return argv[++i]; };
     switch (a) {
       case '-h': case '--help': o.help = true; break;
       case '-o': case '--out': o.out = val(); break;
@@ -88,7 +88,7 @@ function parseArgs(argv) {
       case '--chrome': o.chrome = val(); break;
       case '--tmp': o.tmp = val(); break;
       default:
-        if (a.startsWith('-')) die(`不认识的参数：${a}\n\n${HELP}`);
+        if (a.startsWith('-')) die(`Không hiểu tham số: ${a}\n\n${HELP}`);
         o._.push(a);
     }
   }
@@ -97,8 +97,8 @@ function parseArgs(argv) {
 function die(msg) { console.error(`✗ ${msg}`); process.exit(1); }
 function fail(msg) { throw new Error(msg); }   // Chrome 起来之后出错用 fail：抛出去，由 finally 关掉 Chrome、删临时目录
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const fmtS = (ms) => (ms / 1000).toFixed(1) + ' 秒';
-const bjTime = () => new Date().toLocaleTimeString('zh-CN', { hour12: false });   // 本机时间（v1.3 起不再固定北京时间）
+const fmtS = (ms) => (ms / 1000).toFixed(1) + ' giây';
+const bjTime = () => new Date().toLocaleTimeString('vi-VN', { hour12: false });   // 本机时间（v1.3 起不再固定北京时间）
 
 // ---------------- 极简 CDP 客户端 ----------------
 class CDP {
@@ -110,15 +110,15 @@ class CDP {
       const ws = new WebSocket(this.url);
       this.ws = ws;
       ws.onopen = () => resolve();
-      ws.onerror = (e) => reject(new Error(`连不上 Chrome 调试端口：${e.message || this.url}`));
-      ws.onclose = () => { for (const p of this.pending.values()) p.reject(new Error('Chrome 连接已断开')); this.pending.clear(); };
+      ws.onerror = (e) => reject(new Error(`Không kết nối được cổng gỡ lỗi của Chrome: ${e.message || this.url}`));
+      ws.onclose = () => { for (const p of this.pending.values()) p.reject(new Error('Mất kết nối với Chrome')); this.pending.clear(); };
       ws.onmessage = (ev) => {
         const m = JSON.parse(typeof ev.data === 'string' ? ev.data : Buffer.from(ev.data).toString('utf8'));
         if (m.id !== undefined) {
           const p = this.pending.get(m.id);
           if (!p) return;
           this.pending.delete(m.id);
-          if (m.error) p.reject(new Error(`${p.method} 失败：${m.error.message}${m.error.data ? '（' + m.error.data + '）' : ''}`));
+          if (m.error) p.reject(new Error(`${p.method} thất bại: ${m.error.message}${m.error.data ? ' (' + m.error.data + ')' : ''}`));
           else p.resolve(m.result);
         } else if (m.method) {
           for (const l of this.listeners) if (l.method === m.method && (!l.session || l.session === m.sessionId)) l.fn(m.params);
@@ -131,7 +131,7 @@ class CDP {
     const msg = { id, method, params };
     if (sessionId) msg.sessionId = sessionId;
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { this.pending.delete(id); reject(new Error(`等 ${method} 超过 ${timeoutMs / 1000} 秒`)); }, timeoutMs);
+      const timer = setTimeout(() => { this.pending.delete(id); reject(new Error(`Chờ ${method} quá ${timeoutMs / 1000} giây`)); }, timeoutMs);
       this.pending.set(id, {
         method,
         resolve: (v) => { clearTimeout(timer); resolve(v); },
@@ -144,7 +144,7 @@ class CDP {
   once(method, session, timeoutMs = 60000) {
     return new Promise((resolve, reject) => {
       const l = { method, session, fn: (p) => { clearTimeout(timer); this.listeners.splice(this.listeners.indexOf(l), 1); resolve(p); } };
-      const timer = setTimeout(() => { this.listeners.splice(this.listeners.indexOf(l), 1); reject(new Error(`等 ${method} 超过 ${timeoutMs / 1000} 秒`)); }, timeoutMs);
+      const timer = setTimeout(() => { this.listeners.splice(this.listeners.indexOf(l), 1); reject(new Error(`Chờ ${method} quá ${timeoutMs / 1000} giây`)); }, timeoutMs);
       this.listeners.push(l);
     });
   }
@@ -175,14 +175,14 @@ export function findChrome(explicit) {
   }
   return null;
 }
-export const CHROME_HINT = `找不到 Chrome。
-  · 装 Google Chrome（https://www.google.com/chrome/ ，装到「应用程序」文件夹），装完重跑；
-  · 或者用 --chrome <路径> 指定别的 Chromium 内核浏览器（Edge、Brave、Chromium；没实测），
-    也可以设环境变量 CHROME_PATH=<路径>。`;
+export const CHROME_HINT = `Không tìm thấy Chrome.
+  · Cài Google Chrome (https://www.google.com/chrome/, cài vào thư mục Applications), rồi chạy lại;
+  · hoặc dùng --chrome <đường-dẫn> để chỉ định trình duyệt nhân Chromium khác (Edge, Brave, Chromium; chưa thử),
+    hoặc đặt biến môi trường CHROME_PATH=<đường-dẫn>.`;
 
 async function launchChrome(opts, tmp) {
   const exe = findChrome(opts.chrome);
-  if (!exe) die(opts.chrome ? `--chrome 给的路径不存在：${opts.chrome}` : CHROME_HINT);
+  if (!exe) die(opts.chrome ? `Đường dẫn trong --chrome không tồn tại: ${opts.chrome}` : CHROME_HINT);
   const userDir = path.join(tmp, 'chrome-profile');
   const args = [
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${userDir}`,
@@ -210,8 +210,8 @@ async function launchChrome(opts, tmp) {
       const [port, p] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
       if (port && p) return { proc, ws: `ws://127.0.0.1:${port}${p}`, userDir };
     }
-    if (proc.exitCode !== null || proc.signalCode !== null) fail(`Chrome 启动后立刻退出了：\n${errText.slice(0, 2000)}`);
-    if (Date.now() - t0 > 30000) { proc.kill('SIGKILL'); fail(`Chrome 30 秒内没有给出调试地址：\n${errText.slice(0, 2000)}`); }
+    if (proc.exitCode !== null || proc.signalCode !== null) fail(`Chrome thoát ngay sau khi khởi động:\n${errText.slice(0, 2000)}`);
+    if (Date.now() - t0 > 30000) { proc.kill('SIGKILL'); fail(`Sau 30 giây Chrome vẫn chưa đưa ra địa chỉ gỡ lỗi:\n${errText.slice(0, 2000)}`); }
     await sleep(25);
   }
 }
@@ -249,7 +249,7 @@ async function openPage(cdp, htmlPath, query = '') {
     const fx = path.join(path.dirname(path.resolve(htmlPath)), 'hieu-ung.js');
     if (!fs.existsSync(fx) && fs.readFileSync(htmlPath, 'utf8').includes('src="hieu-ung.js"')) {
       fs.copyFileSync(fileURLToPath(new URL('./hieu-ung.js', import.meta.url)), fx);
-      console.log(`  已把 hieu-ung.js 复制到页面旁边：${fx}`);
+      console.log(`  Đã chép hieu-ung.js vào cạnh trang: ${fx}`);
     }
   } catch { /* 复制不了也照常打开：页面里没调用 动效 就不影响 */ }
   const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
@@ -258,14 +258,14 @@ async function openPage(cdp, htmlPath, query = '') {
   const errors = [];
   cdp.on('Runtime.exceptionThrown', (p) => {
     const d = p.exceptionDetails || {};
-    errors.push(`${d.exception?.description || d.text || '未知错误'}（${d.url ? path.basename(decodeURIComponent(d.url)) : ''}:${d.lineNumber ?? '?'}）`);
+    errors.push(`${d.exception?.description || d.text || 'lỗi không rõ'} (${d.url ? path.basename(decodeURIComponent(d.url)) : ''}:${d.lineNumber ?? '?'})`);
   }, sessionId);
   cdp.on('Runtime.consoleAPICalled', (p) => {
-    if (p.type === 'error' || p.type === 'warning') console.log(`  页面 console.${p.type}：${p.args.map((a) => a.value ?? a.description ?? '').join(' ').slice(0, 300)}`);
+    if (p.type === 'error' || p.type === 'warning') console.log(`  Trang console.${p.type}: ${p.args.map((a) => a.value ?? a.description ?? '').join(' ').slice(0, 300)}`);
   }, sessionId);
   cdp.on('Log.entryAdded', (p) => {
     const e = p.entry;
-    if (e.level === 'error' && e.source !== 'violation') console.log(`  页面报错：${e.text.slice(0, 300)}${e.url ? '（' + decodeURIComponent(e.url) + '）' : ''}`);
+    if (e.level === 'error' && e.source !== 'violation') console.log(`  Trang báo lỗi: ${e.text.slice(0, 300)}${e.url ? ' (' + decodeURIComponent(e.url) + ')' : ''}`);
   }, sessionId);
   await S('Page.enable');
   await S('Runtime.enable');
@@ -273,15 +273,15 @@ async function openPage(cdp, htmlPath, query = '') {
   await S('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
   const loaded = cdp.once('Page.loadEventFired', sessionId, 60000);
   const nav = await S('Page.navigate', { url: pathToFileURL(path.resolve(htmlPath)).href + query });
-  if (nav.errorText) fail(`页面打不开：${nav.errorText}`);
+  if (nav.errorText) fail(`Không mở được trang: ${nav.errorText}`);
   await loaded;
   // 等页面准备好：window.seek 是函数，且 window.ready 不是 false；页面一报错就停
   const t0 = Date.now();
   while (true) {
-    if (errors.length) fail(`页面加载时出错：\n  ${errors.join('\n  ')}`);
+    if (errors.length) fail(`Trang bị lỗi khi tải:\n  ${errors.join('\n  ')}`);
     const ok = await evaluate(S, `typeof window.seek === 'function' && window.ready !== false`);
     if (ok) break;
-    if (Date.now() - t0 > 20000) fail('页面 20 秒内没有定义 window.seek(t)（或 window.ready 一直是 false）');
+    if (Date.now() - t0 > 20000) fail('Sau 20 giây trang vẫn chưa định nghĩa window.seek(t) (hoặc window.ready vẫn là false)');
     await sleep(100);
   }
   const info = await evaluate(S, `(async () => {
@@ -292,8 +292,8 @@ async function openPage(cdp, htmlPath, query = '') {
       sw: document.documentElement.scrollWidth, sh: document.documentElement.scrollHeight,
     };
   })()`, 30000);
-  if (errors.length) fail(`页面加载时出错：\n  ${errors.join('\n  ')}`);
-  if (info.sw > W || info.sh > H) console.log(`  注意：页面内容尺寸 ${info.sw}×${info.sh} 超出 ${W}×${H}，超出部分不会被截到`);
+  if (errors.length) fail(`Trang bị lỗi khi tải:\n  ${errors.join('\n  ')}`);
+  if (info.sw > W || info.sh > H) console.log(`  Lưu ý: nội dung trang ${info.sw}×${info.sh} vượt quá ${W}×${H}, phần vượt sẽ không được chụp`);
   return { S, errors, info };
 }
 
@@ -301,14 +301,14 @@ async function evaluate(S, expression, timeoutMs = 30000) {
   const r = await S('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, timeoutMs);
   if (r.exceptionDetails) {
     const d = r.exceptionDetails;
-    throw new Error(`页面脚本出错：${d.exception?.description || d.text}`);
+    throw new Error(`Mã trong trang bị lỗi: ${d.exception?.description || d.text}`);
   }
   return r.result.value;
 }
 
 async function seekAndShoot(S, errors, t, shot) {
   await evaluate(S, `Promise.resolve(window.seek(${t.toFixed(6)})).then(() => 1)`);
-  if (errors.length) throw new Error(`seek(${t.toFixed(3)}) 时页面出错：\n  ${errors.join('\n  ')}`);
+  if (errors.length) throw new Error(`Trang bị lỗi khi seek(${t.toFixed(3)}):\n  ${errors.join('\n  ')}`);
   const params = { format: shot.format, clip: { x: 0, y: 0, width: W, height: H, scale: shot.scale }, captureBeyondViewport: false, optimizeForSpeed: true };
   if (shot.format === 'jpeg') params.quality = shot.quality;
   const { data } = await S('Page.captureScreenshot', params, 60000);
@@ -323,10 +323,10 @@ function probeDuration(file) {
 }
 function writeAsync(stream, buf) {
   return new Promise((resolve, reject) => {
-    if (stream.destroyed || stream.writableEnded) return reject(new Error('ffmpeg 已退出'));
+    if (stream.destroyed || stream.writableEnded) return reject(new Error('ffmpeg đã thoát'));
     if (stream.write(buf)) return resolve();
     const onDrain = () => { stream.off('close', onClose); resolve(); };
-    const onClose = () => { stream.off('drain', onDrain); reject(new Error('ffmpeg 中途退出')); };
+    const onClose = () => { stream.off('drain', onDrain); reject(new Error('ffmpeg thoát giữa chừng')); };
     stream.once('drain', onDrain);
     stream.once('close', onClose);
   });
@@ -336,24 +336,24 @@ function writeAsync(stream, buf) {
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (opts.help || !opts._.length) { console.log(HELP); process.exit(opts.help ? 0 : 1); }
-  if (opts.stills && !opts.stills.length) die('--stills 后面要写秒数，用逗号隔开，例如 --stills 2.1,7.5,12.6');
+  if (opts.stills && !opts.stills.length) die('Sau --stills cần ghi các số giây, cách nhau bằng dấu phẩy, ví dụ --stills 2.1,7.5,12.6');
   // 环境：Node 22 以上才有自带的 WebSocket；ffmpeg / ffprobe 要在 PATH 里
-  if (typeof WebSocket === 'undefined') die(`Node 版本太低（现在是 ${process.version}，要 22 以上，自带 WebSocket）。Mac 上：brew install node，或到 https://nodejs.org 下载安装包。`);
-  try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); } catch { die('找不到 ffmpeg。Mac 上：brew install ffmpeg（没有 Homebrew 先装 https://brew.sh ）。'); }
+  if (typeof WebSocket === 'undefined') die(`Node quá cũ (đang là ${process.version}, cần bản 22 trở lên, có sẵn WebSocket). Trên Mac: brew install node, hoặc tải bộ cài ở https://nodejs.org.`);
+  try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); } catch { die('Không tìm thấy ffmpeg. Trên Mac: brew install ffmpeg (chưa có Homebrew thì cài trước ở https://brew.sh).'); }
   const html = path.resolve(opts._[0]);
-  if (!fs.existsSync(html)) die(`找不到页面：${html}`);
+  if (!fs.existsSync(html)) die(`Không tìm thấy trang: ${html}`);
   const pageDir = path.dirname(html);
   const baseName = path.basename(pageDir);
   // 作品配置：--config 指定，或页面旁边的 du-an.json；里面的相对路径都相对于配置文件所在目录
   const cfgPath = opts.config ? path.resolve(opts.config) : path.join(pageDir, 'du-an.json');
   let cfg = {};
   if (fs.existsSync(cfgPath)) {
-    try { cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch (e) { die(`作品配置读不了（${cfgPath}）：${e.message}`); }
-  } else if (opts.config) die(`找不到作品配置：${cfgPath}`);
+    try { cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch (e) { die(`Không đọc được cấu hình dự án (${cfgPath}): ${e.message}`); }
+  } else if (opts.config) die(`Không tìm thấy cấu hình dự án: ${cfgPath}`);
   const cfgDir = path.dirname(cfgPath);
   const fromCfg = (k) => (cfg[k] ? path.resolve(cfgDir, cfg[k]) : null);
-  if (opts.stills && (opts.scan || opts.checkMarks)) die('--stills 和 --scan / --check-marks 分两次跑');
-  if (opts.determinism && (opts.stills || opts.scan || opts.checkMarks)) die('--check-determinism 单独跑');
+  if (opts.stills && (opts.scan || opts.checkMarks)) die('--stills và --scan / --check-marks phải chạy riêng hai lần');
+  if (opts.determinism && (opts.stills || opts.scan || opts.checkMarks)) die('--check-determinism phải chạy riêng');
   const mode = opts.determinism ? 'determinism' : opts.stills ? 'stills' : (opts.scan || opts.checkMarks) ? 'check' : opts.preview ? 'preview' : 'final';
   const nsTag = opts.noSub ? '_khong-phu-de' : '';   // 不画字幕时，所有输出文件名都带「_khong-phu-de」，不覆盖带字幕的版本
   const fps = opts.fps || (mode === 'preview' ? 10 : 30);
@@ -364,8 +364,8 @@ async function main() {
   const defAudio = fromCfg('audio') || path.join(pageDir, 'giong-doc.wav');
   let audio = opts.noAudio ? null : (opts.audio ? path.resolve(opts.audio) : defAudio);
   if (audio && !fs.existsSync(audio)) {
-    if (opts.audio || cfg.audio) die(`找不到音频：${audio}`);
-    if (mode === 'final' || mode === 'preview') console.log(`  页面旁边没有 du-an.json 也没有 giong-doc.wav，输出不带声音（要声音用 --audio <文件>）`);
+    if (opts.audio || cfg.audio) die(`Không tìm thấy âm thanh: ${audio}`);
+    if (mode === 'final' || mode === 'preview') console.log(`  Cạnh trang không có du-an.json cũng không có giong-doc.wav, video ra sẽ không có tiếng (muốn có tiếng dùng --audio <file>)`);
     audio = null;
   }
   const query = opts.noSub ? '?nosub=1' : '';
@@ -382,7 +382,7 @@ async function main() {
     if (!opts.keep) fs.rmSync(tmp, { recursive: true, force: true });
   };
   let interrupted = false;
-  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, async () => { if (interrupted) return; interrupted = true; console.error(`\n收到 ${sig}，清理后退出`); await cleanup(); process.exit(130); });
+  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, async () => { if (interrupted) return; interrupted = true; console.error(`\nNhận ${sig}, dọn dẹp rồi thoát`); await cleanup(); process.exit(130); });
 
   const T0 = Date.now();
   try {
@@ -391,21 +391,21 @@ async function main() {
     cdp = new CDP(launched.ws);
     await cdp.open();
     const port = new URL(launched.ws).port;
-    console.log(`[${bjTime()}] Chrome 已启动（调试端口 ${port}，临时目录 ${tmp}）`);
+    console.log(`[${bjTime()}] Đã mở Chrome (cổng gỡ lỗi ${port}, thư mục tạm ${tmp})`);
     const { S, errors, info } = await openPage(cdp, html, query);
     if (opts.noSub) {
       const hasSwitch = await evaluate(S, `typeof NOSUB !== 'undefined' ? NOSUB : null`);
-      if (hasSwitch !== true) console.log('  注意：页面里没有 NOSUB 开关，--no-subtitle 不起作用（页面要有 const NOSUB = /[?&]nosub=1/.test(location.search)）');
+      if (hasSwitch !== true) console.log('  Lưu ý: trang không có công tắc NOSUB nên --no-subtitle không có tác dụng (trang cần có const NOSUB = /[?&]nosub=1/.test(location.search))');
     }
     const tLoad = Date.now() - T0;
 
     // ---------- 确定性检查（v1.3）：同一个 t，单独 seek 和「先跳到别处再回来」画出来要一模一样 ----------
     if (mode === 'determinism') {
       const dur = opts.duration || info.duration || (audio ? probeDuration(audio) : null);
-      if (!dur) fail('不知道时长：请用 --duration 指定，或在页面里设 window.DURATION');
+      if (!dur) fail('Không biết thời lượng: hãy chỉ định bằng --duration, hoặc đặt window.DURATION trong trang');
       const times = opts.determinism === 'auto' ? [0.25, 0.5, 0.75].map((k) => +(dur * k).toFixed(2))
         : opts.determinism.split(',').map((x) => +x.trim()).filter((x) => Number.isFinite(x));
-      if (!times.length) fail('--check-determinism 后面写 auto，或用逗号隔开的秒数');
+      if (!times.length) fail('Sau --check-determinism ghi auto, hoặc các số giây cách nhau bằng dấu phẩy');
       const far = +(dur * 0.95).toFixed(2);
       let bad = 0;
       for (const t of times) {
@@ -416,11 +416,11 @@ async function main() {
         const b = await seekAndShoot(p.S, p.errors, t, { format: 'png', scale: 0.5 });
         const same = Buffer.compare(a, b) === 0;
         if (!same) bad++;
-        console.log(`  ${same ? '✓' : '✗'} ${t.toFixed(2)} 秒：单独 seek 和「先跳到 ${far} 秒、${(t / 2).toFixed(2)} 秒再回来」${same ? '一样' : '不一样'}`);
+        console.log(`  ${same ? '✓' : '✗'} giây ${t.toFixed(2)}: seek trực tiếp và «nhảy tới giây ${far}, giây ${(t / 2).toFixed(2)} rồi quay lại» ${same ? 'giống nhau' : 'khác nhau'}`);
       }
-      console.log(bad ? `✗ ${bad} / ${times.length} 个时刻不一致：画面跟 seek 的先后有关。每帧开头把画布状态整套复位（ctx.reset() 后再设默认值；离屏画布也要），用到随机数的在 seek(t) 里重建种子，再跑一次。`
-        : `✓ ${times.length} 个时刻都一致`);
-      console.log(`[${bjTime()}] 完成，用时 ${fmtS(Date.now() - T0)}`);
+      console.log(bad ? `✗ ${bad} / ${times.length} thời điểm không khớp: hình phụ thuộc thứ tự seek. Đầu mỗi khung hãy đặt lại toàn bộ trạng thái canvas (ctx.reset() rồi đặt giá trị mặc định; cả canvas ngoài màn hình), chỗ nào dùng số ngẫu nhiên thì tạo lại seed trong seek(t), rồi chạy lại.`
+        : `✓ cả ${times.length} thời điểm đều khớp`);
+      console.log(`[${bjTime()}] Xong, mất ${fmtS(Date.now() - T0)}`);
       if (bad) process.exitCode = 2;
       return;
     }
@@ -430,18 +430,18 @@ async function main() {
       const outdir = path.resolve(opts.outdir || pageDir);
       fs.mkdirSync(outdir, { recursive: true });
       const prefix0 = opts.prefix || baseName;
-      const prefix = nsTag && !prefix0.includes('无字幕') ? prefix0 + nsTag : prefix0;
+      const prefix = nsTag && !prefix0.includes('khong-phu-de') ? prefix0 + nsTag : prefix0;
       // 同一前缀的旧静帧、旧检查图先挪走（不删），文件夹里只留这一批，免得新旧混在一起
       const esc = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const oldRe = new RegExp(`^${esc}_(anh-tinh_-?\\d+(\\.\\d+)?s\\.(png|jpg)|kiem-tra-480\\.png)$`);
       const isOld = (f) => oldRe.test(f);
       const olds = fs.readdirSync(outdir).filter(isOld);
       if (olds.length) {
-        const hms = new Date().toLocaleTimeString('zh-CN', { hour12: false }).replace(/:/g, '');
+        const hms = new Date().toLocaleTimeString('vi-VN', { hour12: false }).replace(/:/g, '');
         const bak = path.join(outdir, 'anh-tinh-cu', `${prefix}_${hms}`);
         fs.mkdirSync(bak, { recursive: true });
         for (const f of olds) fs.renameSync(path.join(outdir, f), path.join(bak, f));
-        console.log(`  上一批同名前缀的 ${olds.length} 个文件挪到了 ${bak}`);
+        console.log(`  Đã chuyển ${olds.length} file của đợt trước (cùng tiền tố) vào ${bak}`);
       }
       const files = [];
       for (const t of opts.stills) {
@@ -458,14 +458,14 @@ async function main() {
       const filter = files.map((_, i) => `[${i}:v]scale=480:-1:flags=area[s${i}]`).join(';') + ';' + files.map((_, i) => `[s${i}]`).join('') + (files.length > 1 ? `vstack=inputs=${files.length}` : 'null');
       execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...inputs, '-filter_complex', filter, '-frames:v', '1', '-update', '1', sheet]);
       console.log(`  ✓ ${sheet}`);
-      console.log(`[${bjTime()}] 完成，用时 ${fmtS(Date.now() - T0)}`);
+      console.log(`[${bjTime()}] Xong, mất ${fmtS(Date.now() - T0)}`);
       return;
     }
 
     // ---------- 检查图（不出片）：扫片拼图、关键词前后帧拼图；每格 480×270，从页面直接截，和成片同一时刻的画面一样 ----------
     if (mode === 'check') {
       const dur = opts.duration || info.duration || (audio ? probeDuration(audio) : null);
-      if (!dur) fail('不知道时长：请用 --duration 指定，或在页面里设 window.DURATION');
+      if (!dur) fail('Không biết thời lượng: hãy chỉ định bằng --duration, hoặc đặt window.DURATION trong trang');
       const outdir = path.resolve(opts.outdir || path.join(pageDir, 'kiem-tra'));
       fs.mkdirSync(outdir, { recursive: true });
       const lastT = Math.max(0, (Math.ceil(dur * 30 - 1e-6) - 1) / 30);   // 成片最后一帧的时间
@@ -484,42 +484,42 @@ async function main() {
         console.log(`  ✓ ${file}`);
       };
       if (opts.scan) {
-        const base = `扫片${nsTag}`;
+        const base = `quet${nsTag}`;
         for (const f of fs.readdirSync(outdir)) if (new RegExp(`^${base}_\\d+\\.png$`).test(f)) fs.rmSync(path.join(outdir, f));   // 旧扫片先删（片子变短时张数会变少）
         const times = []; for (let k = 0; k / 3 <= lastT + 1e-6; k++) times.push(k / 3);
         const per = 32;   // 4 列 × 8 行，约 10.7 秒一张
         for (let s = 0; s * per < times.length; s++) {
           const ts = times.slice(s * per, (s + 1) * per);
-          console.log(`  扫片 ${s + 1}：${ts[0].toFixed(2)}–${ts[ts.length - 1].toFixed(2)} 秒（每格 1/3 秒，从左到右、从上到下）`);
+          console.log(`  Ảnh quét ${s + 1}: ${ts[0].toFixed(2)}–${ts[ts.length - 1].toFixed(2)} giây (mỗi ô 1/3 giây, trái sang phải, trên xuống dưới)`);
           await sheetOf(ts, 4, path.join(outdir, `${base}_${s + 1}.png`));
         }
       }
       if (opts.checkMarks) {
         const marks = Object.entries(await evaluate(S, `(window.TL && window.TL.marks) || {}`)).map(([name, m]) => ({ name, start: m.start })).filter((m) => Number.isFinite(m.start)).sort((a, b) => a.start - b.start);
-        if (!marks.length) console.log('  TL.marks 里没有关键词，不出卡点拼图（phan-canh.json 的 marks 是空的？）');
+        if (!marks.length) console.log('  TL.marks không có từ khóa nên không xuất ảnh điểm khớp (marks trong phan-canh.json đang trống?)');
         else {
           const times = marks.flatMap((m) => [m.start - 0.1, m.start + 0.35]);
-          const lines = [`关键词前后帧（diem-khop${nsTag}.png）：每格 480×270；一行两个词，顺序是「词1 前、词1 后、词2 前、词2 后」；前 = 开始说之前 0.1 秒，后 = 开始说之后 0.35 秒。`,
-            '要看的是：「前」那格还没有这个词对应的动作，「后」那格已经开始出现（手写、逐字浮现的风格这时可能只写了一两个字，开始出现就算对上）。', ''];
+          const lines = [`Khung trước/sau từ khóa (diem-khop${nsTag}.png): mỗi ô 480×270; mỗi hàng hai từ, theo thứ tự «từ 1 trước, từ 1 sau, từ 2 trước, từ 2 sau»; trước = 0,1 giây trước khi nói, sau = 0,35 giây sau khi bắt đầu nói.`,
+            'Cần thấy: ô «trước» chưa có chuyển động ứng với từ đó, ô «sau» đã bắt đầu hiện (kiểu viết tay, hiện từng chữ có thể mới được vài chữ, bắt đầu hiện là đạt).', ''];
           for (let r = 0; r * 2 < marks.length; r++) {
             const a = marks[r * 2], b = marks[r * 2 + 1];
-            lines.push(`第 ${String(r + 1).padStart(2)} 行：左 ${a.name}（${a.start.toFixed(2)} 秒）` + (b ? `　右 ${b.name}（${b.start.toFixed(2)} 秒）` : ''));
+            lines.push(`Hàng ${String(r + 1).padStart(2)}: trái ${a.name} (giây ${a.start.toFixed(2)})` + (b ? `   phải ${b.name} (giây ${b.start.toFixed(2)})` : ''));
           }
           await sheetOf(times, 4, path.join(outdir, `diem-khop${nsTag}.png`));
           fs.writeFileSync(path.join(outdir, `diem-khop${nsTag}_ghi-chu.txt`), lines.join('\n') + '\n');
           console.log(`  ✓ ${path.join(outdir, `diem-khop${nsTag}_ghi-chu.txt`)}\n  ${lines.slice(3).join('\n  ')}`);
         }
       }
-      console.log(`[${bjTime()}] 完成，出了 ${nSheet} 张拼图，用时 ${fmtS(Date.now() - T0)}`);
+      console.log(`[${bjTime()}] Xong, xuất ${nSheet} ảnh ghép, mất ${fmtS(Date.now() - T0)}`);
       return;
     }
 
     // ---------- 视频 ----------
     let duration = opts.duration || info.duration || (audio ? probeDuration(audio) : null);
-    if (!duration) fail('不知道时长：请用 --duration 指定，或在页面里设 window.DURATION');
+    if (!duration) fail('Không biết thời lượng: hãy chỉ định bằng --duration, hoặc đặt window.DURATION trong trang');
     const from = opts.from || 0;
     const to = Math.min(opts.to ?? duration, duration);
-    if (!(to > from)) fail(`时间段不对：--from ${from} --to ${to}`);
+    if (!(to > from)) fail(`Khoảng thời gian không hợp lệ: --from ${from} --to ${to}`);
     const nFrames = Math.ceil((to - from) * fps - 1e-6);
     const outLen = nFrames / fps;
     const suffix = `${mode === 'preview' ? '_xem-truoc' : ''}${nsTag}${opts.from !== undefined || opts.to !== undefined ? `_${from}-${to}s` : ''}`;
@@ -527,12 +527,12 @@ async function main() {
     const defOut = cfgOut ? cfgOut.replace(/\.mp4$/i, '') + suffix + '.mp4' : path.join(pageDir, `${baseName}${suffix}.mp4`);
     let out = path.resolve(opts.out || defOut);
     // --no-subtitle 时就算 -o 给的是带字幕成片的名字，也加「_khong-phu-de」，不覆盖带字幕的那版
-    if (nsTag && !path.basename(out).includes('无字幕')) { const ext = path.extname(out); out = out.slice(0, out.length - ext.length) + nsTag + (ext || '.mp4'); }
+    if (nsTag && !path.basename(out).includes('khong-phu-de')) { const ext = path.extname(out); out = out.slice(0, out.length - ext.length) + nsTag + (ext || '.mp4'); }
     fs.mkdirSync(path.dirname(out), { recursive: true });
     part = out.replace(/\.mp4$/i, '') + '.rendering.mp4';
     const outW = Math.round(W * scale), outH = Math.round(H * scale);
-    console.log(`  ${mode === 'preview' ? '预览' : '成片'}：${from}–${to} 秒，${fps} 帧/秒，共 ${nFrames} 帧，${outW}×${outH}，截图 ${format}${audio ? '，音频 ' + path.basename(audio) : '，无音频'}${opts.noSub ? '，不画字幕' : ''}`);
-    console.log(`  输出：${out}`);
+    console.log(`  ${mode === 'preview' ? 'Xem trước' : 'Video'}: ${from}–${to} giây, ${fps} khung/giây, tổng ${nFrames} khung, ${outW}×${outH}, ảnh ${format}${audio ? ', âm thanh ' + path.basename(audio) : ', không có tiếng'}${opts.noSub ? ', không vẽ phụ đề' : ''}`);
+    console.log(`  File ra: ${out}`);
 
     const ffArgs = ['-hide_banner', '-loglevel', 'error', '-y',
       '-f', 'image2pipe', '-framerate', String(fps), '-c:v', format === 'jpeg' ? 'mjpeg' : 'png', '-i', 'pipe:0'];
@@ -560,19 +560,19 @@ async function main() {
       await writeAsync(ff.stdin, buf);
       if ((i + 1) % 60 === 0 || i + 1 === nFrames) {
         const el = Date.now() - tStart, per = el / (i + 1);
-        console.log(`  帧 ${String(i + 1).padStart(4)}/${nFrames}  平均 ${per.toFixed(0)} 毫秒/帧  已用 ${fmtS(el)}  预计还要 ${fmtS(per * (nFrames - i - 1))}`);
+        console.log(`  Khung ${String(i + 1).padStart(4)}/${nFrames}  trung bình ${per.toFixed(0)} ms/khung  đã chạy ${fmtS(el)}  còn khoảng ${fmtS(per * (nFrames - i - 1))}`);
       }
     }
     ff.stdin.end();
     const code = await ffDone;
-    if (code !== 0) fail(`ffmpeg 编码失败（退出码 ${code}）：\n${ffErr.slice(-3000)}`);
+    if (code !== 0) fail(`ffmpeg mã hóa thất bại (mã thoát ${code}):\n${ffErr.slice(-3000)}`);
     fs.renameSync(part, out); part = null;
     const tFrames = Date.now() - tStart;
     const per = tFrames / nFrames;
     console.log(`[${bjTime()}] ✓ ${out}`);
-    console.log(`  统计：启动+加载 ${fmtS(tLoad)}；逐帧 ${nFrames} 帧共 ${fmtS(tFrames)}（平均 ${per.toFixed(0)} 毫秒/帧，其中 seek+截图 ${(tSeekShot / nFrames).toFixed(0)} 毫秒）；总计 ${fmtS(Date.now() - T0)}`);
+    console.log(`  Thống kê: khởi động + tải ${fmtS(tLoad)}; ${nFrames} khung mất ${fmtS(tFrames)} (trung bình ${per.toFixed(0)} ms/khung, trong đó seek + chụp ${(tSeekShot / nFrames).toFixed(0)} ms); tổng ${fmtS(Date.now() - T0)}`);
     const st = fs.statSync(out);
-    console.log(`  文件 ${(st.size / 1048576).toFixed(1)} MB，时长 ${probeDuration(out)?.toFixed(2)} 秒`);
+    console.log(`  File ${(st.size / 1048576).toFixed(1)} MB, dài ${probeDuration(out)?.toFixed(2)} giây`);
   } catch (e) {
     console.error(`✗ ${e.message}`);
     process.exitCode = 1;

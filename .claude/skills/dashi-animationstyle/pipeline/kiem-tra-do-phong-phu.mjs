@@ -39,25 +39,25 @@ for (let i = lag; i < n; i++) {
 // 二、每 every 秒一格，算相邻格差
 const cells = []; for (let t = 0; t < dur - 0.05; t += o.every) cells.push(t);
 const lines = [], pr = (s) => { console.log(s); lines.push(s); };
-pr(`丰富度检查：${path.basename(o.mp4)}，${dur.toFixed(2)} 秒，${n} 帧，每 ${o.every} 秒一格；底部 ${o.sub} 像素字幕带不算`);
+pr(`Kiểm tra độ phong phú: ${path.basename(o.mp4)}, ${dur.toFixed(2)} giây, ${n} khung hình, mỗi ô ${o.every} giây; không tính dải phụ đề ${o.sub} px ở dưới`);
 let flat = 0; const ds = [];
 for (let k = 1; k < cells.length; k++) {
   const i = Math.min(n - 1, Math.round(cells[k] * fps)), j = Math.min(n - 1, Math.round(cells[k - 1] * fps));
   const d = diff(fr(i), fr(j)); ds.push(d); if (d < FLAT) flat++;
-  pr(`  第 ${k} → ${k + 1} 格（${cells[k - 1].toFixed(1)} → ${cells[k].toFixed(1)} 秒）：${d.toFixed(1)}${d < FLAT ? '  ← 几乎没变' : ''}`);
+  pr(`  Ô ${k} → ${k + 1} (${cells[k - 1].toFixed(1)} → ${cells[k].toFixed(1)} giây): ${d.toFixed(1)}${d < FLAT ? '  ← gần như không đổi' : ''}`);
 }
 const avg = ds.reduce((s, x) => s + x, 0) / Math.max(1, ds.length);
-pr(`相邻格变化：平均 ${avg.toFixed(1)}；几乎没变 ${flat} / ${ds.length} 对`);
+pr(`Thay đổi giữa các ô liền nhau: trung bình ${avg.toFixed(1)}; gần như không đổi ${flat} / ${ds.length} cặp`);
 if (ds.length > 2) {   // v1.3：开场常是整屏盖色、黑屏开机，第 1 对会特别大，把平均拉高；另报去掉第 1 对的平均，看后面是不是也够
   const rest = ds.slice(1).reduce((s, x) => s + x, 0) / (ds.length - 1);
-  pr(`去掉第 1 对（开场）的平均：${rest.toFixed(1)}${rest < RICH && avg >= RICH ? '  ← 过线主要靠开场，后面变化偏少' : ''}`);
+  pr(`Trung bình khi bỏ cặp đầu (mở màn): ${rest.toFixed(1)}${rest < RICH && avg >= RICH ? '  ← đạt chủ yếu nhờ mở màn, phần sau ít thay đổi' : ''}`);
 }
-pr(`在动的帧：${(moving / (n - lag) * 100).toFixed(0)}%；最长静止：${(longest / fps).toFixed(2)} 秒（从 ${longestAt.toFixed(2)} 秒起）`);
+pr(`Khung hình có chuyển động: ${(moving / (n - lag) * 100).toFixed(0)}%; đứng yên lâu nhất: ${(longest / fps).toFixed(2)} giây (từ giây ${longestAt.toFixed(2)})`);
 const ok = flat === 0 && avg >= RICH;
-pr(ok ? `判定：过（每格都有新变化，平均 ≥ ${RICH}）` : `判定：不过——看标「几乎没变」的格，按知识文件第一、二节补变化（平均要 ≥ ${RICH}）`);
-if (longest / fps > 2) pr('提醒：静止超过 2 秒——加次要动作（飘动、闪烁、粒子、慢推），见知识文件第一节');
+pr(ok ? `Kết luận: ĐẠT (ô nào cũng có thay đổi mới, trung bình ≥ ${RICH})` : `Kết luận: CHƯA ĐẠT — xem các ô ghi «gần như không đổi», thêm thay đổi theo mục 1–2 của knowledge/hieu-ung-va-chuyen-canh.md (trung bình phải ≥ ${RICH})`);
+if (longest / fps > 2) pr('Lưu ý: có đoạn đứng yên quá 2 giây — thêm chuyển động phụ (trôi, nhấp nháy, hạt, zoom chậm), xem mục 1 của knowledge/hieu-ung-va-chuyen-canh.md');
 // 三、拼图：每 every 秒一格
 const cols = 5, rows = Math.ceil(cells.length / cols), png = path.join(outdir, 'do-phong-phu_quet.png');
 execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', o.mp4, '-vf', `fps=1/${o.every}:round=near,scale=384:-1,tile=${cols}x${rows}:padding=6:color=white`, '-frames:v', '1', png]);
 fs.writeFileSync(path.join(outdir, 'do-phong-phu.txt'), lines.join('\n') + '\n');
-console.log(`拼图：${png}（${cols} 列，从左到右、从上到下，第 1 格是 0 秒）`);
+console.log(`Ảnh ghép: ${png} (${cols} cột, trái sang phải, trên xuống dưới; ô 1 là giây 0)`);

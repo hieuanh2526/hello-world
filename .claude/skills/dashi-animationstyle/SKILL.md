@@ -67,10 +67,10 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
 
 2. **转写 → 字幕**
    - 有 whisper：`node "$SKILL/pipeline/phu-de.mjs" <作品目录>`（实测 20–35 秒的口播转写 2–3 秒）。有 loi-thoai.txt 时按稿子改错字、按稿子的标点分句分条；打印「识别改正」（秒数 + 识别 → 稿子），逐条看一眼。whisper 识别的原文（每段带秒数）存在作品目录的 `whisper-goc.txt`。
-   - 「识别改正」里有 **「→（稿子里没有）」**：识别出了稿子里没有的话。下面「要核对」会说它在几秒、在哪：
+   - 「Sửa theo lời thoại」（识别改正）里有 **「→ (không có trong lời thoại)」**：识别出了稿子里没有的话。下面「Cần kiểm tra」（要核对）会说它在几秒、在哪：
      - **在口播开头或结尾**：多半是从长录音里剪这段时带进来的邻句（上一句结尾、下一句开头）。字幕已经按稿子去掉，但**成片的声音里还在**。先裁掉再往下做：`node "$SKILL/pipeline/phu-de.mjs" <作品目录> --trim auto`（按稿子找切点、切在中间的静音里，原文件留成 `giong-doc_truoc-cat.wav`，裁完自动重跑字幕）；自动切得不对就听 `giong-doc_truoc-cat.wav`，用 `--trim 起,止` 手动给秒数（按原文件算）。裁完口播变短，要在写分镜、生成时间线之前裁；已经出过的静帧、成片要重出。
      - **在中间**：口误、重复说了一遍，或者稿子漏写了这句；听一下，稿子漏了就补进 loi-thoai.txt 重跑。
-     - 「（没识别出）→ 稿子的字」：稿子里有、没识别出来，那几个字的时间是插出来的；说得含糊没关系，口播里根本没说就把稿子里那句删掉重跑。
+     - 「(không nghe ra) → 稿子的字」：稿子里有、没识别出来，那几个字的时间是插出来的；说得含糊没关系，口播里根本没说就把稿子里那句删掉重跑。
    - 没有稿子时：输出是识别原文，没有标点、可能有错字。你照识别结果整理一份**带标点的** loi-thoai.txt 放进作品目录（只改明显的错字、加标点，不改说法，拿不准的问用户），再跑一次 `phu-de.mjs`。
    - 没有 whisper：要有稿子，`node "$SKILL/pipeline/phu-de.mjs" <作品目录> --no-whisper`。用静音检测找句界、句内按字数摊时间（实测字级平均差 0.08 秒、最差 0.45 秒）。打印的「待核对」里是没找到停顿、按字数估的句界，误差可能到 0.4 秒；能听的话听一下，不对就直接改 phu-de.json 里那两条的 start/end。
    - 把打印的字幕表（每条的时间和文字）给用户看一眼。字幕规矩：一条一行，约 20 个字以内；文字以音频为准。
@@ -103,13 +103,13 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
    node "$SKILL/pipeline/render.mjs" <作品目录>/index.html --stills 3.2,12.5,24.8 --outdir <作品目录>/静帧
    ```
    秒数挑开头、中段、结尾各一个最能代表画面的时刻（关键词刚出现之后）。**手写、逐字浮现、擦出来的风格（ve-tay、cong-nghe-nen-den、hoat-hinh-3d的标题，cat-dan-sieu-thuc的手写批注）字是一个个出来的，要取关键词开始说之后约 0.3 秒**（`timeline.js` 打印的关键词秒数 + 0.3），不然字还没写完（实测 4.95 秒只写出「失」，5.15 秒才是「失忆」）。自己先用 Read 看三张 PNG 和自动生成的 `_kiem-tra-480.png`（字幕和关键字缩到 480 宽还能读；ve-tay的笔尖跟着写，看一眼笔杆有没有压住要读的字），没问题再 `open` 给用户看。用户不点头就改，再出静帧。
-   - 重出静帧时，同一目录里同一前缀的旧静帧和旧 480 宽检查图会先挪进 `anh-tinh/旧anh-tinh/<前缀_时分秒>/`，文件夹里只留这一批。调试用的多出几张没关系，用 `--prefix 调试`（或按段 `--prefix A段`）和给用户看的分开。
+   - 重出静帧时，同一目录里同一前缀的旧静帧和旧 480 宽检查图会先挪进 `anh-tinh-cu/<前缀_时分秒>/`，文件夹里只留这一批。调试用的多出几张没关系，用 `--prefix 调试`（或按段 `--prefix A段`）和给用户看的分开。
 
 6. **出整段**：`node "$SKILL/pipeline/render.mjs" <作品目录>/index.html`（命令放后台；满屏颗粒的几套 du-an.json 里已经设了 jpeg 截图；21 秒的ve-tay v1.3 实测 65 秒）。出完自检：
    - `ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate:format=duration -of compact <成片>`：h264 1920×1080 30/1 + aac，时长和片长（phan-canh.json 的 `duration`，没写就是口播时长）差不到 1 帧（按帧向上取整，21.17 秒的口播出来是 21.20 秒）。
    - 确定性（v1.3，几秒钟）：`node "$SKILL/pipeline/render.mjs" <作品目录>/index.html --check-determinism auto`，三个时刻各比一次「单独 seek」和「先跳到别处再回来」，要全是 ✓；有 ✗ 就按页面约定那条复位画布状态。
    - 出检查图（不出片，23 秒的片子约 7 秒）：`node "$SKILL/pipeline/render.mjs" <作品目录>/index.html --scan --check-marks`，在 `<作品目录>/kiem-tra/` 里：
-     - `扫片_1.png`、`扫片_2.png`…：每秒 3 帧、一张 4×8 格（约 10.7 秒），看有没有截断、叠字、闪烁、空白，字幕是不是跟着换；镜头交界前后 0.5 秒最容易出事。
+     - `quet_1.png`、`quet_2.png`…：每秒 3 帧、一张 4×8 格（约 10.7 秒），看有没有截断、叠字、闪烁、空白，字幕是不是跟着换；镜头交界前后 0.5 秒最容易出事。
      - `卡点.png` + `卡点_说明.txt`：每个关键词开始说之前 0.1 秒、之后 0.35 秒各一帧，一行两个词；「前」那格还没有对应动作、「后」那格已经开始出现，就是卡上了。
    - 字幕对得上：扫片里每格下面的字幕跟着口播换；拿不准的时刻单独出静帧看。
    - **丰富度检查**（v1.2）：`node "$SKILL/pipeline/kiem-tra-do-phong-phu.mjs" <成片.mp4>`，每 2.5 秒一格拼成 `kiem-tra/do-phong-phu_quet.png`，算相邻两格差多少（字幕带不算）。判「不过」、或标了「几乎没变」的那几秒，回去补变化（新东西进场、推近拉开、换色），静止超过 2 秒的补次要动作；再对照知识文件第七节的自查表（转场不要全片一种）。盲测 6 版里这个分数高的那版，3 组都是作者觉得更丰富的。开场是整屏盖色或黑屏开机时第 1 对会特别大，脚本另报「去掉第 1 对的平均」，那个数也要 ≥ 10。
@@ -224,7 +224,7 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
 
 **页面里的 `window.TL`**：`duration`、`title`、`text`、`cues`（`{id,text,start,end,show,hide}`）、`chars`（字级时间 `{text,start,end,cue}`，英文词算一个字）、`shots`（`{id,start,end,title,cues,keywords}`）、`marks`、`highlights`、`emphasis`、`assets`；函数 `TL.cueAt(t)`、`TL.shotAt(t)`、`TL.mark(名字)`、`TL.markEnd(名字)`、`TL.has(名字)`。
 
-**render.mjs 常用参数**：`--stills 秒,秒,秒`（静帧 + 480 宽检查图，配 `--outdir`、`--prefix`；同前缀的旧图先挪进 `旧anh-tinh/`）、`--scan`（扫片拼图）、`--check-marks`（关键词前后帧拼图；这两个只出检查图、不出片，默认放 `<作品目录>/kiem-tra/`）、`--preview`（10 帧/秒、960×540，看节奏）、`--from 秒 --to 秒`（只渲一段）、`--no-subtitle`（文件名自动加「_khong-phu-de」）、`--format jpeg`（满屏颗粒时快一倍多）、`--check-determinism auto|秒,秒`（确定性检查，v1.3）、`-o 输出.mp4`、`--audio 文件`、`--chrome 路径`。`node "$SKILL/pipeline/render.mjs" --help` 看全部。
+**render.mjs 常用参数**：`--stills 秒,秒,秒`（静帧 + 480 宽检查图，配 `--outdir`、`--prefix`；同前缀的旧图先挪进 `anh-tinh-cu/`）、`--scan`（扫片拼图）、`--check-marks`（关键词前后帧拼图；这两个只出检查图、不出片，默认放 `<作品目录>/kiem-tra/`）、`--preview`（10 帧/秒、960×540，看节奏）、`--from 秒 --to 秒`（只渲一段）、`--no-subtitle`（文件名自动加「_khong-phu-de」）、`--format jpeg`（满屏颗粒时快一倍多）、`--check-determinism auto|秒,秒`（确定性检查，v1.3）、`-o 输出.mp4`、`--audio 文件`、`--chrome 路径`。`node "$SKILL/pipeline/render.mjs" --help` 看全部。
 
 **phu-de.mjs 参数**：`--no-whisper`（没有 whisper 时只用稿子 + 静音检测）、`--trim auto`（按稿子裁掉口播两头稿子里没有的话）/ `--trim 起,止`（手动裁，秒数按原口播）、`--script loi-thoai.txt`、`--max 20`（每条字幕最多几个字）。输出 `phu-de.json` / `.srt`，有 whisper 时还有 `whisper-goc.txt` / `.json`。
 
