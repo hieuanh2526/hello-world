@@ -166,17 +166,18 @@ if (o.noWhisper) {
     fs.writeFileSync(path.join(dir, 'whisper-goc.txt'), `Văn bản whisper nghe được (${path.basename(audio)}, ${duration.toFixed(2)} giây, model ${path.basename(model)}). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.\n\n` +
       (W.transcription || []).map((s) => `${(s.offsets.from / 1000).toFixed(2)}–${(s.offsets.to / 1000).toFixed(2)}  ${s.text.trim()}`).join('\n') + '\n');
     // 识别出的字：每个 token 取 DTW 时间（没有就取 token 起点），多字 token 往下一个 token 的时间摊开
-    const rec = []; let carry = null;
+    const rec = []; let carry = null, spaceCarry = false;   // spaceCarry：被丢掉的半个字节 token 前面有空格 → 下一个 token 是新词
     for (const seg of W.transcription || []) {
       const toks = (seg.tokens || []).filter((k) => !/^\[_/.test(k.text));
       toks.forEach((k, i) => {
         let tt = k.t_dtw >= 0 ? k.t_dtw / 100 : k.offsets.from / 1000; if (carry !== null) { tt = Math.min(tt, carry); carry = null; }
-        const clean = k.text.replace(/�/g, ''); if (!clean.trim()) { if (/�/.test(k.text)) carry = tt; return; }
+        const clean = k.text.replace(/�/g, ''); if (!clean.trim()) { if (/^\s/.test(k.text)) spaceCarry = true; if (/�/.test(k.text)) carry = tt; return; }   // 单独一个空格的 token（越南语常见）也算新词开头
         const nx = toks[i + 1], tn = nx ? (nx.t_dtw >= 0 ? nx.t_dtw / 100 : nx.offsets.from / 1000) : seg.offsets.to / 1000;
         const us = units(clean);
         // 越南语 / 英语：whisper 常把一个词切成几个 token（" Vi" + "ệt"）。token 不以空格开头、上一个也是词、中间没标点，就接到上一个词后面
         const prev = rec[rec.length - 1];
-        if (us.length && prev && !/^\s/.test(clean) && !prev.after && isWord(prev.text) && isWord(us[0].text) && prev.segEnd === seg.offsets.to / 1000) { prev.text = (prev.text + us[0].text).normalize('NFC'); prev.after = us[0].after; us.shift(); }
+        if (us.length && prev && !/^\s/.test(clean) && !spaceCarry && !prev.after && isWord(prev.text) && isWord(us[0].text) && prev.segEnd === seg.offsets.to / 1000) { prev.text = (prev.text + us[0].text).normalize('NFC'); prev.after = us[0].after; us.shift(); }
+        spaceCarry = false;
         us.forEach((u, j) => rec.push({ text: u.text, start: tt + (tn - tt) * j / Math.max(1, us.length), segEnd: seg.offsets.to / 1000, after: u.after }));
       });
     }
