@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>立体卡通 · Token 示例页（v1.3）</title>
+<title>hoat-hinh-3d · Token 示例页（v1.3）</title>
 <!--
-  立体卡通（S35）· Token 例子的完整页面（v1.3：背景一直在动、每个镜头慢推、7 处换场轮换 4 种转场）。
-  炭黑底 + 右侧点彩钴蓝光晕 + 全画面颗粒；物件是带颗粒渐变的立体卡通：橡胶手套、绿色 DNA 管、银色小球、修枝剪、放大镜、草叶；
+  hoat-hinh-3d（S35）· Token 例子的完整页面（v1.3：背景一直在动、每个镜头慢推、7 处换场轮换 4 种转场）。
+  炭黑底 + 右侧点彩钴蓝光晕 + 全画面颗粒；物件是带颗粒渐变的hoat-hinh-3d：橡胶手套、绿色 DNA 管、银色小球、修枝剪、放大镜、草叶；
   外面套一层杂志版式：细白线分栏、左栏白方框编号 + 竖排细体大字母、左边缘黑圆页码、页眉小字。
   画面只由时间 t 计算：window.seek(t)。内容和时间全部来自 timeline.js（window.TL，和本页放在同一个文件夹）：
   镜头起止用 TL.shots，动作卡在 TL.mark('关键词') 上，例句和切分用 TL.example，数据用 TL.data，字幕用 TL.cueAt(t)。
@@ -94,7 +94,7 @@ function tw(s, f) { const k = f + '|' + s; let v = wCache.get(k); if (v === unde
 function text(s, x, y, f, col, align = 'center', base = 'middle') { g.font = f; g.fillStyle = col; g.textAlign = align; g.textBaseline = base; g.fillText(s, x, y); }
 const fsize = (f) => parseFloat(f.match(/(\d+(?:\.\d+)?)px/)[1]);
 
-// ---------- 立体卡通的基本形 ----------
+// ---------- hoat-hinh-3d的基本形 ----------
 function capsulePath(x0, y0, x1, y1, r) {
   const a = Math.atan2(y1 - y0, x1 - x0), p = new Path2D();
   p.arc(x1, y1, r, a - Math.PI / 2, a + Math.PI / 2);

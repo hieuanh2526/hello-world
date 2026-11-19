@@ -2,8 +2,8 @@
 // 新建作品.mjs：建一个作品目录（一段口播 + 一套风格 = 一个作品），后面的转写、分镜、页面、渲染都在这个目录里做。
 //
 // 用法：
-//   node 新建作品.mjs <作品目录> --style 手绘笔记 --example token     用自带的 Token 例子（第一次用：确认电脑能出片）
-//   node 新建作品.mjs <作品目录> --style 手绘笔记 --audio 我的口播.m4a [--script 稿子.txt] --lang vi|en   自己的口播（只做越南语、英语）
+//   node 新建作品.mjs <作品目录> --style ve-tay --example token     用自带的 Token 例子（第一次用：确认电脑能出片）
+//   node 新建作品.mjs <作品目录> --style ve-tay --audio 我的口播.m4a [--script 稿子.txt] --lang vi|en   自己的口播（只做越南语、英语）
 //   node 新建作品.mjs --list                                            列出有哪些风格
 // 作品目录里会有：作品.json（配置）、口播.wav、index.html（从风格文件夹复制来的页面）、动效部件.js（v1.2，转场和次要动作）；Token 例子还有字幕、分镜、timeline.js。
 // 作品目录已经存在时只补缺的文件，不覆盖已有的（要覆盖页面加 --force）。
@@ -47,7 +47,7 @@ if (o.list) {
     console.log(`  ${n.padEnd(6, '　')}  ${grade ? grade + ' 级' : ''}${tpl}  ${look}`);
     if (fit) console.log(`  ${''.padEnd(6, '　')}        ${fit}。`);
   }
-  console.log('\nA 级：底座直接用，换内容只写场景；B 级：版式和 Token 的比喻绑在一起，要先重排版式或想新比喻（多花 15–20 分钟）。每套的样子看 styles/<风格>/静帧/ 里的 3 张图。');
+  console.log('\nA 级：底座直接用，换内容只写场景；B 级：版式和 Token 的比喻绑在一起，要先重排版式或想新比喻（多花 15–20 分钟）。每套的样子看 styles/<风格>/anh-tinh/ 里的 3 张图。');
   process.exit(0);
 }
 if (o.help || !o._.length || !o.style) {
@@ -55,8 +55,12 @@ if (o.help || !o._.length || !o.style) {
   process.exit(o.help ? 0 : 1);
 }
 
-// 风格：接受「手绘笔记」「S22」「手绘」这种写法
+// 风格：接受「ve-tay」「S22」「手绘」这种写法
 const names = styleNames();
+// 文件夹改成了越南语（不带声调）：老的中文名、带声调 / 空格的写法都还认，例如 手绘笔记、「vẽ tay」、Ve Tay
+const ALIAS = { 扁平流程图: 'so-do-phang', 手绘笔记: 've-tay', 复古报刊: 'bao-co', 复古剪纸: 'cat-giay', 超现实拼贴: 'cat-dan-sieu-thuc', 立体卡通: 'hoat-hinh-3d', 黑底科技: 'cong-nghe-nen-den', 霓虹赛博: 'neon-cyber' };
+if (o.style) { const zh = Object.keys(ALIAS).find((k) => k === o.style || k.includes(o.style)); o.style = zh ? ALIAS[zh]
+  : o.style.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').trim().toLowerCase().replace(/[\s_]+/g, '-'); }
 const style = names.find((n) => n === o.style) || names.find((n) => n.includes(o.style)) ||
   names.find((n) => (fs.readFileSync(path.join(STYLES, n, '示例_Token.html'), 'utf8').slice(0, 600)).includes(o.style));
 if (!style) die(`没有「${o.style}」这套风格。现有：${names.join('、')}`);
@@ -72,7 +76,7 @@ const put = (src, name, force = false) => {
 };
 
 const cfg = { style, audio: '口播.wav', subtitles: '字幕.json', storyboard: '分镜.json', timeline: 'timeline.js', page: 'index.html', output: `${path.basename(dir)}.mp4` };
-const fast = /立体卡通|超现实拼贴|复古剪纸|黑底科技/.test(style);   // 满屏颗粒的几套，PNG 截图慢，默认用 jpeg 截图
+const fast = /hoat-hinh-3d|cat-dan-sieu-thuc|cat-giay|cong-nghe-nen-den/.test(style);   // 满屏颗粒的几套，PNG 截图慢，默认用 jpeg 截图
 if (fast) cfg.format = 'jpeg';
 // 口播语言：这一版只做越南语（vi）和英语（en）；自带的 Token 例子是中文，只用来确认电脑能出片
 if (o.lang && !['vi', 'en'].includes(o.lang)) die(`--lang 只能是 vi 或 en，现在是 ${o.lang}`);

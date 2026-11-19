@@ -6,7 +6,7 @@
 // 出处：我们做风格测试时的共用 render.mjs（10-07）；skill 版（10-08）改了：口播和输出默认从作品目录的
 // 作品.json 读、没有就找页面旁边的 口播.wav；Chrome 自动找；--no-subtitle；开头检查 Node 版本和 ffmpeg。
 // v1.1（10-08 晚，按观众实测改）：--no-subtitle 的输出一律带「_无字幕」（给了 -o 也加）；--scan 扫片拼图、--check-marks 关键词前后帧拼图；
-// --stills 出图前把同一前缀的旧静帧挪进 旧静帧/。
+// --stills 出图前把同一前缀的旧静帧挪进 旧anh-tinh/。
 
 import { spawn, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -37,9 +37,9 @@ const HELP = `用法：
                           lineJoin、setLineDash、globalAlpha 等状态没复位，漏到了下一帧），按时间顺序出片时不一定看得出。
                           auto = 取片长的 25%、50%、75%
   --scan                  扫片拼图：每秒 3 帧、每格 480×270、一张 4×8 格（约 10.7 秒），按片长出几张
-                          （检查/扫片_1.png …，旧的同名扫片先删掉），看截断、叠字、空白、换镜头
+                          （kiem-tra/扫片_1.png …，旧的同名扫片先删掉），看截断、叠字、空白、换镜头
   --check-marks           关键词前后帧拼图：每个关键词开始前 0.1 秒、后 0.35 秒各一帧，一行两个词（前、后、前、后），
-                          出 检查/卡点.png 和 卡点_说明.txt（第几行是哪个词）；手写类风格「后」那帧字可能还没写完，看有没有开始出现
+                          出 kiem-tra/卡点.png 和 卡点_说明.txt（第几行是哪个词）；手写类风格「后」那帧字可能还没写完，看有没有开始出现
                           这两个只截检查用的小图、不出片；可以和 --no-subtitle、--outdir 一起用
   --fps <n>               帧率（成片默认 30，预览默认 10）
   --scale <x>             截图缩放（成片 1，预览 0.5）
@@ -47,9 +47,9 @@ const HELP = `用法：
   --from <秒> --to <秒>   只渲染一段（音频同步截取），用于局部检查
   --format png|jpeg       截图格式（默认 png，无损）；--quality <n> jpeg 质量（默认 92）。和 --stills 一起用时出 jpg 静帧（质量默认 90）
   --crf <n>               x264 质量（成片默认 18，预览 26）
-  --outdir <目录>         --stills 的输出目录（默认页面旁边）；--scan / --check-marks 的输出目录（默认页面旁边的 检查/）
+  --outdir <目录>         --stills 的输出目录（默认页面旁边）；--scan / --check-marks 的输出目录（默认页面旁边的 kiem-tra/）
   --prefix <名>           静帧文件名前缀（默认页面所在文件夹名）。出静帧前，同一目录里同一前缀的旧静帧和旧 480 宽检查图
-                          会先挪进 旧静帧/<前缀_时分秒>/，文件夹里只留这一批；调试用的静帧换个前缀（例如 --prefix 调试）就不会互相挪
+                          会先挪进 旧anh-tinh/<前缀_时分秒>/，文件夹里只留这一批；调试用的静帧换个前缀（例如 --prefix 调试）就不会互相挪
   --gpu                   允许 Chrome 用 GPU（默认关，软件渲染更稳定、并行时不抢显卡）
   --keep                  保留临时目录（调试用）；--tmp <目录> 临时目录放哪（默认系统临时目录）
   --chrome <路径>         Chrome 可执行文件（默认自动找：环境变量 CHROME_PATH → Google Chrome → Chromium → Edge → Brave）
@@ -438,14 +438,14 @@ async function main() {
       const olds = fs.readdirSync(outdir).filter(isOld);
       if (olds.length) {
         const hms = new Date().toLocaleTimeString('zh-CN', { hour12: false }).replace(/:/g, '');
-        const bak = path.join(outdir, '旧静帧', `${prefix}_${hms}`);
+        const bak = path.join(outdir, 'anh-tinh-cu', `${prefix}_${hms}`);
         fs.mkdirSync(bak, { recursive: true });
         for (const f of olds) fs.renameSync(path.join(outdir, f), path.join(bak, f));
         console.log(`  上一批同名前缀的 ${olds.length} 个文件挪到了 ${bak}`);
       }
       const files = [];
       for (const t of opts.stills) {
-        const jpg = opts.format === 'jpeg';   // v1.3：命令行写了 --format jpeg 就出 jpg（风格文件夹的 静帧/ 用 jpg）
+        const jpg = opts.format === 'jpeg';   // v1.3：命令行写了 --format jpeg 就出 jpg（风格文件夹的 anh-tinh/ 用 jpg）
         const buf = await seekAndShoot(S, errors, t, jpg ? { format: 'jpeg', quality: opts.quality || 90, scale: 1 } : { format: 'png', scale: 1 });
         const f = path.join(outdir, `${prefix}_静帧_${t.toFixed(2)}s.${jpg ? 'jpg' : 'png'}`);
         fs.writeFileSync(f, buf);
@@ -466,7 +466,7 @@ async function main() {
     if (mode === 'check') {
       const dur = opts.duration || info.duration || (audio ? probeDuration(audio) : null);
       if (!dur) fail('不知道时长：请用 --duration 指定，或在页面里设 window.DURATION');
-      const outdir = path.resolve(opts.outdir || path.join(pageDir, '检查'));
+      const outdir = path.resolve(opts.outdir || path.join(pageDir, 'kiem-tra'));
       fs.mkdirSync(outdir, { recursive: true });
       const lastT = Math.max(0, (Math.ceil(dur * 30 - 1e-6) - 1) / 30);   // 成片最后一帧的时间
       const frameT = (t) => Math.min(Math.max(0, Math.round(t * 30) / 30), lastT);   // 对到成片的帧上

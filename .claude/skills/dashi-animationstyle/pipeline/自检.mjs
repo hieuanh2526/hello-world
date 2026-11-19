@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 自检.mjs：检查这台电脑能不能出片——Node、ffmpeg、Chrome、whisper（可选）、各套风格要用的字体。几秒钟跑完。
 // 用法：node 自检.mjs                 全部检查（字体按 7 套风格逐套报）
-//       node 自检.mjs --style 手绘笔记   只报这一套的字体
+//       node 自检.mjs --style ve-tay   只报这一套的字体
 // 字体为什么要单独查：兰亭黑、圆体、手札体、翩翩体等是 macOS「按需下载」的字体，没下载时系统只带一部分字，
 // Chrome 里一个词可能一半是这个字体、一半退回苹方。所以这里查的是完整字体文件在不在，不是只看字体名。
 import fs from 'node:fs';
@@ -49,9 +49,9 @@ const has = (re) => [...files].some((f) => re.test(f));
 const VI = { 'Be Vietnam Pro': /^bevietnampro/, 'Nunito': /^nunito/, 'Patrick Hand': /^patrickhand/, 'Baloo 2': /^baloo2/,
   'Playfair Display': /^playfairdisplay/, 'Lora': /^lora/, 'Oswald': /^oswald/, 'Montserrat': /^montserrat/, 'Cormorant Garamond': /^cormorantgaramond/ };
 const STYLE_FONTS = {
-  扁平流程图: ['Be Vietnam Pro'], 手绘笔记: ['Patrick Hand', 'Nunito'], 复古报刊: ['Lora', 'Be Vietnam Pro'],
-  复古剪纸: ['Be Vietnam Pro', 'Playfair Display', 'Oswald'], 超现实拼贴: ['Playfair Display', 'Lora', 'Montserrat', 'Patrick Hand', 'Be Vietnam Pro'],
-  立体卡通: ['Baloo 2', 'Nunito', 'Be Vietnam Pro'], 黑底科技: ['Lora', 'Cormorant Garamond'],
+  so-do-phang: ['Be Vietnam Pro'], ve-tay: ['Patrick Hand', 'Nunito'], bao-co: ['Lora', 'Be Vietnam Pro'],
+  cat-giay: ['Be Vietnam Pro', 'Playfair Display', 'Oswald'], cat-dan-sieu-thuc: ['Playfair Display', 'Lora', 'Montserrat', 'Patrick Hand', 'Be Vietnam Pro'],
+  hoat-hinh-3d: ['Baloo 2', 'Nunito', 'Be Vietnam Pro'], cong-nghe-nen-den: ['Lora', 'Cormorant Garamond'],
 };
 console.log('\n【字体】越南语 / 英语字体（✓ 装了；✗ 没装）');
 let missing = false;

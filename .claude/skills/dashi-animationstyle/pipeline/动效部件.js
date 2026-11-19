@@ -7,10 +7,10 @@
 //   function fxAfter(t) {}                   场景画完、页眉字幕之前调，变换已复位：在这里盖转场（glitch、erase、pageTurn、paperCover）和粒子 particles
 //   两个函数默认是空的，不写就什么都不做，画面和 v1.1 一模一样。全局只多一个对象 window.动效，不和模板里的变量撞名。
 //
-// 例（黑底科技模板里，每次换镜头故障撕裂 + 一直飘光点）：
+// 例（cong-nghe-nen-den模板里，每次换镜头故障撕裂 + 一直飘光点）：
 //   const CUTS = TL.shots.slice(1).map((s) => s.start);
 //   function fxAfter(t) { 动效.particles(g, t, { kind: '光点', n: 40, color: '#e5cf95' }); 动效.glitch(g, t, CUTS); }
-// 例（手绘笔记模板里，换镜头整屏推走）：
+// 例（ve-tay模板里，换镜头整屏推走）：
 //   function fxBefore(t) { const p = 动效.push(t, CUTS); if (p) 动效.shift(g, p, C.paper); }
 //
 // 函数一览（x = 画布 2d 上下文，t = 秒，cuts = 换场时刻数组；o = 选项，都有默认值）：
@@ -268,7 +268,7 @@
     const a = o.a ?? 0.2, b = o.back ?? 0.08;
     return p <= 0 ? 0 : p < a ? -b * Math.sin(Math.PI * p / a) : ease.outCubic((p - a) / (1 - a));
   }
-  // 泛光：整帧缩到 1/4 模糊后 lighter 叠回去（霓虹、黑底科技）。放在 fxAfter 最后、字幕之前
+  // 泛光：整帧缩到 1/4 模糊后 lighter 叠回去（霓虹、cong-nghe-nen-den）。放在 fxAfter 最后、字幕之前
   function bloom(x, o = {}) {
     const W = x.canvas.width, H = x.canvas.height, w = W / 4, h = H / 4, B = canvasOf('bloom', w, h), b = B.getContext('2d');
     b.setTransform(1, 0, 0, 1, 0, 0); b.filter = 'none'; b.clearRect(0, 0, w, h);
@@ -276,7 +276,7 @@
     x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.filter = 'none'; x.globalCompositeOperation = 'lighter'; x.globalAlpha = o.alpha ?? 0.45;
     x.drawImage(B, 0, 0, W, H); x.restore();
   }
-  // 扫描线 + 暗角：一张画布只画一次，每帧盖一下（霓虹、黑底科技）
+  // 扫描线 + 暗角：一张画布只画一次，每帧盖一下（霓虹、cong-nghe-nen-den）
   function scan(x, o = {}) {
     const W = x.canvas.width, H = x.canvas.height, gap = o.gap ?? 4, al = o.alpha ?? 0.2, vg = o.vignette ?? 0.7;
     const S = canvasOf(`scan${gap}_${al}_${vg}`, W, H);
@@ -291,7 +291,7 @@
   }
 
   // v1.3：每帧开头调一次，把画布状态整套复位。上一帧留下的 lineCap / lineJoin / setLineDash / globalAlpha / 阴影……
-  // 会漏到下一帧，按时间顺序出片看不出来，单独出静帧或倒着 seek 就不一样（立体卡通、黑底科技、复古报刊的旧示例页都踩过）。
+  // 会漏到下一帧，按时间顺序出片看不出来，单独出静帧或倒着 seek 就不一样（hoat-hinh-3d、cong-nghe-nen-den、bao-co的旧示例页都踩过）。
   // 离屏画布如果每帧重画，也要对它调一次。检查：node render.mjs <页面> --check-determinism auto
   function resetCtx(x) {
     if (typeof x.reset === 'function') x.reset();   // Chrome 99 起有；会清空画布
@@ -304,7 +304,7 @@
   const areaOf = (x, o) => o.area || [0, 0, x.canvas.width, x.canvas.height];
 
   // v1.3 圆形遮罩：切点前 o.pre 秒圆从大收到 0（圆外填 o.fill），切点后 o.post 秒再从 0 张开；圆心 o.cx / o.cy（默认区域中心）
-  // 适合扁平流程图、扁平插画、立体卡通、黏土（知识文件第三节）
+  // 适合so-do-phang、扁平插画、hoat-hinh-3d、黏土（知识文件第三节）
   function iris(x, t, cuts, o = {}) {
     const pre = o.pre ?? 0.35, post = o.post ?? 0.35, c = near(t, cuts, pre, post); if (c === null) return;
     const [ax, ay, aw, ah] = areaOf(x, o), cx = o.cx ?? ax + aw / 2, cy = o.cy ?? ay + ah / 2;
@@ -318,7 +318,7 @@
   }
 
   // v1.3 色块横扫：几条颜色的宽带从左往右扫，切点那一刻正好盖满 o.area，切点后接着扫出右边。o.colors 从前到后，o.d 总时长
-  // 适合扁平流程图、复古剪纸（彩纸条）、包豪斯、孟菲斯
+  // 适合so-do-phang、cat-giay（彩纸条）、包豪斯、孟菲斯
   function sweep(x, t, cuts, o = {}) {
     const d = o.d ?? 0.66, cols = o.colors || ['#fbbf2f', '#ee8013', '#1a1410'], lag = o.lag ?? 0.12, slant = o.slant ?? 120;
     const L = lag * (cols.length - 1), a = (0.5 + L) / (1 + L);   // 切点落在整段的 a 处：最后一条带正好走到一半（盖满）

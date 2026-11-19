@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>立体卡通 · 通用模板（v1.3）</title>
+<title>hoat-hinh-3d · 通用模板（v1.3）</title>
 <!--
-  立体卡通（S35）的通用模板：能吃任何口播的 timeline.js（和本页放在同一个文件夹，由 pipeline/生成timeline.mjs 生成）。
-  炭黑底 + 钴蓝点彩光晕 + 杂志内页白细线；物件是光从左上来、带颗粒渐变的立体卡通（光面胶囊、小球、管子、手套）。
+  hoat-hinh-3d（S35）的通用模板：能吃任何口播的 timeline.js（和本页放在同一个文件夹，由 pipeline/生成timeline.mjs 生成）。
+  炭黑底 + 钴蓝点彩光晕 + 杂志内页白细线；物件是光从左上来、带颗粒渐变的hoat-hinh-3d（光面胶囊、小球、管子、手套）。
   文件分两块：「底座：换内容时不用改」（字体、小工具、配色和材质、立体基本形、贴图、手套剪刀放大镜植物道具、背景颗粒、版式、杂志框、草丛、字幕、镜头工具）
   和「场景：按新分镜重写」。场景区现在是通用骨架；正式做新内容照 风格卡.md「换内容时怎么改」重画。
   强调色 A = 红 #d41928、B = 手套蓝 #569bd0。满屏颗粒，出片用 --format jpeg（新建作品.mjs 已写进 作品.json）。
@@ -99,7 +99,7 @@ function tw(s, f) { const k = f + '|' + s; let v = wCache.get(k); if (v === unde
 function text(s, x, y, f, col, align = 'center', base = 'middle') { g.font = f; g.fillStyle = col; g.textAlign = align; g.textBaseline = base; g.fillText(s, x, y); }
 const fsize = (f) => parseFloat(f.match(/(\d+(?:\.\d+)?)px/)[1]);
 
-// ---------- 立体卡通的基本形 ----------
+// ---------- hoat-hinh-3d的基本形 ----------
 function capsulePath(x0, y0, x1, y1, r) {
   const a = Math.atan2(y1 - y0, x1 - x0), p = new Path2D();
   p.arc(x1, y1, r, a - Math.PI / 2, a + Math.PI / 2);

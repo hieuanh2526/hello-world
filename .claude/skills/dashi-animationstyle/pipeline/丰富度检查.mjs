@@ -17,7 +17,7 @@ for (let i = 0; i < a.length; i++) {
   else o.mp4 = a[i];
 }
 if (!o.mp4 || !fs.existsSync(o.mp4)) { console.log(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(1, 7).join('\n')); process.exit(1); }
-const outdir = path.resolve(o.outdir || path.join(path.dirname(o.mp4), '检查'));
+const outdir = path.resolve(o.outdir || path.join(path.dirname(o.mp4), 'kiem-tra'));
 fs.mkdirSync(outdir, { recursive: true });
 const dur = +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', o.mp4], { encoding: 'utf8' }).trim();
 const [vw, vh] = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', o.mp4], { encoding: 'utf8' }).trim().split(',').map(Number);

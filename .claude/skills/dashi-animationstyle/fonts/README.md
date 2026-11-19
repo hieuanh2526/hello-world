@@ -4,14 +4,14 @@ Tất cả là font mã nguồn mở theo SIL Open Font License 1.1 (xem `OFL.tx
 
 | Font | Dùng cho phong cách |
 |---|---|
-| Be Vietnam Pro | 扁平流程图, 复古剪纸, 复古报刊, 立体卡通, 超现实拼贴 |
-| Patrick Hand | 手绘笔记, 超现实拼贴 (chữ viết tay) |
-| Nunito | 手绘笔记, 立体卡通 (chữ tròn) |
-| Baloo 2 | 立体卡通 (tiêu đề đậm) |
-| Playfair Display | 复古剪纸, 超现实拼贴 (tiêu đề có chân) |
-| Lora | 复古报刊, 超现实拼贴, 黑底科技 (chữ có chân) |
-| Oswald | 复古剪纸 (chữ hẹp) |
-| Montserrat | 超现实拼贴 (nhãn nhỏ) |
-| Cormorant Garamond | 黑底科技 (chữ Latin thanh mảnh) |
+| Be Vietnam Pro | so-do-phang, cat-giay, bao-co, hoat-hinh-3d, cat-dan-sieu-thuc |
+| Patrick Hand | ve-tay, cat-dan-sieu-thuc (chữ viết tay) |
+| Nunito | ve-tay, hoat-hinh-3d (chữ tròn) |
+| Baloo 2 | hoat-hinh-3d (tiêu đề đậm) |
+| Playfair Display | cat-giay, cat-dan-sieu-thuc (tiêu đề có chân) |
+| Lora | bao-co, cat-dan-sieu-thuc, cong-nghe-nen-den (chữ có chân) |
+| Oswald | cat-giay (chữ hẹp) |
+| Montserrat | cat-dan-sieu-thuc (nhãn nhỏ) |
+| Cormorant Garamond | cong-nghe-nen-den (chữ Latin thanh mảnh) |
 
 Cài: `node pipeline/装字体.mjs`. Trên macOS font được chép vào ~/Library/Fonts, trên Linux vào ~/.local/share/fonts/dashi.
