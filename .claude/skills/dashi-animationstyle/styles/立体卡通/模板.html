@@ -36,6 +36,8 @@ const SH = (k) => TL.shots[k - 1];
 
 // ---------- 字体（全部是 macOS 自带字体） ----------
 // 特粗标题：兰亭黑-简 Heavy；物件上的字：圆体-简 Bold；界面小字和字幕：苹方；英文细体大字母：Helvetica Neue Light / Bold
+// 越南语 / 英语版：画面上的固定小字按口播语言写（作品.json 的 lang → timeline.js 的 TL.lang）
+const UI_EN = !!(window.TL && TL.lang === 'en');
 const F_HEAVY = '"Baloo 2", "Lantinghei SC", "PingFang SC", sans-serif';
 const F_ROUND = '"Nunito", "Yuanti SC", "PingFang SC", sans-serif';
 const F_UI = '"Be Vietnam Pro", "PingFang SC", sans-serif';
@@ -410,7 +412,7 @@ function drawPanel(w, h, head, r) {   // 聊天窗口：银白色有厚度的面
   g.restore();
   sphere(60, head / 2, 30, MAT.green);
   text('AI', 60, head / 2 + 2, fL(25, 700), '#ffffff');
-  text('AI 助手', 108, head / 2 + 2, fU(40, 600), C.white, 'left');
+  text(UI_EN ? 'AI assistant' : 'Trợ lý AI', 108, head / 2 + 2, fU(40, 600), C.white, 'left');
   for (let k = 0; k < 3; k++) sphere(w - 48 - k * 32, head / 2, 9, MAT.silver);
   const ip = new Path2D(); ip.roundRect(INPUT.x - WIN.x, INPUT.y - WIN.y, INPUT.w, INPUT.h, INPUT.h / 2);
   g.fillStyle = '#f7f9fc'; g.fill(ip);

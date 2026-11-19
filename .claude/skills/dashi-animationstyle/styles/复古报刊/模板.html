@@ -179,7 +179,9 @@ const SEA = { x0: 56, x1: 1864, y0: TOP_H, y1: TOP_H + Math.max(1, NS - 1) * SEC
 const CARD0 = { x: 960, y: 676, w: 1000, h: 420 };                 // 第 1 个镜头：报纸版心的「本期要点」卡
 const secY = (i) => (i === 0 ? CARD0.y : TOP_H + 360 + (i - 1) * SEC_H);   // 各镜头内容的中心 y
 // 刊名、副标题、版次（按内容改）；大标题用 TL.title，导语用口播第一句，两栏正文用各镜头的标题和要讲清
-const MAST = { a: 'AI', b: '万象', sub: '探索语言、数据与推理的奥秘', date: '第 1 版' };
+// 越南语 / 英语版：画面上的固定小字按口播语言写（作品.json 的 lang → timeline.js 的 TL.lang）
+const UI_EN = !!(window.TL && TL.lang === 'en');
+const MAST = UI_EN ? { a: 'AI', b: 'Digest', sub: 'Exploring language, data and reasoning', date: 'Page 1' } : { a: 'AI', b: 'Toàn Cảnh', sub: 'Khám phá ngôn ngữ, dữ liệu và suy luận', date: 'Trang 1' };
 const TITLE = TL.title || (TL.shots[0] && TL.shots[0].title) || '';
 const LEAD = (() => { const s = (TL.text || '').split(/[。！？!?]/)[0] || ''; const a = [...s]; return a.length <= 24 ? [s] : [a.slice(0, 24).join(''), a.slice(24, 47).join('') + (a.length > 47 ? '……' : '')]; })();
 const shortHead = (x) => { const h = (x || '').split(/[，,：:。]/)[0]; return [...h].length > 8 ? [...h].slice(0, 8).join('') : h; };   // 栏目小标题只有 336 像素宽，放 8 个字以内
@@ -376,10 +378,10 @@ function buildPage() {
   text(MAST.b, mx + wa + gp, 112, fB, C.gray, 'left', 'alphabetic');
   textLS(MAST.sub, 963, 146, fSans(500, 19), C.ink, 6, 'center');
   silhouette(1290, 36);
-  text(`本期：${TITLE}`.slice(0, 18), 1290, 120, fSans(400, 15), C.ink2, 'left');
+  text(`${UI_EN ? 'In this issue: ' : 'Số này: '}${TITLE}`.slice(0, 40), 1290, 120, fSans(400, 15), C.ink2, 'left');
   const fH = fSong(900, 168); let sx = 0.8; const hw = tw(TITLE, fH) * sx; if (hw > 1010) sx *= 1010 / hw;   // 大标题：宋体-简 Black 压窄成长宋
   text(TITLE, 960, 318, fH, C.head, 'center', 'alphabetic', sx);
-  text('文·图／本刊编辑部', 1480, 350, fSans(400, 18), C.ink2, 'right', 'alphabetic');
+  text(UI_EN ? 'Words & art: Editorial desk' : 'Bài & minh họa: Ban biên tập', 1480, 350, fSans(400, 18), C.ink2, 'right', 'alphabetic');
   LEAD.forEach((ln, k) => text(ln, 960, 390 + k * 42, fSong(400, 34), C.ink, 'center', 'alphabetic'));   // 导语
   g = keep;
 }
@@ -403,7 +405,7 @@ const SECS = TL.shots.map((s, i) => {
   const y0 = secY(i) + (i === 0 ? 86 : 150) - (rows.length - 1) * (KH + 26) / 2;
   rows.forEach((r, ri) => { const tot = r.reduce((a, it) => a + it.wd, 0) + KG * (r.length - 1); let x = 960 - tot / 2;
     r.forEach((it) => { it.x = x + it.wd / 2; it.y = y0 + ri * (KH + 26); x += it.wd + KG; }); });
-  const title = s.title || `第 ${i + 1} 段`, n = Math.max(1, [...title].length);
+  const title = s.title || (UI_EN ? `Part ${i + 1}` : `Phần ${i + 1}`), n = Math.max(1, [...title].length);
   return { s, i, items, title, tf: fSong(900, Math.min(i === 0 ? 60 : 76, Math.floor((i === 0 ? 900 : 1500) / n))) };
 });
 function drawKey(it, t, onSea) {
@@ -433,7 +435,7 @@ function drawCard0(t) {
   g.fillStyle = C.paper; g.fillRect(x0, y0, w, h);
   g.strokeStyle = C.ink; g.lineWidth = 2; strokeReveal(x0, y0, w, h, 2, outC(p));
   g.fillStyle = C.head; g.fillRect(x0, y0, w, 56);
-  textLS('本 期 要 点', x0 + 28, y0 + 29, fSans(700, 26), '#ffffff', 4, 'left');
+  textLS(UI_EN ? 'KEY POINTS' : 'ĐIỂM CHÍNH', x0 + 28, y0 + 29, fSans(700, 26), '#ffffff', 4, 'left');
   g.restore();
   g.save(); g.beginPath(); g.rect(x0, y0, (w) * outC(P(t, s.start + 0.25, 0.5)), h); g.clip();
   text(sc.title, x, y0 + 130, sc.tf, C.ink);
@@ -542,7 +544,7 @@ function drawTurn(t) {
     g.beginPath(); g.moveTo(L - 160, 0); g.lineTo(R - 160, 0); g.lineTo(R + 60, H); g.lineTo(L + 60, H); g.closePath();
     g.save(); g.clip(); g.drawImage(TURNCV, L - 160, 0);
     text(ttl, L - 160 + 452, 149, fSong(900, 50), '#ffffff', 'left');
-    text(`第 ${cu.i + 1} 版`, L - 160 + 2180, 44, fSans(400, 19), C.ink2, 'right');
+    text(UI_EN ? `Page ${cu.i + 1}` : `Trang ${cu.i + 1}`, L - 160 + 2180, 44, fSans(400, 19), C.ink2, 'right');
     const fold = g.createLinearGradient(L - 50, 0, L + 120, 0);
     fold.addColorStop(0, 'rgba(10,20,50,0.2)'); fold.addColorStop(0.3, 'rgba(255,255,255,0.4)'); fold.addColorStop(1, 'rgba(255,255,255,0)');
     g.fillStyle = fold; g.fillRect(L - 160, 0, 320, H);
@@ -613,7 +615,7 @@ window.DURATION = TL.duration;
 window.seek = (t) => { init(); render(t); };
 window.ready = false;
 const FONTS = [fSong(900, 54), fSong(400, 36), fSong(300, 96), fTimes(700, 150), fTimes(400, 100, true), fSans(400, 22), fSans(500, 42), fSans(600, 64), fSans(700, 52)];
-Promise.all(FONTS.map((f) => document.fonts.load(f, '中文AI Token'))).catch(() => {}).then(() => { init(); render(0); window.ready = true; });
+Promise.all(FONTS.map((f) => document.fonts.load(f, 'Tiếng Việt ệữơư AI Token'))).catch(() => {}).then(() => { init(); render(0); window.ready = true; });
 </script>
 </body>
 </html>

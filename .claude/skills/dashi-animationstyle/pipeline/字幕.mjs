@@ -145,8 +145,10 @@ if (o.noWhisper) {
   cues.forEach((c) => { c.chars = spread(c); });
 } else {
   // ---------- 主路：whisper-cli + DTW 字级时间 ----------
-  const wcli = ['whisper-cli', 'whisper-cpp'].find((c) => { try { execFileSync('which', [c], { stdio: 'ignore' }); return true; } catch { return false; } });
-  if (!wcli) die('没有 whisper-cli。装：brew install whisper-cpp；或者用后备：给稿子.txt，加 --no-whisper');
+  // install.sh 在 Linux 上把 whisper-cli 装到 ~/.local/bin（不一定在 PATH 里），先看那里
+  const localCli = path.join(os.homedir(), '.local/bin/whisper-cli');
+  const wcli = fs.existsSync(localCli) ? localCli : ['whisper-cli', 'whisper-cpp'].find((c) => { try { execFileSync('which', [c], { stdio: 'ignore' }); return true; } catch { return false; } });
+  if (!wcli) die('没有 whisper-cli。装：bash "$SKILL/install.sh"（或 brew install whisper-cpp）；或者用后备：给稿子.txt，加 --no-whisper');
   const mdirs = [path.join(os.homedir(), '.cache/whisper-cpp'), '/opt/homebrew/share/whisper-cpp', '/usr/local/share/whisper-cpp'];
   const model = o.model || process.env.WHISPER_MODEL || mdirs.flatMap((d) => { try { return fs.readdirSync(d).filter((f) => /^ggml-.*\.bin$/.test(f) && !/silero|for-tests/.test(f)).map((f) => path.join(d, f)); } catch { return []; } }).sort((a, b) => (/large-v3-turbo/.test(b) ? 1 : 0) - (/large-v3-turbo/.test(a) ? 1 : 0))[0];
   if (!model || !fs.existsSync(model)) die('没有 whisper 模型。下载 ggml-large-v3-turbo.bin（约 1.6 GB）放到 ~/.cache/whisper-cpp/，或 --model 指定；或者用后备 --no-whisper');

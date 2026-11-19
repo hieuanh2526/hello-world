@@ -41,6 +41,8 @@ const FX_PLAN = {};                                   // 指定某个交界（�
 // ---------- 字体（每种都写了 macOS 自带的替代） ----------
 // 大标题、字幕、骨牌、纸条例句：特粗衬线。英文落在 Hoefler Text Black（macOS 自带）；中文落在思源宋体 Heavy（用户装的，开源），
 // 没有思源宋体的 Mac 落到宋体-简 Black（macOS 自带）。
+// 越南语 / 英语版：画面上的固定小字按口播语言写（作品.json 的 lang → timeline.js 的 TL.lang）
+const UI_EN = !!(window.TL && TL.lang === 'en');
 const F_HEAD = '"Playfair Display", "Hoefler Text", "Source Han Serif SC", "Songti SC", serif';
 const F_SLIP = '"Lora", "Source Han Serif SC", "Songti SC", serif';                     // 数据纸条：思源宋体 Bold → 宋体-简 Bold
 const F_LABEL = '"Montserrat", "Avenir Next", "PingFang SC", sans-serif';       // 宽字距小标签：Montserrat（用户装的）→ Avenir Next；中文苹方
@@ -415,7 +417,7 @@ function scissors(x, y, th, rot, a, tagA, swing) {
     const tp2 = tornRect(196, 76, 41, { edge: 1, endL: 3, endR: 0.5 });
     g.fillStyle = 'rgba(45,36,20,0.22)'; poly(tp2, 4, 5); g.fill(); g.fillStyle = '#f6f2e6'; poly(tp2); g.fill();
     g.fillStyle = C.ink2; g.beginPath(); g.arc(84, 0, 5, 0, TAU); g.fill();
-    text('分词器', -8, 3, fHead(46), C.ink);
+    text(UI_EN ? 'Tokenizer' : 'Bộ tách từ', -8, 3, fHead(46), C.ink);
     g.restore();
   }
   for (const sgn of [-1, 1]) {
@@ -544,12 +546,12 @@ function drawBackPieces(t, cam) {
 function drawHeader() {                                    // 罗盘标志 + 两行粗体（栏目名，按需要改），右上宽字距小字 = 标题 + 细线
   if (FX_DEFAULT) {                                         // v1.3：字先描一圈纸色的边（纸上看不出来），深色东西从页眉后面经过时也读得清
     g.save(); g.strokeStyle = C.paper; g.lineWidth = 5; g.lineJoin = 'round'; g.font = fUI(30, 600); g.textAlign = 'left'; g.textBaseline = 'middle';
-    g.strokeText('知识', 146, 64); g.strokeText('图鉴', 146, 98);
+    g.strokeText(UI_EN ? 'Knowledge' : 'Kiến thức', 146, 64); g.strokeText(UI_EN ? 'Atlas' : 'Minh họa', 146, 98);
     if (TL.title) { g.font = fLabel(22); g.letterSpacing = '7px'; g.strokeText(TL.title, 1690 - spacedW(TL.title, fLabel(22), 7), 80); }
     g.restore();
   }
   compassMark(96, 80, 36, false);
-  text('知识', 146, 64, fUI(30, 600), C.ink, 'left'); text('图鉴', 146, 98, fUI(30, 600), C.ink, 'left');
+  text(UI_EN ? 'Knowledge' : 'Kiến thức', 146, 64, fUI(30, 600), C.ink, 'left'); text(UI_EN ? 'Atlas' : 'Minh họa', 146, 98, fUI(30, 600), C.ink, 'left');
   if (TL.title) { const f = fLabel(22), lw = spacedW(TL.title, f, 7); spaced(TL.title, 1690 - lw, 80, f, C.ink2, 7); g.fillStyle = C.ink2; g.fillRect(1710, 79, 130, 1.6); }
 }
 // 字幕：撕边米白纸条 + 特粗衬线 64 像素；「字幕强调」的词在被念到时刷上橙色干笔刷，「高亮」的词用强调色 A 红 / B 蓝字
@@ -605,7 +607,7 @@ const SECS = TL.shots.map((s, i) => {
   if (row.length) rows.push(row);
   const y0 = 600 - (rows.length - 1) * (SLH + 34) / 2;
   rows.forEach((r, ri) => { let x = 300; r.forEach((it) => { it.x = x + it.wd / 2; it.y = y0 + ri * (SLH + 34); x += it.wd + SLG; }); });
-  const title = s.title || `第 ${i + 1} 张`, n = Math.max(1, [...title].length), size = Math.min(110, Math.floor(1450 / n));
+  const title = s.title || (UI_EN ? `Card ${i + 1}` : `Tấm ${i + 1}`), n = Math.max(1, [...title].length), size = Math.min(110, Math.floor(1450 / n));
   return { s, i, items, title, size };
 });
 function drawPoster(sc, t) {

@@ -13,7 +13,7 @@ import path from 'node:path';
 
 const die = (m) => { console.error(`✗ ${m}`); process.exit(1); };
 const args = process.argv.slice(2);
-let subsPath, sbPath, outPath, dir;
+let subsPath, sbPath, outPath, dir, lang;
 for (let i = 0; i < args.length; i++) {
   const a = args[i], v = () => args[++i] ?? die(`参数 ${a} 后面缺值`);
   if (a === '--subs') subsPath = v();
@@ -30,6 +30,7 @@ if (dir) {
   subsPath ??= path.join(dir, cfg.subtitles || '字幕.json');
   sbPath ??= path.join(dir, cfg.storyboard || '分镜.json');
   outPath ??= path.join(dir, cfg.timeline || 'timeline.js');
+  lang = cfg.lang;   // vi / en：模板里画面上的固定小字按这个写
 }
 if (!subsPath || !sbPath || !outPath) die('用法：node 生成timeline.mjs <作品目录>，或 --subs 字幕.json --storyboard 分镜.json -o timeline.js');
 for (const f of [subsPath, sbPath]) if (!fs.existsSync(f)) die(`找不到 ${f}`);
@@ -105,6 +106,7 @@ for (const s of Array.isArray(sb.shots) ? sb.shots : []) for (const k of s['时�
 // ---------- 全片固定上色的词（强调色 A/B）和字幕里要强调的词 ----------
 const hl = (sb['高亮'] || []).map((h, i) => (typeof h === 'string' ? { text: h, role: i === 0 ? 'A' : 'B' } : { text: h.text, role: h.role || (i === 0 ? 'A' : 'B') }));
 const TL = {
+  lang: lang || sb.lang || 'vi',
   duration, fps: sb.fps || 30, size: sb.size || [1920, 1080],
   title: sb['标题'] || '',
   text: subs.text || cues.map((c) => c.text).join(' '),

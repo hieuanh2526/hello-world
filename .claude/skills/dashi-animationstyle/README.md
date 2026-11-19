@@ -1,3 +1,5 @@
+> **Bản trong repo này: chỉ làm video tiếng Việt và tiếng Anh.** Cài đặt một lệnh: `bash .claude/skills/dashi-animationstyle/install.sh` (font tiếng Việt, whisper-cli, model whisper, tự kiểm tra; chạy được trên macOS và Linux/cloud). Xem phần「本仓库版」trong `SKILL.md`.
+
 # dashi-animationstyle：风格动画（Claude Code skill）
 
 把一段 15–60 秒的中文知识口播，交给 Claude 做成某种画风的讲解动画：1920×1080、30 帧/秒的 mp4，带口播和字幕，能直接拖进剪映接着剪。

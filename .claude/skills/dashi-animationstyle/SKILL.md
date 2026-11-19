@@ -15,6 +15,8 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
 - **字体**：7 套模板的字体栈最前面换成了 `$SKILL/fonts/` 里的开源字体（全部支持越南语声调，见 `fonts/README.md`）。第一次用先跑 `node "$SKILL/pipeline/装字体.mjs"`。改页面时只用这些字体写字；不要用中文字体写越南语（声调会退到别的字体，一个词里字体不一致）。苹方、兰亭黑这些中文字体不用下载。
 - **页面里的文字**：标题、标注、字幕全部写成和口播同一种语言（越南语或英语），不要留中文；风格卡里的中文说明照样能看懂配色、构图、动效。拉丁字母比汉字窄、比汉字长：一行能放的字数要按实际宽度算（`measureText`），长标题换行或缩小字号；逐字出现的动效按词或按字母都行，按字母时步长放小（0.02–0.035 秒）。
 - **云端（Linux、root）**：`render.mjs` 会自动找 `/opt/pw-browsers/chromium`，以 root 运行时自动加 `--no-sandbox`；不用设 CHROME_PATH。
+- **whisper**：`install.sh` 装的是 ggml-large-v3-turbo-q5_0（越南语实测：46 个词只有 3 处和稿子不同，都是英文词 Token 的读音）。Linux 上 whisper-cli 装在 `~/.local/bin`，`字幕.mjs` 会自己找到。越南语每句开头两三个词的字级时间常常挤在一起（DTW 的老毛病，例如「Bộ tách từ」三个词都在 3.80 秒），卡点用的关键词尽量别选句首的词，或者听一下手动改 字幕.json。英文词在越南语口播里常被识别错（Token → thẻ OKER），**一定给稿子**，按稿子改正。
+- **模板里的固定小字**（报头、「第几版」、标签）按 `TL.lang` 显示越南语或英语（作品.json 的 `lang` 会写进 timeline.js）。
 - 跟用户说话用他的语言（越南语或英语）。
 
 下文 `$SKILL` 指本文件所在的文件夹（装好后一般是 `~/.claude/skills/dashi-animationstyle`）。命令里的路径都要换成实际路径，带空格或中文的路径加引号。
@@ -37,6 +39,7 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
 
 ## 第一次用：先确认这台电脑能出片（约 2 分钟）
 
+0. **一条命令装好（越南语 / 英语版）**：`bash "$SKILL/install.sh"`。装字体、编译或安装 whisper-cli、下载 whisper 模型（约 550 MB），最后跑自检；可以重复跑。只要字体：`--no-whisper`；在别的项目里也想用：`--global`。云端会话的环境 setup script 已经跑过它的话，直接从第 2 步开始。
 1. 检查环境：`node "$SKILL/pipeline/自检.mjs"`
    - 报 ✗ 的照提示处理：Node 要 22 以上（`brew install node`）、ffmpeg（`brew install ffmpeg`）、Chrome（装 Google Chrome）。这些要用户自己装，你只告诉他装什么、怎么装。
    - 字体报 ✗：是 macOS 按需下载的字体（兰亭黑、圆体、手札体、翩翩体），让用户打开「字体册」搜字体名点「下载」。不下也能渲，但那几个字体会退回苹方。
