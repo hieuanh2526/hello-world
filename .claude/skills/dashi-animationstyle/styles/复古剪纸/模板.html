@@ -40,10 +40,10 @@ const M = (k) => TL.mark(k), ME = (k) => TL.markEnd(k);
 const SH = (k) => TL.shots[k - 1];
 
 // ---------- 字体（用户装的开源字体在前，后面是 macOS 自带的替代） ----------
-const F_HEAVY = '"Source Han Sans CN", "Lantinghei SC", "PingFang SC", sans-serif';   // 900：思源黑体 Heavy → 兰亭黑-简 Heavy
-const F_BODY = '"Source Han Sans CN", "PingFang SC", sans-serif';                       // 500–700：思源黑体 → 苹方
-const F_SERIF = '"Source Han Serif SC", "Songti SC", serif';                            // 900：思源宋体 Heavy → 宋体-简 Black
-const F_COND = '"Bebas Neue", "DIN Condensed", sans-serif';                              // 英文窄体大写：Bebas Neue → DIN Condensed Bold
+const F_HEAVY = '"Be Vietnam Pro", "Source Han Sans CN", "Lantinghei SC", "PingFang SC", sans-serif';   // 900：思源黑体 Heavy → 兰亭黑-简 Heavy
+const F_BODY = '"Be Vietnam Pro", "Source Han Sans CN", "PingFang SC", sans-serif';                       // 500–700：思源黑体 → 苹方
+const F_SERIF = '"Playfair Display", "Source Han Serif SC", "Songti SC", serif';                            // 900：思源宋体 Heavy → 宋体-简 Black
+const F_COND = '"Oswald", "Bebas Neue", "DIN Condensed", sans-serif';                              // 英文窄体大写：Bebas Neue → DIN Condensed Bold
 const fH = (s) => `900 ${s}px ${F_HEAVY}`;
 const fB = (w, s) => `${w} ${s}px ${F_BODY}`;
 const fS = (s) => `900 ${s}px ${F_SERIF}`;

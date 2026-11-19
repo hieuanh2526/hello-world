@@ -29,8 +29,8 @@ const FX_DEFAULT = true;   // v1.3 默认动效开关：背景一直动 + 镜头
 const W = 1920, H = 1080, TAU = Math.PI * 2;
 // 字体：本机装的 MiSans（小米，免费商用）。没有 MiSans 的 Mac 上自动换成系统自带的：
 // 特粗（800–900）用兰亭黑-简 Heavy，其余用苹方（Lantinghei SC 只有 Extralight/Demibold/Heavy 三档，不能拿来排正文）
-const FONT_HEAVY = '"MiSans", "Lantinghei SC", "PingFang SC", sans-serif';
-const FONT_BODY = '"MiSans", "PingFang SC", sans-serif';
+const FONT_HEAVY = '"Be Vietnam Pro", "MiSans", "Lantinghei SC", "PingFang SC", sans-serif';
+const FONT_BODY = '"Be Vietnam Pro", "MiSans", "PingFang SC", sans-serif';
 const font = (w, s) => `${w} ${s}px ${w >= 800 ? FONT_HEAVY : FONT_BODY}`;
 const TL = window.TL;
 const NOSUB = /[?&]nosub=1/.test(location.search);   // 渲染时 render.mjs --no-subtitle 会加 ?nosub=1：不画字幕，回剪映统一加

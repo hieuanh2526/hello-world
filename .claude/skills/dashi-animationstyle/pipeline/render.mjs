@@ -169,6 +169,7 @@ export function findChrome(explicit) {
     const p = path.join(root, rel);
     if (fs.existsSync(p)) return p;
   }
+  if (fs.existsSync('/opt/pw-browsers/chromium')) return '/opt/pw-browsers/chromium';   // Claude Code 云端容器自带的 Chromium
   for (const cmd of ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser']) {
     try { const p = execFileSync('which', [cmd], { encoding: 'utf8' }).trim(); if (p) return p; } catch {}
   }
@@ -192,6 +193,8 @@ async function launchChrome(opts, tmp) {
     '--hide-scrollbars', '--mute-audio', '--force-color-profile=srgb', '--force-device-scale-factor=1',
     `--window-size=${W},${H}`,
     ...(opts.gpu ? [] : ['--disable-gpu']),
+    // Linux 上用 root 跑（云端容器）时 Chrome 不肯开沙箱，必须加 --no-sandbox；页面只是本地生成的 HTML
+    ...(process.platform === 'linux' && process.getuid?.() === 0 ? ['--no-sandbox'] : []),
     'about:blank',
   ];
   const proc = spawn(exe, args, { stdio: ['ignore', 'ignore', 'pipe'] });

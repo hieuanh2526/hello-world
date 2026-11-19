@@ -37,70 +37,29 @@ if (wcli && models.length) ok(`whisper-cli：${wcli}；模型 ${models.map((m) =
 else may(`没有 ${wcli ? 'whisper 模型' : 'whisper-cli'}（可选）`, '没有也能做：给稿子，用 字幕.mjs --script 按静音检测排时间（句子边界要对一遍）。\n想装：brew install whisper-cpp，再下载模型 ggml-large-v3-turbo.bin（约 1.6 GB）放到 ~/.cache/whisper-cpp/');
 
 // ---------------- 字体 ----------------
-// 文件索引：系统字体、按需下载的字体（AssetsV2）、用户装的字体
-const dirs = ['/System/Library/Fonts', '/System/Library/Fonts/Supplemental', '/Library/Fonts', path.join(os.homedir(), 'Library/Fonts')];
+// 越南语 / 英语版（v1.3-vi）：7 套风格的字体栈最前面都换成了 $SKILL/fonts/ 里的开源字体（全部支持越南语声调），
+// 原来的中文字体（苹方、兰亭黑……）只在渲自带的中文 Token 例子时用得到，没有也不算错。
+const dirs = ['/System/Library/Fonts', '/System/Library/Fonts/Supplemental', '/Library/Fonts', path.join(os.homedir(), 'Library/Fonts'),
+  '/usr/share/fonts', '/usr/local/share/fonts', path.join(os.homedir(), '.local/share/fonts'), path.join(os.homedir(), '.fonts')];
 const files = new Set();
-for (const d of dirs) { try { for (const f of fs.readdirSync(d)) files.add(f.toLowerCase()); } catch {} }
-// 测试用：设 FONT_CHECK_SIMULATE_NEW_MAC=1 时不看按需下载的字体和用户字体，模拟一台新 Mac
-const SIM = process.env.FONT_CHECK_SIMULATE_NEW_MAC === '1';
-if (SIM) { files.clear(); for (const d of dirs.slice(0, 2)) { try { for (const f of fs.readdirSync(d)) files.add(f.toLowerCase()); } catch {} } }
-for (const root of SIM ? [] : ['/System/Library/AssetsV2']) {
-  let subs = []; try { subs = fs.readdirSync(root).filter((n) => /Font/.test(n)); } catch {}
-  for (const s of subs) { let assets = []; try { assets = fs.readdirSync(path.join(root, s)); } catch {}
-    for (const a of assets) { try { for (const f of fs.readdirSync(path.join(root, s, a, 'AssetData'))) files.add(f.toLowerCase()); } catch {} } }
-}
+const walk = (d, depth = 0) => { let es = []; try { es = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+  for (const e of es) { if (e.isDirectory() && depth < 3) walk(path.join(d, e.name), depth + 1); else files.add(e.name.toLowerCase()); } };
+for (const d of dirs) walk(d);
 const has = (re) => [...files].some((f) => re.test(f));
-// 字体表：kind = 系统（一直在）/ 按需（要在「字体册」下载）/ 自装（用户自己装的，没有就退到替代）
-const F = {
-  'PingFang SC': { kind: '系统', re: /^pingfang/ },
-  'Songti SC': { kind: '系统', re: /^songti\.ttc$/ },
-  'Times New Roman': { kind: '系统', re: /^times new roman/ },
-  'Helvetica Neue': { kind: '系统', re: /^helveticaneue/ },
-  'Avenir Next': { kind: '系统', re: /^avenir next/ },
-  'Baskerville': { kind: '系统', re: /^baskerville/ },
-  'Arial Rounded MT Bold': { kind: '系统', re: /^arial rounded/ },
-  'DIN Condensed': { kind: '系统', re: /^din condensed/ },
-  'Hoefler Text': { kind: '系统', re: /^hoefler text/ },
-  'Lantinghei SC': { kind: '按需', re: /^lantinghei\.ttc$/, cn: '兰亭黑-简' },
-  'Yuanti SC': { kind: '按需', re: /^yuanti\.ttc$/, cn: '圆体-简' },
-  'Hannotate SC': { kind: '按需', re: /^hannotate\.ttc$/, cn: '手札体-简' },
-  'HanziPen SC': { kind: '按需', re: /^hanzipen\.ttc$/, cn: '翩翩体-简' },
-  'MiSans': { kind: '自装', re: /^misans/ },
-  'Source Han Sans': { kind: '自装', re: /^(sourcehansans|source han sans|思源黑体)/ },
-  'Source Han Serif': { kind: '自装', re: /^(sourcehanserif|source han serif|思源宋体)/ },
-  'Montserrat': { kind: '自装', re: /^montserrat/ },
-  'Bebas Neue': { kind: '自装', re: /^bebas/ },
-};
-// 每套风格用到的字体（照各套页面的字体栈；fallback = 没有时退到什么）
+const VI = { 'Be Vietnam Pro': /^bevietnampro/, 'Nunito': /^nunito/, 'Patrick Hand': /^patrickhand/, 'Baloo 2': /^baloo2/,
+  'Playfair Display': /^playfairdisplay/, 'Lora': /^lora/, 'Oswald': /^oswald/, 'Montserrat': /^montserrat/, 'Cormorant Garamond': /^cormorantgaramond/ };
 const STYLE_FONTS = {
-  扁平流程图: [['MiSans', '兰亭黑-简 Heavy（特粗）/ 苹方'], ['Lantinghei SC', '苹方（粗细轻一档）']],
-  手绘笔记: [['Hannotate SC', '苹方（手写感没了）'], ['Yuanti SC', '苹方'], ['HanziPen SC', '苹方'], ['Arial Rounded MT Bold']],
-  复古报刊: [['Songti SC'], ['Times New Roman'], ['Helvetica Neue']],
-  复古剪纸: [['Source Han Sans', '兰亭黑-简 / 苹方'], ['Source Han Serif', '宋体-简'], ['Lantinghei SC', '苹方'], ['DIN Condensed'], ['Bebas Neue', 'DIN Condensed']],
-  超现实拼贴: [['Source Han Serif', '宋体-简'], ['Montserrat', 'Avenir Next'], ['Hoefler Text'], ['HanziPen SC', '苹方'], ['Hannotate SC', '苹方']],
-  立体卡通: [['Lantinghei SC', '苹方'], ['Yuanti SC', '苹方'], ['Helvetica Neue']],
-  黑底科技: [['Source Han Serif', '宋体-简'], ['Songti SC'], ['Baskerville']],
+  扁平流程图: ['Be Vietnam Pro'], 手绘笔记: ['Patrick Hand', 'Nunito'], 复古报刊: ['Lora', 'Be Vietnam Pro'],
+  复古剪纸: ['Be Vietnam Pro', 'Playfair Display', 'Oswald'], 超现实拼贴: ['Playfair Display', 'Lora', 'Montserrat', 'Patrick Hand', 'Be Vietnam Pro'],
+  立体卡通: ['Baloo 2', 'Nunito', 'Be Vietnam Pro'], 黑底科技: ['Lora', 'Cormorant Garamond'],
 };
-console.log('\n【字体】（✓ 有完整字体；! 用户自装字体没有，会自动退到替代；✗ 按需下载字体没下载，要先下）');
-const toDownload = new Set();
+console.log('\n【字体】越南语 / 英语字体（✓ 装了；✗ 没装）');
+let missing = false;
 for (const [style, list] of Object.entries(STYLE_FONTS)) {
   if (onlyStyle && !style.includes(onlyStyle)) continue;
-  const parts = [];
-  for (const [name, fb] of list) {
-    const f = F[name], here = has(f.re);
-    if (here) parts.push(`✓${name}`);
-    else if (f.kind === '按需') { parts.push(`✗${name}`); toDownload.add(`${f.cn}（${name}）`); }
-    else if (f.kind === '自装') parts.push(`!${name}→${fb}`);
-    else parts.push(`✗${name}（系统字体不见了？）`);
-  }
-  const mark = parts.some((p) => p.startsWith('✗')) ? '✗' : parts.some((p) => p.startsWith('!')) ? '!' : '✓';
-  console.log(`  ${mark} ${style}：${parts.join('  ')}`);
+  const parts = list.map((n) => (has(VI[n]) ? `✓${n}` : (missing = true, `✗${n}`)));
+  console.log(`  ${parts.some((x) => x.startsWith('✗')) ? '✗' : '✓'} ${style}：${parts.join('  ')}`);
 }
-if (toDownload.size) {
-  bad++;
-  console.log(`\n  要先下载的字体：${[...toDownload].join('、')}`);
-  console.log('    做法：打开「字体册」（Font Book）→ 搜字体名（例如「兰亭黑」）→ 点「下载」；下完重跑本自检。');
-  console.log('    不下载也能渲染，但这些字会退回苹方，或者一个词里一半是这个字体、一半是苹方。');
-}
+if (missing) { bad++; console.log(`\n  先装字体：node "${path.join(path.dirname(new URL(import.meta.url).pathname), '装字体.mjs')}"（字体在 $SKILL/fonts/，SIL OFL 开源）`); }
 console.log(`\n${bad ? `有 ${bad} 处要处理（✗）` : '必需的都齐了'}${warn ? `，${warn} 处可选（!）` : ''}。${bad ? '' : '下一步：渲自带的 Token 例子（见 SKILL.md「第一次用」）。'}`);
 process.exitCode = bad ? 1 : 0;

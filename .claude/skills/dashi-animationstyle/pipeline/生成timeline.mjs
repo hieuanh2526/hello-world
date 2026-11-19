@@ -54,7 +54,7 @@ cues.forEach((c, i) => { if (i && c.show < cues[i - 1].show) die(`字幕第 ${c.
 let shots = sb.shots;
 if (!Array.isArray(shots) || !shots.length) {
   const groups = Array.isArray(subs.sentences) && subs.sentences.length ? subs.sentences.map((s) => s.cues) : cues.map((c) => [c.id]);
-  shots = groups.map((ids, k) => ({ id: k + 1, cues: ids, title: ids.map((id) => cues.find((c) => c.id === id)?.text || '').join('') }));
+  shots = groups.map((ids, k) => ({ id: k + 1, cues: ids, title: ids.map((id) => cues.find((c) => c.id === id)?.text || '').join(' ') }));
   console.log(`  分镜.json 里没有 shots，按句子自动分了 ${shots.length} 个镜头（只适合试渲，正式做要自己写分镜）`);
 }
 shots = shots.map((s, k) => {
@@ -72,13 +72,16 @@ shots.forEach((s, k) => {
 if (Math.abs(shots[shots.length - 1].end - duration) > 0.05) console.log(`  注意：最后一个镜头到 ${shots[shots.length - 1].end} 秒结束，片长 ${duration} 秒`);
 
 // ---------- 关键词时间：在指定字幕条（不写 cue 就在全文）里按字找短语，取第一个字的起点、最后一个字的终点 ----------
+// 越南语 / 英语：比较时去掉空格、统一成 NFC、不分大小写（「large language model」= 三个词连起来）
+const norm = (x) => String(x).normalize('NFC').replace(/\s+/g, '').toLowerCase();
 function findPhrase(phrase, cueId, nth = 1) {
+  phrase = norm(phrase);
   const cs = cueId ? subs.chars.filter((c) => c.cue === cueId) : subs.chars;
   let hit = 0;
   for (let i = 0; i < cs.length; i++) {
     let s = '';
     for (let j = i; j < cs.length; j++) {
-      s += cs[j].text;
+      s += norm(cs[j].text);
       if (s === phrase) { if (++hit === nth) return { start: cs[i].start, end: cs[j].end }; break; }
       if (!phrase.startsWith(s)) break;
     }
@@ -104,7 +107,7 @@ const hl = (sb['高亮'] || []).map((h, i) => (typeof h === 'string' ? { text: h
 const TL = {
   duration, fps: sb.fps || 30, size: sb.size || [1920, 1080],
   title: sb['标题'] || '',
-  text: subs.text || cues.map((c) => c.text).join(''),
+  text: subs.text || cues.map((c) => c.text).join(' '),
   cues, chars: subs.chars, shots, marks,
   highlights: hl,
   emphasis: sb['字幕强调'] || [],

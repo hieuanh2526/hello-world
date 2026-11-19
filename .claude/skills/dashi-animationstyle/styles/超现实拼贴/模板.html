@@ -41,11 +41,11 @@ const FX_PLAN = {};                                   // 指定某个交界（�
 // ---------- 字体（每种都写了 macOS 自带的替代） ----------
 // 大标题、字幕、骨牌、纸条例句：特粗衬线。英文落在 Hoefler Text Black（macOS 自带）；中文落在思源宋体 Heavy（用户装的，开源），
 // 没有思源宋体的 Mac 落到宋体-简 Black（macOS 自带）。
-const F_HEAD = '"Hoefler Text", "Source Han Serif SC", "Songti SC", serif';
-const F_SLIP = '"Source Han Serif SC", "Songti SC", serif';                     // 数据纸条：思源宋体 Bold → 宋体-简 Bold
+const F_HEAD = '"Playfair Display", "Hoefler Text", "Source Han Serif SC", "Songti SC", serif';
+const F_SLIP = '"Lora", "Source Han Serif SC", "Songti SC", serif';                     // 数据纸条：思源宋体 Bold → 宋体-简 Bold
 const F_LABEL = '"Montserrat", "Avenir Next", "PingFang SC", sans-serif';       // 宽字距小标签：Montserrat（用户装的）→ Avenir Next；中文苹方
-const F_HAND = '"HanziPen SC", "Hannotate SC", cursive';                       // 手写批注：翩翩体-简（自带）→ 手札体-简（自带）
-const F_UI = '"PingFang SC", sans-serif';                                      // 聊天卡片界面字：苹方（自带）
+const F_HAND = '"Patrick Hand", "HanziPen SC", "Hannotate SC", cursive';                       // 手写批注：翩翩体-简（自带）→ 手札体-简（自带）
+const F_UI = '"Be Vietnam Pro", "PingFang SC", sans-serif';                                      // 聊天卡片界面字：苹方（自带）
 const fHead = (s) => `900 ${s}px ${F_HEAD}`;
 const fSlip = (s) => `700 ${s}px ${F_SLIP}`;
 const fLabel = (s, w = 500) => `${w} ${s}px ${F_LABEL}`;

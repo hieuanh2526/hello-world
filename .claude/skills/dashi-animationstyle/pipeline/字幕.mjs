@@ -15,12 +15,12 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const die = (m) => { console.error(`✗ ${m}`); process.exit(1); };
-const A = process.argv.slice(2), o = { _: [], max: 20 };
+const A = process.argv.slice(2), o = { _: [], max: 20 };   // max：每条字幕最多多宽，单位是「一个汉字宽」；拉丁字母按 0.55 个算（64 像素字号单行约 20 个汉字 ≈ 36 个越南/英文字母）
 for (let i = 0; i < A.length; i++) {
   const a = A[i], v = () => A[++i] ?? die(`参数 ${a} 后面缺值`);
   if (a === '--audio') o.audio = v(); else if (a === '--script') o.script = v(); else if (a === '--model') o.model = v();
   else if (a === '-o' || a === '--out') o.out = v(); else if (a === '--max') o.max = +v(); else if (a === '--no-whisper') o.noWhisper = true;
-  else if (a === '--trim') o.trim = v();
+  else if (a === '--trim') o.trim = v(); else if (a === '--lang') o.lang = v();
   else if (a === '-h' || a === '--help') { console.log(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(1, 9).join('\n')); process.exit(0); }
   else if (a.startsWith('-')) die(`不认识的参数：${a}`); else o._.push(a);
 }
@@ -43,6 +43,9 @@ function trimAudio(src, t0, t1) {
 const trimSecs = o.trim && o.trim !== 'auto' ? o.trim.split(',').map(Number) : null;
 if (o.trim && o.trim !== 'auto' && !(trimSecs.length === 2 && trimSecs.every(Number.isFinite) && trimSecs[1] > trimSecs[0] && trimSecs[0] >= 0)) die('--trim 写 auto，或者「起,止」两个秒数，例如 --trim 0.80,22.88');
 if (trimSecs) trimAudio(fs.existsSync(backup) ? backup : audio, trimSecs[0], trimSecs[1]);
+// 语言：--lang，或 作品.json 的 lang；没写就 auto（whisper 自己判断）。这一版只做越南语（vi）和英语（en）
+const LANG = o.lang || cfg.lang || 'auto';
+if (!['vi', 'en', 'auto'].includes(LANG)) die(`--lang 只能是 vi 或 en（这一版只做越南语和英语口播），现在是 ${LANG}`);
 const scriptPath = o.script ? path.resolve(o.script) : (fs.existsSync(path.join(dir, '稿子.txt')) ? path.join(dir, '稿子.txt') : null);
 if (o.trim === 'auto' && (o.noWhisper || !scriptPath)) die('--trim auto 要有 whisper 和稿子（按稿子找口播两头多出来的话）；没有就用 --trim 起,止 手动给秒数');
 const outJson = path.resolve(dir, o.out || cfg.subtitles || '字幕.json');
@@ -53,17 +56,21 @@ const r2 = (x) => Math.round(x * 100) / 100;
 // ---------- 文字切成「字」：一个汉字一个；英文词、数字（Token、AI、5.5）整个算一个；标点单独记下来 ----------
 const PUNCT = /[，。！？；：、,.!?;:…—“”"'‘’（）()《》「」『』【】〈〉\[\]\s]/;   // v1.3：加了「」『』【】，稿子里的引号不再算成字、不再误报「没识别出」
 function units(text) {
-  const out = []; const re = /[A-Za-z0-9]+(?:[.'][A-Za-z0-9]+)*|[\s\S]/gu; let m;
+  text = text.normalize('NFC');   // 越南语：统一成预组合字符（ệ 不拆成 e + 两个附加符）
+  const out = []; const re = /[\p{Script=Latin}\p{M}\p{N}]+(?:[.'’\-][\p{Script=Latin}\p{M}\p{N}]+)*|[\s\S]/gu; let m;
   while ((m = re.exec(text))) { const s = m[0]; if (s.length === 1 && PUNCT.test(s)) { if (out.length) out[out.length - 1].after = (out[out.length - 1].after || '') + s; } else out.push({ text: s }); }
   return out;
 }
-const weight = (u) => (/^[\x00-\x7f]+$/.test(u.text) ? 2 : 1);   // 英文词按 2 个字宽算（试验 2）
+const isWord = (t) => /^[\p{Script=Latin}\p{M}\p{N}]/u.test(t);
+// 字宽（按汉字宽算）：汉字 1；越南语 / 英文词按字母数 × 0.55，最少 1（试验 2 里英文词按 2 个字算，越南语、英语全是词，改成按字母数）
+const weight = (u) => (isWord(u.text) ? Math.max(1, [...u.text].length * 0.55) : 1);
+const width = (us) => us.reduce((a, u) => a + weight(u), 0);
 // 按稿子标点分句、分字幕条：。！？ 断句；，；：、 和换行断条；太长的条从中间再切
 function splitCues(us, max) {
   const cues = []; let cur = [], sid = 1;
   const flush = (endSentence) => { if (cur.length) cues.push({ us: cur, sid }); cur = []; if (endSentence) sid++; };
   for (const u of us) { cur.push(u); const a = u.after || '';
-    if (/[。！？!?…]/.test(a) || /\n/.test(a)) flush(true); else if (/[，,；;：:]/.test(a)) flush(false); }   // 顿号「、」不断条
+    if (/[。！？!?…]/.test(a) || /\.(\s|$)/.test(a) || /^\.$/.test(a) || /\n/.test(a)) flush(true); else if (/[，,；;：:]/.test(a)) flush(false); }   // 顿号「、」不断条
   flush(true);
   const res = [];
   for (const c of cues) {
@@ -78,7 +85,8 @@ function splitCues(us, max) {
         else { let best = -1; for (let i = lo; i <= hi; i++) { const g = p[i].start - p[i - 1].end; if (g > best) { best = g; k = i; } } }
       }
       return [p.slice(0, k), p.slice(k)]; };
-    while (parts.some((p) => p.length > max)) parts = parts.flatMap((p) => (p.length > max ? cut(p) : [p]));
+    const tooWide = (p) => p.length > 1 && width(p) > max;
+    while (parts.some(tooWide)) parts = parts.flatMap((p) => (tooWide(p) ? cut(p) : [p]));
     for (const p of parts) res.push({ us: p, sid: c.sid });
   }
   return res;
@@ -147,7 +155,7 @@ if (o.noWhisper) {
   try {
     run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', audio, '-ar', '16000', '-ac', '1', '-c:a', 'pcm_s16le', path.join(tmp, 'a.wav')]);
     const t0 = Date.now();
-    run(wcli, ['-m', model, '-l', 'zh', '-f', path.join(tmp, 'a.wav'), '-ojf', '-of', path.join(tmp, 'w'), '-dtw', preset, '-np'], { stdio: ['ignore', 'ignore', 'pipe'] });
+    run(wcli, ['-m', model, '-l', LANG, '-f', path.join(tmp, 'a.wav'), '-ojf', '-of', path.join(tmp, 'w'), '-dtw', preset, '-np'], { stdio: ['ignore', 'ignore', 'pipe'] });
     console.log(`  whisper 转写用时 ${((Date.now() - t0) / 1000).toFixed(1)} 秒（模型 ${path.basename(model)}）`);
     const W = JSON.parse(fs.readFileSync(path.join(tmp, 'w.json'), 'utf8'));
     method = `whisper-cli（${path.basename(model)}，DTW 字级时间）+ 静音检测修句界`;
@@ -163,7 +171,11 @@ if (o.noWhisper) {
         let tt = k.t_dtw >= 0 ? k.t_dtw / 100 : k.offsets.from / 1000; if (carry !== null) { tt = Math.min(tt, carry); carry = null; }
         const clean = k.text.replace(/�/g, ''); if (!clean.trim()) { if (/�/.test(k.text)) carry = tt; return; }
         const nx = toks[i + 1], tn = nx ? (nx.t_dtw >= 0 ? nx.t_dtw / 100 : nx.offsets.from / 1000) : seg.offsets.to / 1000;
-        const us = units(clean); us.forEach((u, j) => rec.push({ text: u.text, start: tt + (tn - tt) * j / us.length, segEnd: seg.offsets.to / 1000, after: u.after }));
+        const us = units(clean);
+        // 越南语 / 英语：whisper 常把一个词切成几个 token（" Vi" + "ệt"）。token 不以空格开头、上一个也是词、中间没标点，就接到上一个词后面
+        const prev = rec[rec.length - 1];
+        if (us.length && prev && !/^\s/.test(clean) && !prev.after && isWord(prev.text) && isWord(us[0].text) && prev.segEnd === seg.offsets.to / 1000) { prev.text = (prev.text + us[0].text).normalize('NFC'); prev.after = us[0].after; us.shift(); }
+        us.forEach((u, j) => rec.push({ text: u.text, start: tt + (tn - tt) * j / Math.max(1, us.length), segEnd: seg.offsets.to / 1000, after: u.after }));
       });
     }
     rec.forEach((u, i) => { const n = rec[i + 1]; u.end = Math.min(n ? n.start : u.segEnd, u.start + 0.5, u.segEnd); if (u.end <= u.start) u.end = u.start + 0.05; });
@@ -185,7 +197,7 @@ if (o.noWhisper) {
       let i = 0, j = 0; while (i < n || j < m) {
         if (i < n && pair[i] >= 0 && pair[i] === j) { i++; j++; continue; }
         let i2 = i; while (i2 < n && pair[i2] < 0) i2++; const j2 = i2 < n ? pair[i2] : m;
-        const ra = rec.slice(j, j2), sb = S.slice(i, i2), a = ra.map((u) => u.text).join(''), b = sb.map((u) => u.text).join('');
+        const ra = rec.slice(j, j2), sb = S.slice(i, i2), a = joinUs(ra), b = joinUs(sb);
         if (a !== b) {
           fixes.push(`${span(ra.length ? ra : sb)}  ${a || '（没识别出）'} → ${b || '（稿子里没有）'}`);
           if (!b) extra.push({ where: i === 0 ? 'head' : i >= n ? 'tail' : 'mid', text: a, start: ra[0].start, end: ra[ra.length - 1].end });
@@ -197,7 +209,7 @@ if (o.noWhisper) {
         const at = `${x.start.toFixed(2)}–${x.end.toFixed(2)} 秒识别出「${x.text}」，稿子里没有`;
         if (x.where === 'head') notes.push(`${at}：在口播开头、稿子第一句之前，多半是剪口播时带进来的上一句结尾。字幕已经按稿子去掉，但成片的声音里还在；要去掉就加 --trim auto 重跑（自动裁掉两头，原文件留成 ${path.basename(backup)}）`);
         else if (x.where === 'tail') notes.push(`${at}：在口播结尾、稿子最后一句之后，多半是剪口播时带进来的下一句开头。字幕已经按稿子去掉，但成片的声音里还在；要去掉就加 --trim auto 重跑`);
-        else if (/^(那么|那|就是|然后|嗯|啊|呃|这个|那个|其实|对|好|所以)+$/.test(x.text)) notes.push(`${at}：是口头的语气词，字幕按稿子写、不加它，一般不用管（想让字幕带上它，就把它补进 稿子.txt 重跑）`);   // v1.3
+        else if (/^((ừ|ờ|ừm|à|ạ|thì|là|mà|kiểu|nói chung|um|uh|uhm|er|so|well|like|you know)\s*)+$/i.test(x.text)) notes.push(`${at}：是口头的语气词，字幕按稿子写、不加它，一般不用管（想让字幕带上它，就把它补进 稿子.txt 重跑）`);   // v1.3
         else notes.push(`${at}：在口播中间，可能是口误、重复说了一遍，或者稿子漏写了这句；听一下，稿子漏了就补进 稿子.txt 重跑`);
       }
       // --trim auto：口播两头有稿子外的话就裁掉，再用裁好的口播重跑一遍（时间全部重新算）
@@ -223,7 +235,7 @@ if (o.noWhisper) {
     } else {
       cues = []; let cur = [];
       let segNo = 0;
-      rec.forEach((u, i) => { cur.push(u); if (!rec[i + 1] || rec[i + 1].segEnd !== u.segEnd) { segNo++; const tmpc = splitCues(cur.map((x, k) => ({ ...x, after: k === cur.length - 1 ? '。' : (x.after || '') })), o.max); tmpc.forEach((c) => { c.sid = segNo; }); cues.push(...tmpc); cur = []; } });
+      rec.forEach((u, i) => { cur.push(u); if (!rec[i + 1] || rec[i + 1].segEnd !== u.segEnd) { segNo++; const tmpc = splitCues(cur.map((x, k) => ({ ...x, after: k === cur.length - 1 ? '.' : (x.after || '') })), o.max); tmpc.forEach((c) => { c.sid = segNo; }); cues.push(...tmpc); cur = []; } });
       notes.push('没给稿子：字幕是 whisper 识别的原文，没有标点、可能有错字（专有名词、英文最容易错），对一遍再往下做');
     }
     cues.forEach((c) => { c.start = c.us[0].start; c.end = c.us[c.us.length - 1].end; c.chars = c.us.map((u) => ({ text: u.text, start: r2(u.start), end: r2(u.end) })); });
@@ -237,7 +249,10 @@ if (o.noWhisper) {
 
 // ---------- 整理输出：字级时间收进所在字幕条；显示时间比语音早 0.05 秒出现，显示到下一条出现 ----------
 // 条内文字：英文/数字中间的点保留（5.5），其余标点不进字幕
-const joinUs = (us) => us.map((u, i) => u.text + (i < us.length - 1 && /^\.$/.test((u.after || '').trim()) && /^[0-9]/.test(us[i + 1].text) && /[0-9]$/.test(u.text) ? '.' : '')).join('');
+// 越南语 / 英语：词和词之间留一个空格（v1.3-vi）
+function joinUs(us) { return us.map((u, i) => { const n = us[i + 1]; if (!n) return u.text;
+  if (/^\.$/.test((u.after || '').trim()) && /^[0-9]/.test(n.text) && /[0-9]$/.test(u.text)) return u.text + '.';
+  return u.text + (isWord(u.text) || isWord(n.text) || /\s/.test(u.after || '') ? ' ' : ''); }).join('').replace(/\s+/g, ' ').trim(); }
 const outCues = cues.map((c, k) => ({ id: k + 1, text: joinUs(c.us), start: r2(c.start), end: r2(c.end), sid: c.sid }));
 const chars = [];
 cues.forEach((c, k) => { let last = outCues[k].start;
@@ -248,9 +263,9 @@ outCues.forEach((c, k) => { c.hide = k + 1 < outCues.length ? outCues[k + 1].sho
   const lastEnd = outCues[outCues.length - 1].end, tail = duration - lastEnd;
   if (tail < 0.5) notes.push(`口播最后一个字在 ${lastEnd.toFixed(2)} 秒说完，离结尾只有 ${tail.toFixed(2)} 秒：片尾没有停顿，最后一个镜头的画面会一闪而过。在 分镜.json 里写 "duration": ${(Math.ceil((lastEnd + 1.2) * 10) / 10).toFixed(1)}（比口播长约 1 秒）让片尾多停一会儿——生成时间线时最后一条字幕会延到片尾，render.mjs 会在口播后面补静音`);
 }
-const sentences = []; for (const c of outCues) { const s = sentences.find((x) => x.sid === c.sid); if (s) { s.cues.push(c.id); s.end = c.end; s.text += c.text; } else sentences.push({ sid: c.sid, text: c.text, start: c.start, end: c.end, cues: [c.id] }); }
+const sentences = []; for (const c of outCues) { const s = sentences.find((x) => x.sid === c.sid); if (s) { s.cues.push(c.id); s.end = c.end; s.text += ' ' + c.text; } else sentences.push({ sid: c.sid, text: c.text, start: c.start, end: c.end, cues: [c.id] }); }
 const punct = (k) => (cues[k].us[cues[k].us.length - 1].after || '').replace(/\s/g, '');
-const text = outCues.map((c, k) => c.text + (punct(k) || (k === outCues.length - 1 ? '。' : '，'))).join('');
+const text = outCues.map((c, k) => c.text + (punct(k) || (k === outCues.length - 1 ? '.' : ','))).join(' ');
 const J = {
   说明: '时间单位秒，都是口播音频里的时间。start/end 是语音起止；show/hide 是画面上显示字幕的时间（比语音早 0.05 秒出现，显示到下一条出现）。chars 是字级时间（英文词、数字算一个字）。',
   方法: method, 来源: { 音频: path.basename(audio), 稿子: scriptPath ? path.basename(scriptPath) : null },

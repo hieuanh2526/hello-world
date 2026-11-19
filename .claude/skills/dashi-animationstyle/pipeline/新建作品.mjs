@@ -3,7 +3,7 @@
 //
 // 用法：
 //   node 新建作品.mjs <作品目录> --style 手绘笔记 --example token     用自带的 Token 例子（第一次用：确认电脑能出片）
-//   node 新建作品.mjs <作品目录> --style 手绘笔记 --audio 我的口播.m4a [--script 稿子.txt]   自己的口播
+//   node 新建作品.mjs <作品目录> --style 手绘笔记 --audio 我的口播.m4a [--script 稿子.txt] --lang vi|en   自己的口播（只做越南语、英语）
 //   node 新建作品.mjs --list                                            列出有哪些风格
 // 作品目录里会有：作品.json（配置）、口播.wav、index.html（从风格文件夹复制来的页面）、动效部件.js（v1.2，转场和次要动作）；Token 例子还有字幕、分镜、timeline.js。
 // 作品目录已经存在时只补缺的文件，不覆盖已有的（要覆盖页面加 --force）。
@@ -26,6 +26,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === '--example') o.example = v();
   else if (a === '--audio') o.audio = v();
   else if (a === '--script') o.script = v();
+  else if (a === '--lang') o.lang = v();
   else if (a === '--force') o.force = true;
   else if (a === '--list') o.list = true;
   else if (a === '-h' || a === '--help') o.help = true;
@@ -73,6 +74,9 @@ const put = (src, name, force = false) => {
 const cfg = { style, audio: '口播.wav', subtitles: '字幕.json', storyboard: '分镜.json', timeline: 'timeline.js', page: 'index.html', output: `${path.basename(dir)}.mp4` };
 const fast = /立体卡通|超现实拼贴|复古剪纸|黑底科技/.test(style);   // 满屏颗粒的几套，PNG 截图慢，默认用 jpeg 截图
 if (fast) cfg.format = 'jpeg';
+// 口播语言：这一版只做越南语（vi）和英语（en）；自带的 Token 例子是中文，只用来确认电脑能出片
+if (o.lang && !['vi', 'en'].includes(o.lang)) die(`--lang 只能是 vi 或 en，现在是 ${o.lang}`);
+if (!o.example) { if (!o.lang) die('自己的口播要写 --lang vi（越南语）或 --lang en（英语）'); cfg.lang = o.lang; }
 
 if (o.example) {
   const ex = path.join(SKILL, 'examples', o.example);

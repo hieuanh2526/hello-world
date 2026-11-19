@@ -36,9 +36,9 @@ const NOSUB = /[?&]nosub=1/.test(location.search);   // 渲染时 render.mjs --n
 // ---------- 字体：全部是 macOS 自带（换台 Mac 也有） ----------
 // 宋体-简：大标题（Black，压窄成长宋）、导语、栏目小标题、Token 块、结论；Times New Roman：AI、TOKEN、Prompt；
 // 正文、标注、字幕：西文 Helvetica Neue，中文苹方（参考图正文是 Helvetica）
-const SONG = '"Songti SC", "STSong", serif';
+const SONG = '"Lora", "Songti SC", "STSong", serif';
 const TIMES = '"Times New Roman", "Times", serif';
-const SANS = '"Helvetica Neue", "PingFang SC", sans-serif';
+const SANS = '"Be Vietnam Pro", "Helvetica Neue", "PingFang SC", sans-serif';
 const fSong = (w, s) => `${w} ${s}px ${SONG}`;
 const fTimes = (w, s, it) => `${it ? 'italic ' : ''}${w} ${s}px ${TIMES}`;
 const fSans = (w, s) => `${w} ${s}px ${SANS}`;
