@@ -1,0 +1,14 @@
+Văn bản whisper nghe được (giong-doc.wav, 43.32 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+
+0.00–3.36  Vì sao nhà tư bản bỏ tiền ra rồi thu về nhiều tiền hơn
+3.36–6.70  Theo các mắc bí mật nằm ở một hàng hóa đặc biệt sức lao động
+6.70–8.70  Nhà tư bản ứng trước hai phần tư bản
+8.70–14.58  Tư bản bất biến, ký hiệu sệ, mua máy móc và nguyên liệu giá trị của nó chỉ truyền nguyên vào sản phẩm
+14.58–17.56  Tư bản khả biến, ký hiệu vệ, mua sức lao động của công nhân
+17.56–19.84  Giả sử một ngày lao động là 8 giờ
+19.84–24.84  Chỉ sau 4 giờ công nhân đã tạo ra lượng giá trị mới ngang với giá trị sức lao động của mình
+24.84–26.86  Đó là thời gian lao động tất yếu
+26.86–29.52  4 giờ còn lại là thời gian lao động thẳng dư
+29.52–35.30  Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm không gọi là giá trị thẳng dư ký hiệu em
+35.30–38.26  Vì vậy giá trị hàng hóa bằng xây cộng với cục em
+38.26–41.88  Thì xuất giá trị thẳng dư em trên vệ ở đây là 100%
