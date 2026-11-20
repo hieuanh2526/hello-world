@@ -1,6 +1,6 @@
 # Video giảng dạy: Giá trị thặng dư (K. Marx)
 
-43 giây, phong cách vẽ tay (`ve-tay`), làm bằng skill `dashi-animationstyle` trong repo này.
+53 giây, phong cách vẽ tay (`ve-tay`), làm bằng skill `dashi-animationstyle` trong repo này.
 
 | File | Nội dung |
 |---|---|
@@ -38,4 +38,4 @@ Nếu giọng mới dài hơn hoặc ngắn hơn, sửa `"duration"` trong `phan
 
 ## Nguồn giọng đọc
 
-Giọng máy tạo bằng [Piper](https://github.com/rhasspy/piper), giọng `vi_VN-vais1000-medium` (rhasspy/piper-voices), huấn luyện trên bộ dữ liệu VAIS-1000, giấy phép CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Khi đọc, các ký hiệu c, v, m được đọc là «xê», «vê», «em».
+Giọng máy tạo bằng [Piper](https://github.com/rhasspy/piper), giọng `vi_VN-vais1000-medium` (rhasspy/piper-voices), huấn luyện trên bộ dữ liệu VAIS-1000, giấy phép CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Khi đọc, các ký hiệu c, v, m được đọc là «xê», «vê», «em». Tốc độ: `--length-scale 1.45 --sentence-silence 0.7` (chậm hơn mặc định để kịp đọc phụ đề).

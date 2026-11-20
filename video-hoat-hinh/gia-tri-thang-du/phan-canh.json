@@ -1,6 +1,6 @@
 {
  "说明": "Video giảng dạy: Giá trị thặng dư (K. Marx). Phong cách ve-tay. Thời gian lấy từ phu-de.json.",
- "duration": 43.4,
+ "duration": 53.2,
  "标题": "Giá trị thặng dư",
  "高亮": [
   {
@@ -68,127 +68,127 @@
   },
   {
    "name": "máy móc",
-   "cue": 6,
+   "cue": 5,
    "phrase": "máy móc"
   },
   {
    "name": "nguyên liệu",
-   "cue": 6,
+   "cue": 5,
    "phrase": "nguyên liệu"
   },
   {
    "name": "chuyển nguyên",
-   "cue": 7,
+   "cue": 6,
    "phrase": "chuyển nguyên"
   },
   {
    "name": "sản phẩm",
-   "cue": 7,
+   "cue": 6,
    "phrase": "sản phẩm"
   },
   {
    "name": "khả biến",
-   "cue": 8,
+   "cue": 7,
    "phrase": "khả biến"
   },
   {
    "name": "v8",
-   "cue": 8,
+   "cue": 7,
    "phrase": "v"
   },
   {
    "name": "mua",
-   "cue": 9,
+   "cue": 7,
    "phrase": "mua"
   },
   {
    "name": "công nhân",
-   "cue": 9,
+   "cue": 7,
    "phrase": "công nhân"
   },
   {
    "name": "tám giờ",
-   "cue": 10,
+   "cue": 8,
    "phrase": "tám giờ"
   },
   {
    "name": "bốn giờ",
-   "cue": 11,
+   "cue": 9,
    "phrase": "bốn giờ"
   },
   {
    "name": "giá trị mới",
-   "cue": 12,
+   "cue": 10,
    "phrase": "giá trị mới"
   },
   {
    "name": "ngang với",
-   "cue": 12,
+   "cue": 10,
    "phrase": "ngang với"
   },
   {
    "name": "tất yếu",
-   "cue": 13,
+   "cue": 11,
    "phrase": "tất yếu"
   },
   {
    "name": "còn lại",
-   "cue": 14,
+   "cue": 12,
    "phrase": "còn lại"
   },
   {
    "name": "lao động thặng dư",
-   "cue": 14,
+   "cue": 12,
    "phrase": "lao động thặng dư"
   },
   {
    "name": "chiếm không",
-   "cue": 15,
+   "cue": 13,
    "phrase": "chiếm không"
   },
   {
    "name": "giá trị thặng dư",
-   "cue": 16,
+   "cue": 14,
    "phrase": "giá trị thặng dư"
   },
   {
    "name": "m16",
-   "cue": 16,
+   "cue": 14,
    "phrase": "m"
   },
   {
    "name": "hàng hóa",
-   "cue": 17,
+   "cue": 15,
    "phrase": "hàng hóa"
   },
   {
    "name": "c17",
-   "cue": 17,
+   "cue": 15,
    "phrase": "c"
   },
   {
    "name": "v17",
-   "cue": 17,
+   "cue": 15,
    "phrase": "v"
   },
   {
    "name": "m17",
-   "cue": 17,
+   "cue": 15,
    "phrase": "m"
   },
   {
    "name": "tỷ suất",
-   "cue": 18,
+   "cue": 16,
    "phrase": "tỷ suất"
   },
   {
    "name": "m trên v",
-   "cue": 18,
+   "cue": 16,
    "phrase": "m trên v"
   },
   {
    "name": "một trăm",
-   "cue": 19,
+   "cue": 17,
    "phrase": "một trăm phần trăm"
   }
  ],
@@ -223,8 +223,7 @@
    "cues": [
     4,
     5,
-    6,
-    7
+    6
    ],
    "title": "Tư bản bất biến c",
    "时间点": [
@@ -240,8 +239,7 @@
   {
    "id": 4,
    "cues": [
-    8,
-    9
+    7
    ],
    "title": "Tư bản khả biến v",
    "时间点": [
@@ -254,10 +252,10 @@
   {
    "id": 5,
    "cues": [
+    8,
+    9,
     10,
-    11,
-    12,
-    13
+    11
    ],
    "title": "Thời gian lao động tất yếu",
    "时间点": [
@@ -271,9 +269,9 @@
   {
    "id": 6,
    "cues": [
-    14,
-    15,
-    16
+    12,
+    13,
+    14
    ],
    "title": "Thời gian lao động thặng dư",
    "时间点": [
@@ -287,7 +285,7 @@
   {
    "id": 7,
    "cues": [
-    17
+    15
    ],
    "title": "G = c + v + m",
    "时间点": [
@@ -300,8 +298,8 @@
   {
    "id": 8,
    "cues": [
-    18,
-    19
+    16,
+    17
    ],
    "title": "m' = m / v",
    "时间点": [
