@@ -1,0 +1,804 @@
+{
+ "ghi_chu": "Thời gian tính bằng giây, theo file giọng đọc. start/end là lúc bắt đầu/kết thúc lời nói; show/hide là lúc phụ đề hiện/ẩn trên hình (hiện sớm hơn lời 0,05 giây, giữ đến khi dòng sau hiện). chars là thời gian từng từ.",
+ "phuong_phap": "whisper-cli (ggml-large-v3-turbo-q5_0.bin, thời gian từng từ bằng DTW) + chỉnh chỗ ngắt câu theo khoảng lặng",
+ "nguon": {
+  "am_thanh": "giong-doc.wav",
+  "loi_thoai": "loi-thoai.txt"
+ },
+ "sua_theo_loi_thoai": [
+  "1.17–1.47 giây  chắc → chat",
+  "4.64–4.83 giây  3 → ba",
+  "8.92–9.12 giây  con → Prompt",
+  "10.31–10.77 giây  con → Prompt",
+  "19.80–20.09 giây  2 → hai"
+ ],
+ "duration": 26.16,
+ "speech": {
+  "start": 0,
+  "end": 24.96
+ },
+ "text": "Bây giờ bạn mở khung chat của một ứng dụng AI. Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày. Câu này chính là thứ ta nghe nhiều nhất mỗi ngày, gọi là câu lệnh hay Prompt. Sau khi AI nhận được Prompt, nó dùng bộ tách từ chia câu thành đơn vị nhỏ hơn. Những mảnh ngôn ngữ nhỏ nhất ấy gọi là Token. Tiếp đó AI vào kho dữ liệu khổng lồ đã học để lục tìm, thấy hai Token Đà Lạt và du lịch, thường xuất hiện cùng nhau, nên đoán ra điều bạn cần là nhu cầu du lịch.",
+ "sentences": [
+  {
+   "id": 1,
+   "text": "Bây giờ bạn mở khung chat của một ứng dụng AI",
+   "start": 0,
+   "end": 2.69,
+   "cues": [
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "text": "Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày",
+   "start": 3.04,
+   "end": 5.22,
+   "cues": [
+    2
+   ]
+  },
+  {
+   "id": 3,
+   "text": "Câu này chính là thứ ta nghe nhiều nhất mỗi ngày gọi là câu lệnh hay Prompt",
+   "start": 5.56,
+   "end": 9.18,
+   "cues": [
+    3,
+    4
+   ]
+  },
+  {
+   "id": 4,
+   "text": "Sau khi AI nhận được Prompt nó dùng bộ tách từ chia câu thành đơn vị nhỏ hơn",
+   "start": 9.61,
+   "end": 13.57,
+   "cues": [
+    5,
+    6
+   ]
+  },
+  {
+   "id": 5,
+   "text": "Những mảnh ngôn ngữ nhỏ nhất ấy gọi là Token",
+   "start": 13.92,
+   "end": 16.09,
+   "cues": [
+    7
+   ]
+  },
+  {
+   "id": 6,
+   "text": "Tiếp đó AI vào kho dữ liệu khổng lồ đã học để lục tìm thấy hai Token Đà Lạt và du lịch thường xuất hiện cùng nhau nên đoán ra điều bạn cần là nhu cầu du lịch",
+   "start": 16.48,
+   "end": 24.96,
+   "cues": [
+    8,
+    9,
+    10,
+    11
+   ]
+  }
+ ],
+ "cues": [
+  {
+   "id": 1,
+   "text": "Bây giờ bạn mở khung chat của một ứng dụng AI",
+   "start": 0,
+   "end": 2.69,
+   "show": 0,
+   "hide": 2.99
+  },
+  {
+   "id": 2,
+   "text": "Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày",
+   "start": 3.04,
+   "end": 5.22,
+   "show": 2.99,
+   "hide": 5.51
+  },
+  {
+   "id": 3,
+   "text": "Câu này chính là thứ ta nghe nhiều nhất mỗi ngày",
+   "start": 5.56,
+   "end": 7.86,
+   "show": 5.51,
+   "hide": 7.95
+  },
+  {
+   "id": 4,
+   "text": "gọi là câu lệnh hay Prompt",
+   "start": 8,
+   "end": 9.18,
+   "show": 7.95,
+   "hide": 9.56
+  },
+  {
+   "id": 5,
+   "text": "Sau khi AI nhận được Prompt",
+   "start": 9.61,
+   "end": 10.56,
+   "show": 9.56,
+   "hide": 10.61
+  },
+  {
+   "id": 6,
+   "text": "nó dùng bộ tách từ chia câu thành đơn vị nhỏ hơn",
+   "start": 10.66,
+   "end": 13.57,
+   "show": 10.61,
+   "hide": 13.87
+  },
+  {
+   "id": 7,
+   "text": "Những mảnh ngôn ngữ nhỏ nhất ấy gọi là Token",
+   "start": 13.92,
+   "end": 16.09,
+   "show": 13.87,
+   "hide": 16.43
+  },
+  {
+   "id": 8,
+   "text": "Tiếp đó AI vào kho dữ liệu khổng lồ đã học để lục tìm",
+   "start": 16.48,
+   "end": 19.54,
+   "show": 16.43,
+   "hide": 19.62
+  },
+  {
+   "id": 9,
+   "text": "thấy hai Token Đà Lạt và du lịch",
+   "start": 19.67,
+   "end": 21.37,
+   "show": 19.62,
+   "hide": 21.61
+  },
+  {
+   "id": 10,
+   "text": "thường xuất hiện cùng nhau",
+   "start": 21.66,
+   "end": 22.7,
+   "show": 21.61,
+   "hide": 22.74
+  },
+  {
+   "id": 11,
+   "text": "nên đoán ra điều bạn cần là nhu cầu du lịch",
+   "start": 22.79,
+   "end": 24.96,
+   "show": 22.74,
+   "hide": 26.16
+  }
+ ],
+ "chars": [
+  {
+   "text": "Bây",
+   "start": 0,
+   "end": 0.41,
+   "cue": 1
+  },
+  {
+   "text": "giờ",
+   "start": 0.41,
+   "end": 0.44,
+   "cue": 1
+  },
+  {
+   "text": "bạn",
+   "start": 0.44,
+   "end": 0.66,
+   "cue": 1
+  },
+  {
+   "text": "mở",
+   "start": 0.66,
+   "end": 0.8,
+   "cue": 1
+  },
+  {
+   "text": "khung",
+   "start": 0.8,
+   "end": 1.17,
+   "cue": 1
+  },
+  {
+   "text": "chat",
+   "start": 1.17,
+   "end": 1.32,
+   "cue": 1
+  },
+  {
+   "text": "của",
+   "start": 1.47,
+   "end": 1.69,
+   "cue": 1
+  },
+  {
+   "text": "một",
+   "start": 1.69,
+   "end": 1.94,
+   "cue": 1
+  },
+  {
+   "text": "ứng",
+   "start": 1.94,
+   "end": 2.2,
+   "cue": 1
+  },
+  {
+   "text": "dụng",
+   "start": 2.2,
+   "end": 2.42,
+   "cue": 1
+  },
+  {
+   "text": "AI",
+   "start": 2.42,
+   "end": 2.69,
+   "cue": 1
+  },
+  {
+   "text": "Giúp",
+   "start": 3.04,
+   "end": 3.09,
+   "cue": 2
+  },
+  {
+   "text": "tôi",
+   "start": 3.09,
+   "end": 3.29,
+   "cue": 2
+  },
+  {
+   "text": "lên",
+   "start": 3.29,
+   "end": 3.39,
+   "cue": 2
+  },
+  {
+   "text": "lịch",
+   "start": 3.39,
+   "end": 3.64,
+   "cue": 2
+  },
+  {
+   "text": "trình",
+   "start": 3.64,
+   "end": 3.96,
+   "cue": 2
+  },
+  {
+   "text": "du",
+   "start": 3.96,
+   "end": 4.09,
+   "cue": 2
+  },
+  {
+   "text": "lịch",
+   "start": 4.09,
+   "end": 4.36,
+   "cue": 2
+  },
+  {
+   "text": "Đà",
+   "start": 4.36,
+   "end": 4.46,
+   "cue": 2
+  },
+  {
+   "text": "Lạt",
+   "start": 4.46,
+   "end": 4.64,
+   "cue": 2
+  },
+  {
+   "text": "ba",
+   "start": 4.64,
+   "end": 4.73,
+   "cue": 2
+  },
+  {
+   "text": "ngày",
+   "start": 4.83,
+   "end": 5.18,
+   "cue": 2
+  },
+  {
+   "text": "Câu",
+   "start": 5.56,
+   "end": 5.59,
+   "cue": 3
+  },
+  {
+   "text": "này",
+   "start": 5.59,
+   "end": 5.61,
+   "cue": 3
+  },
+  {
+   "text": "chính",
+   "start": 5.6,
+   "end": 5.95,
+   "cue": 3
+  },
+  {
+   "text": "là",
+   "start": 5.95,
+   "end": 6.09,
+   "cue": 3
+  },
+  {
+   "text": "thứ",
+   "start": 6.09,
+   "end": 6.3,
+   "cue": 3
+  },
+  {
+   "text": "ta",
+   "start": 6.3,
+   "end": 6.47,
+   "cue": 3
+  },
+  {
+   "text": "nghe",
+   "start": 6.47,
+   "end": 6.72,
+   "cue": 3
+  },
+  {
+   "text": "nhiều",
+   "start": 6.72,
+   "end": 7.12,
+   "cue": 3
+  },
+  {
+   "text": "nhất",
+   "start": 7.12,
+   "end": 7.38,
+   "cue": 3
+  },
+  {
+   "text": "mỗi",
+   "start": 7.38,
+   "end": 7.56,
+   "cue": 3
+  },
+  {
+   "text": "ngày",
+   "start": 7.56,
+   "end": 7.84,
+   "cue": 3
+  },
+  {
+   "text": "gọi",
+   "start": 8,
+   "end": 8.19,
+   "cue": 4
+  },
+  {
+   "text": "là",
+   "start": 8.19,
+   "end": 8.27,
+   "cue": 4
+  },
+  {
+   "text": "câu",
+   "start": 8.27,
+   "end": 8.47,
+   "cue": 4
+  },
+  {
+   "text": "lệnh",
+   "start": 8.47,
+   "end": 8.68,
+   "cue": 4
+  },
+  {
+   "text": "hay",
+   "start": 8.68,
+   "end": 8.92,
+   "cue": 4
+  },
+  {
+   "text": "Prompt",
+   "start": 8.92,
+   "end": 9.02,
+   "cue": 4
+  },
+  {
+   "text": "Sau",
+   "start": 9.61,
+   "end": 9.63,
+   "cue": 5
+  },
+  {
+   "text": "khi",
+   "start": 9.61,
+   "end": 9.63,
+   "cue": 5
+  },
+  {
+   "text": "AI",
+   "start": 9.61,
+   "end": 9.75,
+   "cue": 5
+  },
+  {
+   "text": "nhận",
+   "start": 9.75,
+   "end": 10.01,
+   "cue": 5
+  },
+  {
+   "text": "được",
+   "start": 10.01,
+   "end": 10.31,
+   "cue": 5
+  },
+  {
+   "text": "Prompt",
+   "start": 10.31,
+   "end": 10.54,
+   "cue": 5
+  },
+  {
+   "text": "nó",
+   "start": 10.77,
+   "end": 10.83,
+   "cue": 6
+  },
+  {
+   "text": "dùng",
+   "start": 10.83,
+   "end": 11.12,
+   "cue": 6
+  },
+  {
+   "text": "bộ",
+   "start": 11.12,
+   "end": 11.32,
+   "cue": 6
+  },
+  {
+   "text": "tách",
+   "start": 11.32,
+   "end": 11.56,
+   "cue": 6
+  },
+  {
+   "text": "từ",
+   "start": 11.56,
+   "end": 11.71,
+   "cue": 6
+  },
+  {
+   "text": "chia",
+   "start": 11.71,
+   "end": 12.16,
+   "cue": 6
+  },
+  {
+   "text": "câu",
+   "start": 12.16,
+   "end": 12.23,
+   "cue": 6
+  },
+  {
+   "text": "thành",
+   "start": 12.23,
+   "end": 12.61,
+   "cue": 6
+  },
+  {
+   "text": "đơn",
+   "start": 12.61,
+   "end": 12.86,
+   "cue": 6
+  },
+  {
+   "text": "vị",
+   "start": 12.86,
+   "end": 12.98,
+   "cue": 6
+  },
+  {
+   "text": "nhỏ",
+   "start": 12.98,
+   "end": 13.2,
+   "cue": 6
+  },
+  {
+   "text": "hơn",
+   "start": 13.2,
+   "end": 13.56,
+   "cue": 6
+  },
+  {
+   "text": "Những",
+   "start": 13.92,
+   "end": 13.98,
+   "cue": 7
+  },
+  {
+   "text": "mảnh",
+   "start": 13.98,
+   "end": 14.19,
+   "cue": 7
+  },
+  {
+   "text": "ngôn",
+   "start": 14.19,
+   "end": 14.47,
+   "cue": 7
+  },
+  {
+   "text": "ngữ",
+   "start": 14.47,
+   "end": 14.68,
+   "cue": 7
+  },
+  {
+   "text": "nhỏ",
+   "start": 14.68,
+   "end": 14.89,
+   "cue": 7
+  },
+  {
+   "text": "nhất",
+   "start": 14.89,
+   "end": 15.21,
+   "cue": 7
+  },
+  {
+   "text": "ấy",
+   "start": 15.21,
+   "end": 15.31,
+   "cue": 7
+  },
+  {
+   "text": "gọi",
+   "start": 15.31,
+   "end": 15.52,
+   "cue": 7
+  },
+  {
+   "text": "là",
+   "start": 15.52,
+   "end": 15.66,
+   "cue": 7
+  },
+  {
+   "text": "Token",
+   "start": 15.66,
+   "end": 16.04,
+   "cue": 7
+  },
+  {
+   "text": "Tiếp",
+   "start": 16.48,
+   "end": 16.5,
+   "cue": 8
+  },
+  {
+   "text": "đó",
+   "start": 16.48,
+   "end": 16.54,
+   "cue": 8
+  },
+  {
+   "text": "AI",
+   "start": 16.54,
+   "end": 16.71,
+   "cue": 8
+  },
+  {
+   "text": "vào",
+   "start": 16.71,
+   "end": 17.01,
+   "cue": 8
+  },
+  {
+   "text": "kho",
+   "start": 17.01,
+   "end": 17.21,
+   "cue": 8
+  },
+  {
+   "text": "dữ",
+   "start": 17.21,
+   "end": 17.37,
+   "cue": 8
+  },
+  {
+   "text": "liệu",
+   "start": 17.37,
+   "end": 17.71,
+   "cue": 8
+  },
+  {
+   "text": "khổng",
+   "start": 17.71,
+   "end": 18.13,
+   "cue": 8
+  },
+  {
+   "text": "lồ",
+   "start": 18.13,
+   "end": 18.29,
+   "cue": 8
+  },
+  {
+   "text": "đã",
+   "start": 18.29,
+   "end": 18.46,
+   "cue": 8
+  },
+  {
+   "text": "học",
+   "start": 18.46,
+   "end": 18.71,
+   "cue": 8
+  },
+  {
+   "text": "để",
+   "start": 18.71,
+   "end": 18.96,
+   "cue": 8
+  },
+  {
+   "text": "lục",
+   "start": 18.96,
+   "end": 19.14,
+   "cue": 8
+  },
+  {
+   "text": "tìm",
+   "start": 19.14,
+   "end": 19.5,
+   "cue": 8
+  },
+  {
+   "text": "thấy",
+   "start": 19.67,
+   "end": 19.8,
+   "cue": 9
+  },
+  {
+   "text": "hai",
+   "start": 19.8,
+   "end": 19.95,
+   "cue": 9
+  },
+  {
+   "text": "Token",
+   "start": 20.09,
+   "end": 20.4,
+   "cue": 9
+  },
+  {
+   "text": "Đà",
+   "start": 20.4,
+   "end": 20.53,
+   "cue": 9
+  },
+  {
+   "text": "Lạt",
+   "start": 20.53,
+   "end": 20.75,
+   "cue": 9
+  },
+  {
+   "text": "và",
+   "start": 20.75,
+   "end": 20.9,
+   "cue": 9
+  },
+  {
+   "text": "du",
+   "start": 20.9,
+   "end": 21.05,
+   "cue": 9
+  },
+  {
+   "text": "lịch",
+   "start": 21.05,
+   "end": 21.37,
+   "cue": 9
+  },
+  {
+   "text": "thường",
+   "start": 21.66,
+   "end": 21.74,
+   "cue": 10
+  },
+  {
+   "text": "xuất",
+   "start": 21.74,
+   "end": 22.01,
+   "cue": 10
+  },
+  {
+   "text": "hiện",
+   "start": 22.01,
+   "end": 22.19,
+   "cue": 10
+  },
+  {
+   "text": "cùng",
+   "start": 22.19,
+   "end": 22.45,
+   "cue": 10
+  },
+  {
+   "text": "nhau",
+   "start": 22.45,
+   "end": 22.7,
+   "cue": 10
+  },
+  {
+   "text": "nên",
+   "start": 22.79,
+   "end": 22.9,
+   "cue": 11
+  },
+  {
+   "text": "đoán",
+   "start": 22.9,
+   "end": 23.15,
+   "cue": 11
+  },
+  {
+   "text": "ra",
+   "start": 23.15,
+   "end": 23.28,
+   "cue": 11
+  },
+  {
+   "text": "điều",
+   "start": 23.28,
+   "end": 23.55,
+   "cue": 11
+  },
+  {
+   "text": "bạn",
+   "start": 23.55,
+   "end": 23.75,
+   "cue": 11
+  },
+  {
+   "text": "cần",
+   "start": 23.75,
+   "end": 24.06,
+   "cue": 11
+  },
+  {
+   "text": "là",
+   "start": 24.06,
+   "end": 24.08,
+   "cue": 11
+  },
+  {
+   "text": "nhu",
+   "start": 24.08,
+   "end": 24.27,
+   "cue": 11
+  },
+  {
+   "text": "cầu",
+   "start": 24.27,
+   "end": 24.48,
+   "cue": 11
+  },
+  {
+   "text": "du",
+   "start": 24.48,
+   "end": 24.59,
+   "cue": 11
+  },
+  {
+   "text": "lịch",
+   "start": 24.59,
+   "end": 24.96,
+   "cue": 11
+  }
+ ]
+}
