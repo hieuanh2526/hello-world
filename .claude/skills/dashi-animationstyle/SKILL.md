@@ -45,7 +45,14 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
    - 字体报 ✗：是 macOS 按需下载的字体（兰亭黑、圆体、手札体、翩翩体），让用户打开「字体册」搜字体名点「下载」。不下也能渲，但那几个字体会退回苹方。
    - whisper 报 ! 是可选的：没有也能做（走稿子 + 静音检测的后备）。
 2. 让用户挑一套风格：`node "$SKILL/pipeline/tao-du-an.mjs" --list` 列出 7 套；每套的样子看 `$SKILL/styles/<风格>/anh-tinh/` 里的 3 张图（用 Read 看，或 `open` 给用户看）。用户已经说了要哪套，就用那套渲例子；没说就用「ve-tay」。
-3. 用自带的 Token 例子建一个作品并渲染：
+3. 用自带的**越南语例子**建一个作品并渲染（本仓库版默认用这个；只有 ve-tay 一套，tao-du-an 会自动选 ve-tay）：
+   ```bash
+   node "$SKILL/pipeline/tao-du-an.mjs" ./video-hoat-hinh/vi-du --example token-vi
+   node "$SKILL/pipeline/render.mjs" ./video-hoat-hinh/vi-du/index.html
+   ```
+   出来的是 26 秒的 `vi-du.mp4`（「AI đọc hiểu một câu thế nào」，8 个镜头，例句「Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày」，高亮 Đà Lạt / du lịch）。云端实测约 2 分钟。见 `examples/token-vi/README.md`。
+   **给新口播改页面时，`examples/token-vi/index.html` 是越南语版的参考**：怎么把中文例句、数据、标签、按汉字位置取时间（cueTimes）改成越南语（按词、或用 `seq(M('关键词'), '文字', 步长)`）。
+   想看其他风格的样子：用中文原版例子 `--example token --style <风格>`（中文口播，只用来看画风）：
    ```bash
    node "$SKILL/pipeline/tao-du-an.mjs" ./video-hoat-hinh/token_ve-tay --style ve-tay --example token
    node "$SKILL/pipeline/render.mjs" ./video-hoat-hinh/token_ve-tay/index.html

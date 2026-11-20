@@ -1,0 +1,315 @@
+{
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "标题": "AI đọc hiểu một câu thế nào",
+ "高亮": [
+  {
+   "text": "Đà Lạt",
+   "role": "A"
+  },
+  {
+   "text": "du lịch",
+   "role": "B"
+  }
+ ],
+ "字幕强调": [
+  "nhu cầu du lịch",
+  "thường xuất hiện cùng nhau",
+  "câu lệnh",
+  "Prompt",
+  "bộ tách từ",
+  "Token",
+  "dữ liệu khổng lồ"
+ ],
+ "例句": "Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày",
+ "例句切分": [
+  "Giúp",
+  "tôi",
+  "lên",
+  "lịch trình",
+  "du lịch",
+  "Đà Lạt",
+  "ba",
+  "ngày"
+ ],
+ "数据样例": {
+  "说明": "镜头 6、7 里「海量数据」中要被看清的那一组短句。6 句同时有「成都」和「旅行」，4 句只有「成都」，2 句只有「旅行」。各风格可以再加大量看不清的填充数据（灰线、模糊小字、远处的条目）来表现「海量」，但能看清的这一组用这 12 句。",
+  "句子": [
+   {
+    "text": "Cẩm nang du lịch Đà Lạt",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Món ngon Đà Lạt",
+    "成都": true,
+    "旅行": false
+   },
+   {
+    "text": "Đi du lịch Đà Lạt ba ngày",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Đi du lịch mang gì",
+    "成都": false,
+    "旅行": true
+   },
+   {
+    "text": "Điểm du lịch Đà Lạt",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Thời tiết Đà Lạt hôm nay",
+    "成都": true,
+    "旅行": false
+   },
+   {
+    "text": "Cuối tuần du lịch Đà Lạt",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Hoa dã quỳ Đà Lạt",
+    "成都": true,
+    "旅行": false
+   },
+   {
+    "text": "Lần đầu du lịch Đà Lạt",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Đi du lịch một mình",
+    "成都": false,
+    "旅行": true
+   },
+   {
+    "text": "Ở đâu khi du lịch Đà Lạt",
+    "成都": true,
+    "旅行": true
+   },
+   {
+    "text": "Lịch trình Đà Lạt ba ngày",
+    "成都": true,
+    "旅行": false
+   }
+  ]
+ },
+ "marks": [
+  {
+   "name": "打开",
+   "cue": 1,
+   "phrase": "mở"
+  },
+  {
+   "name": "聊天框",
+   "cue": 1,
+   "phrase": "khung chat"
+  },
+  {
+   "name": "例句",
+   "cue": 2,
+   "phrase": "Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày"
+  },
+  {
+   "name": "这句话",
+   "cue": 3,
+   "phrase": "Câu này"
+  },
+  {
+   "name": "提示词",
+   "cue": 4,
+   "phrase": "câu lệnh"
+  },
+  {
+   "name": "Prompt",
+   "cue": 4,
+   "phrase": "Prompt"
+  },
+  {
+   "name": "AI",
+   "cue": 5,
+   "phrase": "AI"
+  },
+  {
+   "name": "接收到",
+   "cue": 5,
+   "phrase": "nhận được"
+  },
+  {
+   "name": "分词器",
+   "cue": 6,
+   "phrase": "bộ tách từ"
+  },
+  {
+   "name": "拆分",
+   "cue": 6,
+   "phrase": "chia"
+  },
+  {
+   "name": "更小的单位",
+   "cue": 6,
+   "phrase": "đơn vị nhỏ hơn"
+  },
+  {
+   "name": "最小的语言碎片",
+   "cue": 7,
+   "phrase": "mảnh ngôn ngữ nhỏ nhất"
+  },
+  {
+   "name": "Token",
+   "cue": 7,
+   "phrase": "Token"
+  },
+  {
+   "name": "自己学过的",
+   "cue": 8,
+   "phrase": "đã học"
+  },
+  {
+   "name": "海量数据",
+   "cue": 8,
+   "phrase": "dữ liệu khổng lồ"
+  },
+  {
+   "name": "翻找",
+   "cue": 8,
+   "phrase": "lục tìm"
+  },
+  {
+   "name": "成都",
+   "cue": 9,
+   "phrase": "Đà Lạt"
+  },
+  {
+   "name": "旅行",
+   "cue": 9,
+   "phrase": "du lịch"
+  },
+  {
+   "name": "这两个Token",
+   "cue": 9,
+   "phrase": "hai Token"
+  },
+  {
+   "name": "常常在一起出现",
+   "cue": 10,
+   "phrase": "thường xuất hiện cùng nhau"
+  },
+  {
+   "name": "推断",
+   "cue": 11,
+   "phrase": "đoán ra"
+  },
+  {
+   "name": "旅行的需求",
+   "cue": 11,
+   "phrase": "nhu cầu du lịch"
+  }
+ ],
+ "shots": [
+  {
+   "id": 1,
+   "cues": [
+    1,
+    2
+   ],
+   "title": "Mở khung chat, gõ câu này",
+   "时间点": [
+    "打开",
+    "聊天框",
+    "例句"
+   ]
+  },
+  {
+   "id": 2,
+   "cues": [
+    3,
+    4
+   ],
+   "title": "Đây là câu lệnh – Prompt",
+   "时间点": [
+    "这句话",
+    "提示词",
+    "Prompt"
+   ]
+  },
+  {
+   "id": 3,
+   "cues": [
+    5
+   ],
+   "title": "AI nhận Prompt",
+   "时间点": [
+    "AI",
+    "接收到"
+   ]
+  },
+  {
+   "id": 4,
+   "cues": [
+    6
+   ],
+   "title": "Bộ tách từ chia câu",
+   "时间点": [
+    "分词器",
+    "拆分",
+    "更小的单位"
+   ]
+  },
+  {
+   "id": 5,
+   "cues": [
+    7
+   ],
+   "title": "Mảnh nhỏ gọi là Token",
+   "时间点": [
+    "最小的语言碎片",
+    "Token"
+   ]
+  },
+  {
+   "id": 6,
+   "cues": [
+    8
+   ],
+   "title": "Lục tìm trong dữ liệu khổng lồ",
+   "时间点": [
+    "自己学过的",
+    "海量数据",
+    "翻找"
+   ]
+  },
+  {
+   "id": 7,
+   "cues": [
+    9,
+    10
+   ],
+   "title": "Đà Lạt và du lịch hay đi cùng nhau",
+   "时间点": [
+    "成都",
+    "旅行",
+    "这两个Token",
+    "常常在一起出现"
+   ]
+  },
+  {
+   "id": 8,
+   "cues": [
+    11
+   ],
+   "title": "Đoán ra nhu cầu du lịch",
+   "时间点": [
+    "推断",
+    "旅行的需求"
+   ]
+  }
+ ],
+ "duration": 26.16
+}

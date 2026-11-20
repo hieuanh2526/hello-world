@@ -2,7 +2,7 @@
 // tao-du-an.mjs：建一个作品目录（一段口播 + 一套风格 = 一个作品），后面的转写、分镜、页面、渲染都在这个目录里做。
 //
 // Cách dùng:
-//   node tao-du-an.mjs <thư-mục-dự-án> --style ve-tay --example token     dùng ví dụ Token có sẵn (lần đầu: kiểm tra máy render được)
+//   node tao-du-an.mjs <thư-mục-dự-án> --example token-vi              ví dụ tiếng Việt có sẵn (lần đầu: kiểm tra máy render được)
 //   node tao-du-an.mjs <thư-mục-dự-án> --style ve-tay --audio giong-cua-toi.m4a [--script loi-thoai.txt] --lang vi|en   lời thoại của bạn (chỉ tiếng Việt, tiếng Anh)
 //   node tao-du-an.mjs --list                                              liệt kê các phong cách
 // Thư mục dự án sẽ có: du-an.json (cấu hình), giong-doc.wav, index.html (trang chép từ thư mục phong cách), hieu-ung.js (chuyển cảnh, chuyển động phụ).
@@ -62,6 +62,13 @@ if (o.list) {
   console.log('\nHạng A: dùng nền có sẵn, đổi nội dung chỉ cần vẽ lại cảnh. Hạng B: bố cục gắn với ví dụ Token, phải xếp lại bố cục hoặc nghĩ hình ảnh so sánh mới (thêm 15–20 phút). Xem 3 ảnh mẫu của mỗi phong cách trong styles/<phong-cách>/anh-tinh/.');
   process.exit(0);
 }
+// Ví dụ có vi-du.json (vd token-vi) chỉ làm cho một phong cách: tự chọn phong cách đó
+let EXCFG = null;
+if (o.example) { const f = path.join(SKILL, 'examples', o.example, 'vi-du.json'); if (fs.existsSync(f)) EXCFG = JSON.parse(fs.readFileSync(f, 'utf8')); }
+if (EXCFG && EXCFG.style) {
+  if (o.style && o.style !== EXCFG.style) console.log(`  Ví dụ ${o.example} chỉ có cho phong cách ${EXCFG.style}, dùng ${EXCFG.style} thay cho ${o.style}`);
+  o.style = EXCFG.style;
+}
 if (o.help || !o._.length || !o.style) {
   console.log(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(3, 9).join('\n'));
   process.exit(o.help ? 0 : 1);
@@ -98,7 +105,8 @@ if (o.example) {
   const ex = path.join(SKILL, 'examples', o.example);
   if (!fs.existsSync(ex)) die(`Không có ví dụ: ${o.example} (hiện có: ${fs.readdirSync(path.join(SKILL, 'examples')).join(', ')})`);
   for (const f of ['giong-doc.wav', 'phu-de.json', 'phu-de.srt', 'phan-canh.json', 'phan-canh.md', 'loi-thoai.txt']) if (fs.existsSync(path.join(ex, f))) put(path.join(ex, f), f);
-  put(path.join(sdir, 'vi-du_Token.html'), 'index.html', o.force);
+  put(fs.existsSync(path.join(ex, 'index.html')) ? path.join(ex, 'index.html') : path.join(sdir, 'vi-du_Token.html'), 'index.html', o.force);
+  if (EXCFG && EXCFG.lang) cfg.lang = EXCFG.lang;
 } else {
   if (o.audio) {
     const src = path.resolve(o.audio);

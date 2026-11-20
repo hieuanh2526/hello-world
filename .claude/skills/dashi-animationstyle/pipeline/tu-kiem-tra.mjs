@@ -61,5 +61,5 @@ for (const [style, list] of Object.entries(STYLE_FONTS)) {
   console.log(`  ${parts.some((x) => x.startsWith('✗')) ? '✗' : '✓'} ${style}：${parts.join('  ')}`);
 }
 if (missing) { bad++; console.log(`\n  Cài font trước: node "${path.join(path.dirname(new URL(import.meta.url).pathname), 'cai-font.mjs')}" (font nằm trong $SKILL/fonts/, giấy phép SIL OFL)`); }
-console.log(`\n${bad ? `Có ${bad} chỗ cần xử lý (✗)` : 'Đã đủ mọi thứ bắt buộc'}${warn ? `, ${warn} chỗ không bắt buộc (!)` : ''}.${bad ? '' : ' Bước tiếp: render ví dụ Token có sẵn để thử máy.'}`);
+console.log(`\n${bad ? `Có ${bad} chỗ cần xử lý (✗)` : 'Đã đủ mọi thứ bắt buộc'}${warn ? `, ${warn} chỗ không bắt buộc (!)` : ''}.${bad ? '' : ' Bước tiếp: render ví dụ tiếng Việt có sẵn để thử máy (tao-du-an.mjs ... --example token-vi).'}`);
 process.exitCode = bad ? 1 : 0;

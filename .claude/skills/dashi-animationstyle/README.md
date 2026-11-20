@@ -1,4 +1,6 @@
 > **Bản trong repo này: chỉ làm video tiếng Việt và tiếng Anh.** Cài đặt một lệnh: `bash .claude/skills/dashi-animationstyle/install.sh` (font tiếng Việt, whisper-cli, model whisper, tự kiểm tra; chạy được trên macOS và Linux/cloud). Xem phần「本仓库版」trong `SKILL.md`.
+>
+> Ví dụ tiếng Việt có sẵn (26 giây, phong cách vẽ tay): `node .claude/skills/dashi-animationstyle/pipeline/tao-du-an.mjs ./video-hoat-hinh/vi-du --example token-vi` rồi `node .claude/skills/dashi-animationstyle/pipeline/render.mjs ./video-hoat-hinh/vi-du/index.html`. Xem `examples/token-vi/README.md`.
 
 # dashi-animationstyle：风格动画（Claude Code skill）
 

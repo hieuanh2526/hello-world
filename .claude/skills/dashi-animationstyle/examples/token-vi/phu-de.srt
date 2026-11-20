@@ -1,0 +1,43 @@
+1
+00:00:00,000 --> 00:00:02,990
+Bây giờ bạn mở khung chat của một ứng dụng AI
+
+2
+00:00:02,990 --> 00:00:05,510
+Giúp tôi lên lịch trình du lịch Đà Lạt ba ngày
+
+3
+00:00:05,510 --> 00:00:07,950
+Câu này chính là thứ ta nghe nhiều nhất mỗi ngày
+
+4
+00:00:07,950 --> 00:00:09,560
+gọi là câu lệnh hay Prompt
+
+5
+00:00:09,560 --> 00:00:10,610
+Sau khi AI nhận được Prompt
+
+6
+00:00:10,610 --> 00:00:13,870
+nó dùng bộ tách từ chia câu thành đơn vị nhỏ hơn
+
+7
+00:00:13,870 --> 00:00:16,430
+Những mảnh ngôn ngữ nhỏ nhất ấy gọi là Token
+
+8
+00:00:16,430 --> 00:00:19,620
+Tiếp đó AI vào kho dữ liệu khổng lồ đã học để lục tìm
+
+9
+00:00:19,620 --> 00:00:21,610
+thấy hai Token Đà Lạt và du lịch
+
+10
+00:00:21,610 --> 00:00:22,740
+thường xuất hiện cùng nhau
+
+11
+00:00:22,740 --> 00:00:26,160
+nên đoán ra điều bạn cần là nhu cầu du lịch
