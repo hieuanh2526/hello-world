@@ -736,6 +736,13 @@ const MS = (k, dflt) => (hasMark(k) ? TL.mark(k) : dflt);
 function markTimes(name) { const m = TL.marks[name]; if (!m) throw new Error('TL.marks 里没有 ' + name); return TL.chars.filter((c) => c.start >= m.start - 1e-6 && c.start < m.end - 1e-6).map((c) => c.start); }
 function charTimes(cue, idx) { const cs = TL.chars.filter((c) => c.cue === cue); return idx.map((i) => (cs[i] ? cs[i].start : TL.duration)); }
 
+// Nhịp viết tay: tối thiểu 0,075 giây mỗi ký tự, mỗi ký tự vẽ trong ít nhất 0,18 giây (bản đầu viết 30–50 ký tự/giây, quá nhanh)
+const WRITE_STEP = 0.075, WRITE_DUR = 0.18;
+const writeTextFast = writeText;
+writeText = function (str, x, y, f, col, t, times, dur = 0.12, align = 'left', pen = true) {
+  const t0 = times[0], slow = times.map((ti, i) => t0 + Math.max(ti - t0, i * WRITE_STEP));
+  return writeTextFast(str, x, y, f, col, t, slow, Math.max(dur, WRITE_DUR), align, pen);
+};
 // ===== 场景：Giá trị thặng dư（8 个镜头，6 段；世界 y 每段 1000，段 3–4 左右两半共用一段）=====
 // Thời gian đều lấy từ TL (M('từ khóa'), fxStart(i)); không viết cứng số giây.
 const ST = (i) => fxStart(i);
