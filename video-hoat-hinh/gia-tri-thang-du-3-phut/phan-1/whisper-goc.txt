@@ -1,0 +1,6 @@
+Văn bản whisper nghe được (giong-doc.wav, 59.65 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+
+0.00–18.30  Công thức chung của tư bản là THT. Nhà tư bản bỏ tiền ra mua hàng, rồi bán hàng để thu về lượng tiền lớn hơn. Nhưng nếu trao đổi ngang giá, lưu thông không tạo ra giá trị mới, vậy phần tiền tăng thêm từ đâu mà có.
+18.98–38.08  Các mạc chỉ ra, nhà tư bản phải tìm được trên thị trường một hàng hóa đặc biệt, đó là hàng hóa sức lao động. Sức lao động trở thành hàng hóa khi có hai điều kiện. Người lao động được tự do về thân thể và họ không có tư liệu sản xuất buộc phải bán sức lao động để sống.
+38.64–50.16  Hàng hóa này có hai thuộc tính. Giá trị của nó do giá trị của các tư liệu sinh hoạt cần thiết để nuôi sống người lao động, gia đình họ và chi phí đào tạo quyết định.
+50.70–58.42  Còn giá trị sử dụng của nó rất đặc biệt. Khi được tiêu dùng, nó tạo ra một lượng giá trị mới lớn hơn giá trị của bản thân nó.

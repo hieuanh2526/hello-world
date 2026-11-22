@@ -1,0 +1,1127 @@
+{
+ "ghi_chu": "Thời gian tính bằng giây, theo file giọng đọc. start/end là lúc bắt đầu/kết thúc lời nói; show/hide là lúc phụ đề hiện/ẩn trên hình (hiện sớm hơn lời 0,05 giây, giữ đến khi dòng sau hiện). chars là thời gian từng từ.",
+ "phuong_phap": "whisper-cli (ggml-large-v3-turbo-q5_0.bin, thời gian từng từ bằng DTW) + chỉnh chỗ ngắt câu theo khoảng lặng",
+ "nguon": {
+  "am_thanh": "giong-doc.wav",
+  "loi_thoai": "loi-thoai.txt"
+ },
+ "sua_theo_loi_thoai": [
+  "0.00–0.44 giây  Lê Niên → Lênin",
+  "1.77–2.27 giây  thẳng → thặng",
+  "4.88–5.18 giây  Mark → Mác",
+  "8.25–8.75 giây  thẳng → thặng",
+  "20.22–20.65 giây  thẳng → thặng",
+  "28.05–28.50 giây  thẳng → thặng",
+  "32.57–32.81 giây  bệnh → định"
+ ],
+ "duration": 41.34,
+ "speech": {
+  "start": 0.41,
+  "end": 40.1
+ },
+ "text": "Lênin gọi học thuyết giá trị thặng dư là hòn đá tảng, trong học thuyết kinh tế của Mác. Vì sao vậy? Thứ nhất sản xuất giá trị thặng dư, là quy luật kinh tế tuyệt đối của chủ nghĩa tư bản, quyết định mục đích và động lực của nền sản xuất ấy. Thứ hai lợi nhuận lợi tức và địa tô, đều là những hình thức chuyển hóa của giá trị thặng dư. Thứ ba học thuyết này vạch rõ bản chất của quan hệ tư bản: giá trị mới do lao động làm thuê tạo ra, nhưng phần thặng dư bị nhà tư bản chiếm không. Câu hỏi thảo luận: trong nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam, chúng ta vận dụng lý luận này thế nào, để vừa khuyến khích đầu tư, vừa bảo vệ quyền lợi người lao động?",
+ "sentences": [
+  {
+   "id": 1,
+   "text": "Lênin gọi học thuyết giá trị thặng dư là hòn đá tảng trong học thuyết kinh tế của Mác",
+   "start": 0.41,
+   "end": 5.17,
+   "cues": [
+    1,
+    2
+   ]
+  },
+  {
+   "id": 2,
+   "text": "Vì sao vậy",
+   "start": 5.94,
+   "end": 6.44,
+   "cues": [
+    3
+   ]
+  },
+  {
+   "id": 3,
+   "text": "Thứ nhất sản xuất giá trị thặng dư là quy luật kinh tế tuyệt đối của chủ nghĩa tư bản quyết định mục đích và động lực của nền sản xuất ấy",
+   "start": 7.17,
+   "end": 15.16,
+   "cues": [
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "id": 4,
+   "text": "Thứ hai lợi nhuận lợi tức và địa tô đều là những hình thức chuyển hóa của giá trị thặng dư",
+   "start": 15.85,
+   "end": 21.42,
+   "cues": [
+    7,
+    8
+   ]
+  },
+  {
+   "id": 5,
+   "text": "Thứ ba học thuyết này vạch rõ bản chất của quan hệ tư bản giá trị mới do lao động làm thuê tạo ra nhưng phần thặng dư bị nhà tư bản chiếm không",
+   "start": 22.08,
+   "end": 30.27,
+   "cues": [
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "id": 6,
+   "text": "Câu hỏi thảo luận trong nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam chúng ta vận dụng lý luận này thế nào để vừa khuyến khích đầu tư vừa bảo vệ quyền lợi người lao động",
+   "start": 30.85,
+   "end": 40.1,
+   "cues": [
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  }
+ ],
+ "cues": [
+  {
+   "id": 1,
+   "text": "Lênin gọi học thuyết giá trị thặng dư là hòn đá tảng",
+   "start": 0.41,
+   "end": 3.68,
+   "show": 0.36,
+   "hide": 3.68
+  },
+  {
+   "id": 2,
+   "text": "trong học thuyết kinh tế của Mác",
+   "start": 3.68,
+   "end": 5.17,
+   "show": 3.68,
+   "hide": 5.89
+  },
+  {
+   "id": 3,
+   "text": "Vì sao vậy",
+   "start": 5.94,
+   "end": 6.44,
+   "show": 5.89,
+   "hide": 7.12
+  },
+  {
+   "id": 4,
+   "text": "Thứ nhất sản xuất giá trị thặng dư",
+   "start": 7.17,
+   "end": 8.97,
+   "show": 7.12,
+   "hide": 8.97
+  },
+  {
+   "id": 5,
+   "text": "là quy luật kinh tế tuyệt đối của chủ nghĩa tư bản",
+   "start": 8.97,
+   "end": 12.59,
+   "show": 8.97,
+   "hide": 12.73
+  },
+  {
+   "id": 6,
+   "text": "quyết định mục đích và động lực của nền sản xuất ấy",
+   "start": 12.78,
+   "end": 15.16,
+   "show": 12.73,
+   "hide": 15.8
+  },
+  {
+   "id": 7,
+   "text": "Thứ hai lợi nhuận lợi tức và địa tô",
+   "start": 15.85,
+   "end": 17.05,
+   "show": 15.8,
+   "hide": 17.27
+  },
+  {
+   "id": 8,
+   "text": "đều là những hình thức chuyển hóa của giá trị thặng dư",
+   "start": 17.32,
+   "end": 21.42,
+   "show": 17.27,
+   "hide": 22.03
+  },
+  {
+   "id": 9,
+   "text": "Thứ ba học thuyết này vạch rõ bản chất của quan hệ tư bản",
+   "start": 22.08,
+   "end": 25.07,
+   "show": 22.03,
+   "hide": 25.52
+  },
+  {
+   "id": 10,
+   "text": "giá trị mới do lao động làm thuê tạo ra",
+   "start": 25.57,
+   "end": 27.5,
+   "show": 25.52,
+   "hide": 27.5
+  },
+  {
+   "id": 11,
+   "text": "nhưng phần thặng dư bị nhà tư bản chiếm không",
+   "start": 27.5,
+   "end": 30.27,
+   "show": 27.5,
+   "hide": 30.8
+  },
+  {
+   "id": 12,
+   "text": "Câu hỏi thảo luận",
+   "start": 30.85,
+   "end": 31.22,
+   "show": 30.8,
+   "hide": 31.22
+  },
+  {
+   "id": 13,
+   "text": "trong nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam",
+   "start": 31.22,
+   "end": 34.82,
+   "show": 31.22,
+   "hide": 35.13
+  },
+  {
+   "id": 14,
+   "text": "chúng ta vận dụng lý luận này thế nào",
+   "start": 35.18,
+   "end": 36.66,
+   "show": 35.13,
+   "hide": 36.66
+  },
+  {
+   "id": 15,
+   "text": "để vừa khuyến khích đầu tư",
+   "start": 36.66,
+   "end": 38.18,
+   "show": 36.66,
+   "hide": 38.55
+  },
+  {
+   "id": 16,
+   "text": "vừa bảo vệ quyền lợi người lao động",
+   "start": 38.6,
+   "end": 40.1,
+   "show": 38.55,
+   "hide": 41.34
+  }
+ ],
+ "chars": [
+  {
+   "text": "Lênin",
+   "start": 0.41,
+   "end": 0.43,
+   "cue": 1
+  },
+  {
+   "text": "gọi",
+   "start": 0.44,
+   "end": 0.66,
+   "cue": 1
+  },
+  {
+   "text": "học",
+   "start": 0.66,
+   "end": 0.88,
+   "cue": 1
+  },
+  {
+   "text": "thuyết",
+   "start": 0.88,
+   "end": 1.33,
+   "cue": 1
+  },
+  {
+   "text": "giá",
+   "start": 1.33,
+   "end": 1.55,
+   "cue": 1
+  },
+  {
+   "text": "trị",
+   "start": 1.55,
+   "end": 1.77,
+   "cue": 1
+  },
+  {
+   "text": "thặng",
+   "start": 1.77,
+   "end": 2.03,
+   "cue": 1
+  },
+  {
+   "text": "dư",
+   "start": 2.29,
+   "end": 2.5,
+   "cue": 1
+  },
+  {
+   "text": "là",
+   "start": 2.5,
+   "end": 2.81,
+   "cue": 1
+  },
+  {
+   "text": "hòn",
+   "start": 2.81,
+   "end": 3.02,
+   "cue": 1
+  },
+  {
+   "text": "đá",
+   "start": 3.02,
+   "end": 3.22,
+   "cue": 1
+  },
+  {
+   "text": "tảng",
+   "start": 3.22,
+   "end": 3.68,
+   "cue": 1
+  },
+  {
+   "text": "trong",
+   "start": 3.68,
+   "end": 4,
+   "cue": 2
+  },
+  {
+   "text": "học",
+   "start": 4,
+   "end": 4.16,
+   "cue": 2
+  },
+  {
+   "text": "thuyết",
+   "start": 4.16,
+   "end": 4.38,
+   "cue": 2
+  },
+  {
+   "text": "kinh",
+   "start": 4.38,
+   "end": 4.57,
+   "cue": 2
+  },
+  {
+   "text": "tế",
+   "start": 4.57,
+   "end": 4.69,
+   "cue": 2
+  },
+  {
+   "text": "của",
+   "start": 4.69,
+   "end": 4.88,
+   "cue": 2
+  },
+  {
+   "text": "Mác",
+   "start": 4.88,
+   "end": 5.17,
+   "cue": 2
+  },
+  {
+   "text": "Vì",
+   "start": 5.94,
+   "end": 5.96,
+   "cue": 3
+  },
+  {
+   "text": "sao",
+   "start": 5.94,
+   "end": 5.96,
+   "cue": 3
+  },
+  {
+   "text": "vậy",
+   "start": 5.94,
+   "end": 6.36,
+   "cue": 3
+  },
+  {
+   "text": "Thứ",
+   "start": 7.17,
+   "end": 7.19,
+   "cue": 4
+  },
+  {
+   "text": "nhất",
+   "start": 7.17,
+   "end": 7.21,
+   "cue": 4
+  },
+  {
+   "text": "sản",
+   "start": 7.21,
+   "end": 7.53,
+   "cue": 4
+  },
+  {
+   "text": "xuất",
+   "start": 7.53,
+   "end": 7.77,
+   "cue": 4
+  },
+  {
+   "text": "giá",
+   "start": 7.77,
+   "end": 8.01,
+   "cue": 4
+  },
+  {
+   "text": "trị",
+   "start": 8.01,
+   "end": 8.25,
+   "cue": 4
+  },
+  {
+   "text": "thặng",
+   "start": 8.25,
+   "end": 8.55,
+   "cue": 4
+  },
+  {
+   "text": "dư",
+   "start": 8.85,
+   "end": 8.97,
+   "cue": 4
+  },
+  {
+   "text": "là",
+   "start": 8.97,
+   "end": 9.13,
+   "cue": 5
+  },
+  {
+   "text": "quy",
+   "start": 9.13,
+   "end": 9.38,
+   "cue": 5
+  },
+  {
+   "text": "luật",
+   "start": 9.38,
+   "end": 9.78,
+   "cue": 5
+  },
+  {
+   "text": "kinh",
+   "start": 9.78,
+   "end": 10.03,
+   "cue": 5
+  },
+  {
+   "text": "tế",
+   "start": 10.03,
+   "end": 10.19,
+   "cue": 5
+  },
+  {
+   "text": "tuyệt",
+   "start": 10.19,
+   "end": 10.61,
+   "cue": 5
+  },
+  {
+   "text": "đối",
+   "start": 10.61,
+   "end": 10.85,
+   "cue": 5
+  },
+  {
+   "text": "của",
+   "start": 10.85,
+   "end": 11.08,
+   "cue": 5
+  },
+  {
+   "text": "chủ",
+   "start": 11.08,
+   "end": 11.52,
+   "cue": 5
+  },
+  {
+   "text": "nghĩa",
+   "start": 11.52,
+   "end": 11.95,
+   "cue": 5
+  },
+  {
+   "text": "tư",
+   "start": 11.95,
+   "end": 12.06,
+   "cue": 5
+  },
+  {
+   "text": "bản",
+   "start": 12.06,
+   "end": 12.56,
+   "cue": 5
+  },
+  {
+   "text": "quyết",
+   "start": 12.78,
+   "end": 12.99,
+   "cue": 6
+  },
+  {
+   "text": "định",
+   "start": 12.99,
+   "end": 13.11,
+   "cue": 6
+  },
+  {
+   "text": "mục",
+   "start": 13.11,
+   "end": 13.29,
+   "cue": 6
+  },
+  {
+   "text": "đích",
+   "start": 13.29,
+   "end": 13.49,
+   "cue": 6
+  },
+  {
+   "text": "và",
+   "start": 13.49,
+   "end": 13.7,
+   "cue": 6
+  },
+  {
+   "text": "động",
+   "start": 13.7,
+   "end": 13.88,
+   "cue": 6
+  },
+  {
+   "text": "lực",
+   "start": 13.88,
+   "end": 14.16,
+   "cue": 6
+  },
+  {
+   "text": "của",
+   "start": 14.16,
+   "end": 14.21,
+   "cue": 6
+  },
+  {
+   "text": "nền",
+   "start": 14.21,
+   "end": 14.32,
+   "cue": 6
+  },
+  {
+   "text": "sản",
+   "start": 14.32,
+   "end": 14.48,
+   "cue": 6
+  },
+  {
+   "text": "xuất",
+   "start": 14.48,
+   "end": 14.77,
+   "cue": 6
+  },
+  {
+   "text": "ấy",
+   "start": 14.77,
+   "end": 15.12,
+   "cue": 6
+  },
+  {
+   "text": "Thứ",
+   "start": 15.85,
+   "end": 15.87,
+   "cue": 7
+  },
+  {
+   "text": "hai",
+   "start": 15.85,
+   "end": 15.87,
+   "cue": 7
+  },
+  {
+   "text": "lợi",
+   "start": 15.85,
+   "end": 15.93,
+   "cue": 7
+  },
+  {
+   "text": "nhuận",
+   "start": 15.93,
+   "end": 16.43,
+   "cue": 7
+  },
+  {
+   "text": "lợi",
+   "start": 16.45,
+   "end": 16.66,
+   "cue": 7
+  },
+  {
+   "text": "tức",
+   "start": 16.66,
+   "end": 16.87,
+   "cue": 7
+  },
+  {
+   "text": "và",
+   "start": 16.87,
+   "end": 17.03,
+   "cue": 7
+  },
+  {
+   "text": "địa",
+   "start": 17.03,
+   "end": 17.05,
+   "cue": 7
+  },
+  {
+   "text": "tô",
+   "start": 17.05,
+   "end": 17.05,
+   "cue": 7
+  },
+  {
+   "text": "đều",
+   "start": 17.4,
+   "end": 17.62,
+   "cue": 8
+  },
+  {
+   "text": "là",
+   "start": 17.62,
+   "end": 17.77,
+   "cue": 8
+  },
+  {
+   "text": "những",
+   "start": 17.77,
+   "end": 18.16,
+   "cue": 8
+  },
+  {
+   "text": "hình",
+   "start": 18.16,
+   "end": 18.58,
+   "cue": 8
+  },
+  {
+   "text": "thức",
+   "start": 18.58,
+   "end": 18.76,
+   "cue": 8
+  },
+  {
+   "text": "chuyển",
+   "start": 18.76,
+   "end": 19.22,
+   "cue": 8
+  },
+  {
+   "text": "hóa",
+   "start": 19.22,
+   "end": 19.43,
+   "cue": 8
+  },
+  {
+   "text": "của",
+   "start": 19.43,
+   "end": 19.65,
+   "cue": 8
+  },
+  {
+   "text": "giá",
+   "start": 19.65,
+   "end": 19.88,
+   "cue": 8
+  },
+  {
+   "text": "trị",
+   "start": 19.88,
+   "end": 20.22,
+   "cue": 8
+  },
+  {
+   "text": "thặng",
+   "start": 20.22,
+   "end": 20.43,
+   "cue": 8
+  },
+  {
+   "text": "dư",
+   "start": 20.65,
+   "end": 21.15,
+   "cue": 8
+  },
+  {
+   "text": "Thứ",
+   "start": 22.08,
+   "end": 22.1,
+   "cue": 9
+  },
+  {
+   "text": "ba",
+   "start": 22.08,
+   "end": 22.1,
+   "cue": 9
+  },
+  {
+   "text": "học",
+   "start": 22.09,
+   "end": 22.15,
+   "cue": 9
+  },
+  {
+   "text": "thuyết",
+   "start": 22.15,
+   "end": 22.52,
+   "cue": 9
+  },
+  {
+   "text": "này",
+   "start": 22.52,
+   "end": 22.74,
+   "cue": 9
+  },
+  {
+   "text": "vạch",
+   "start": 22.74,
+   "end": 23.02,
+   "cue": 9
+  },
+  {
+   "text": "rõ",
+   "start": 23.02,
+   "end": 23.21,
+   "cue": 9
+  },
+  {
+   "text": "bản",
+   "start": 23.21,
+   "end": 23.47,
+   "cue": 9
+  },
+  {
+   "text": "chất",
+   "start": 23.47,
+   "end": 23.68,
+   "cue": 9
+  },
+  {
+   "text": "của",
+   "start": 23.68,
+   "end": 23.88,
+   "cue": 9
+  },
+  {
+   "text": "quan",
+   "start": 23.88,
+   "end": 24.18,
+   "cue": 9
+  },
+  {
+   "text": "hệ",
+   "start": 24.18,
+   "end": 24.39,
+   "cue": 9
+  },
+  {
+   "text": "tư",
+   "start": 24.39,
+   "end": 24.47,
+   "cue": 9
+  },
+  {
+   "text": "bản",
+   "start": 24.47,
+   "end": 24.97,
+   "cue": 9
+  },
+  {
+   "text": "giá",
+   "start": 25.57,
+   "end": 25.88,
+   "cue": 10
+  },
+  {
+   "text": "trị",
+   "start": 25.88,
+   "end": 25.97,
+   "cue": 10
+  },
+  {
+   "text": "mới",
+   "start": 25.97,
+   "end": 26.13,
+   "cue": 10
+  },
+  {
+   "text": "do",
+   "start": 26.13,
+   "end": 26.26,
+   "cue": 10
+  },
+  {
+   "text": "lao",
+   "start": 26.26,
+   "end": 26.45,
+   "cue": 10
+  },
+  {
+   "text": "động",
+   "start": 26.45,
+   "end": 26.71,
+   "cue": 10
+  },
+  {
+   "text": "làm",
+   "start": 26.71,
+   "end": 26.9,
+   "cue": 10
+  },
+  {
+   "text": "thuê",
+   "start": 26.9,
+   "end": 27.15,
+   "cue": 10
+  },
+  {
+   "text": "tạo",
+   "start": 27.15,
+   "end": 27.34,
+   "cue": 10
+  },
+  {
+   "text": "ra",
+   "start": 27.34,
+   "end": 27.5,
+   "cue": 10
+  },
+  {
+   "text": "nhưng",
+   "start": 27.5,
+   "end": 27.79,
+   "cue": 11
+  },
+  {
+   "text": "phần",
+   "start": 27.79,
+   "end": 28.05,
+   "cue": 11
+  },
+  {
+   "text": "thặng",
+   "start": 28.05,
+   "end": 28.28,
+   "cue": 11
+  },
+  {
+   "text": "dư",
+   "start": 28.5,
+   "end": 28.62,
+   "cue": 11
+  },
+  {
+   "text": "bị",
+   "start": 28.62,
+   "end": 28.75,
+   "cue": 11
+  },
+  {
+   "text": "nhà",
+   "start": 28.75,
+   "end": 28.94,
+   "cue": 11
+  },
+  {
+   "text": "tư",
+   "start": 28.94,
+   "end": 29.06,
+   "cue": 11
+  },
+  {
+   "text": "bản",
+   "start": 29.06,
+   "end": 29.26,
+   "cue": 11
+  },
+  {
+   "text": "chiếm",
+   "start": 29.26,
+   "end": 29.56,
+   "cue": 11
+  },
+  {
+   "text": "không",
+   "start": 29.56,
+   "end": 30.06,
+   "cue": 11
+  },
+  {
+   "text": "Câu",
+   "start": 30.85,
+   "end": 30.87,
+   "cue": 12
+  },
+  {
+   "text": "hỏi",
+   "start": 30.85,
+   "end": 30.87,
+   "cue": 12
+  },
+  {
+   "text": "thảo",
+   "start": 30.85,
+   "end": 30.87,
+   "cue": 12
+  },
+  {
+   "text": "luận",
+   "start": 30.85,
+   "end": 31.22,
+   "cue": 12
+  },
+  {
+   "text": "trong",
+   "start": 31.22,
+   "end": 31.49,
+   "cue": 13
+  },
+  {
+   "text": "nền",
+   "start": 31.49,
+   "end": 31.67,
+   "cue": 13
+  },
+  {
+   "text": "kinh",
+   "start": 31.67,
+   "end": 31.91,
+   "cue": 13
+  },
+  {
+   "text": "tế",
+   "start": 31.91,
+   "end": 32.03,
+   "cue": 13
+  },
+  {
+   "text": "thị",
+   "start": 32.03,
+   "end": 32.27,
+   "cue": 13
+  },
+  {
+   "text": "trường",
+   "start": 32.27,
+   "end": 32.57,
+   "cue": 13
+  },
+  {
+   "text": "định",
+   "start": 32.57,
+   "end": 32.69,
+   "cue": 13
+  },
+  {
+   "text": "hướng",
+   "start": 32.81,
+   "end": 33.11,
+   "cue": 13
+  },
+  {
+   "text": "xã",
+   "start": 33.11,
+   "end": 33.23,
+   "cue": 13
+  },
+  {
+   "text": "hội",
+   "start": 33.23,
+   "end": 33.65,
+   "cue": 13
+  },
+  {
+   "text": "chủ",
+   "start": 33.65,
+   "end": 33.71,
+   "cue": 13
+  },
+  {
+   "text": "nghĩa",
+   "start": 33.71,
+   "end": 34.01,
+   "cue": 13
+  },
+  {
+   "text": "ở",
+   "start": 34.01,
+   "end": 34.07,
+   "cue": 13
+  },
+  {
+   "text": "Việt",
+   "start": 34.07,
+   "end": 34.31,
+   "cue": 13
+  },
+  {
+   "text": "Nam",
+   "start": 34.31,
+   "end": 34.76,
+   "cue": 13
+  },
+  {
+   "text": "chúng",
+   "start": 35.18,
+   "end": 35.2,
+   "cue": 14
+  },
+  {
+   "text": "ta",
+   "start": 35.19,
+   "end": 35.21,
+   "cue": 14
+  },
+  {
+   "text": "vận",
+   "start": 35.2,
+   "end": 35.37,
+   "cue": 14
+  },
+  {
+   "text": "dụng",
+   "start": 35.37,
+   "end": 35.63,
+   "cue": 14
+  },
+  {
+   "text": "lý",
+   "start": 35.63,
+   "end": 35.73,
+   "cue": 14
+  },
+  {
+   "text": "luận",
+   "start": 35.73,
+   "end": 35.97,
+   "cue": 14
+  },
+  {
+   "text": "này",
+   "start": 35.97,
+   "end": 36.05,
+   "cue": 14
+  },
+  {
+   "text": "thế",
+   "start": 36.05,
+   "end": 36.54,
+   "cue": 14
+  },
+  {
+   "text": "nào",
+   "start": 36.54,
+   "end": 36.66,
+   "cue": 14
+  },
+  {
+   "text": "để",
+   "start": 36.66,
+   "end": 36.68,
+   "cue": 15
+  },
+  {
+   "text": "vừa",
+   "start": 36.67,
+   "end": 36.84,
+   "cue": 15
+  },
+  {
+   "text": "khuyến",
+   "start": 36.84,
+   "end": 37.2,
+   "cue": 15
+  },
+  {
+   "text": "khích",
+   "start": 37.2,
+   "end": 37.7,
+   "cue": 15
+  },
+  {
+   "text": "đầu",
+   "start": 37.7,
+   "end": 37.76,
+   "cue": 15
+  },
+  {
+   "text": "tư",
+   "start": 37.76,
+   "end": 38.08,
+   "cue": 15
+  },
+  {
+   "text": "vừa",
+   "start": 38.6,
+   "end": 38.62,
+   "cue": 16
+  },
+  {
+   "text": "bảo",
+   "start": 38.6,
+   "end": 38.62,
+   "cue": 16
+  },
+  {
+   "text": "vệ",
+   "start": 38.6,
+   "end": 38.62,
+   "cue": 16
+  },
+  {
+   "text": "quyền",
+   "start": 38.6,
+   "end": 38.94,
+   "cue": 16
+  },
+  {
+   "text": "lợi",
+   "start": 38.94,
+   "end": 39.08,
+   "cue": 16
+  },
+  {
+   "text": "người",
+   "start": 39.08,
+   "end": 39.41,
+   "cue": 16
+  },
+  {
+   "text": "lao",
+   "start": 39.41,
+   "end": 39.6,
+   "cue": 16
+  },
+  {
+   "text": "động",
+   "start": 39.6,
+   "end": 40.1,
+   "cue": 16
+  }
+ ]
+}

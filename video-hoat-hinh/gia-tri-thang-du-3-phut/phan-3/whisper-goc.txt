@@ -1,0 +1,8 @@
+Văn bản whisper nghe được (giong-doc.wav, 48.93 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+
+0.18–4.06  Muốn thu nhiều giá trị thặng dư hơn, nhà tư bản dùng hai phương pháp.
+4.68–10.74  Thứ nhất là sản xuất giá trị thặng dư tuyệt đối, kéo dài ngày lao động, trong khi thời gian lao động tất yếu không đổi.
+11.28–21.22  Ngày lao động tăng từ 8 đến 10 giờ, thời gian tất yếu vẫn là 4 giờ, thời gian thặng dư tăng lên 6 giờ, tỷ suất giá trị thặng dư tăng từ 100 đến 150%.
+21.56–32.78  Thứ hai là sản xuất giá trị thặng dư tương đối, ngày lao động giữ nguyên, nhưng rút ngắn thời gian lao động tất yếu, nhờ tăng năng suất lao động xã hội làm giảm giá trị tư liệu sinh hoạt.
+33.34–40.28  Ngày lao động vẫn 8 giờ, thời gian tất yếu giảm còn 2 giờ, thời gian thặng dư là 6 giờ, tỷ suất lên 300%.
+40.58–47.84  Doanh nghiệp nào áp dụng kỹ thuật mới sớm hơn, có giá trị cá biệt thấp hơn giá trị xã hội, sẽ thu thêm giá trị thặng dư siêu ngạch.
