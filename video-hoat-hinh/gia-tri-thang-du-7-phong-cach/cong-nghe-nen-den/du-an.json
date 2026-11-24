@@ -1,0 +1,11 @@
+{
+  "style": "cong-nghe-nen-den",
+  "audio": "giong-doc.wav",
+  "subtitles": "phu-de.json",
+  "storyboard": "phan-canh.json",
+  "timeline": "timeline.js",
+  "page": "index.html",
+  "output": "gttd_cong-nghe-nen-den.mp4",
+  "lang": "vi",
+  "format": "jpeg"
+}
