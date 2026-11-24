@@ -1,5 +1,14 @@
-Văn bản whisper nghe được (giong-doc.wav, 53.15 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+Văn bản whisper nghe được (giong-doc.wav, 50.86 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
 
-0.00–21.16  Vì sao nhà tư bản bỏ tiền ra rồi thu về nhiều tiền hơn? Theo các mát bí mật nằm ở một hàng hóa đặc biệt sức lao động, nhà tư bản ứng trước hai phần tư bản. Tư bản bất biến ký hiệu xệ mua máy móc và nguyên liệu giá trị của nó chỉ truyền nguyên vào sản phẩm. Tư bản khả biến ký hiệu về mua sức lao động của công nhân.
-21.70–43.42  Giả sử một ngày lao động là 8 giờ, chỉ sau 4 giờ công nhân đã tạo ra lượng giá trị mới ngang với giá trị sức lao động của mình. Đó là thời gian lao động tất yếu. 4 giờ còn lại là thời gian lao động thẳng dự. Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm không gọi là giá trị thẳng dư ký hiệu em.
-43.96–51.78  Vì vậy giá trị hàng hóa bằng C cộng V cộng em. Kỳ xuất giá trị thẳng dự em trên vệ ở đây là 100%.
+0.00–3.56  Vì sao nhà tư bản bỏ tiền ra rồi thu về nhiều tiền hơn?
+4.30–7.86  Theo các mạc, bí mật nằm ở một hàng hóa đặc biệt sức lao động.
+8.66–10.56  Nhà tư bản ứng trước hai phần tư bản.
+11.34–16.84  Tư bản bất biến, ký hiệu C mua máy móc và nguyên liệu, giá trị của nó chỉ chuyển nguyên bao sản phẩm.
+17.58–20.80  Tư bản khả biến, ký hiệu V mua sức lao động của công nhân.
+21.60–23.80  Giả sử một ngày lao động là 8 giờ.
+24.40–29.94  Chỉ sau 4 giờ, công nhân đã tạo ra lượng giá trị 10 ngang về giá trị sức lao động của mình.
+30.64–32.28  Đó là thời gian lao động tất yếu.
+32.98–35.32  4 giờ còn lại là thời gian lao động thẳng dư.
+36.00–41.60  Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm 0, gọi là giá trị thẳng dư, ký hiệu M.
+42.30–44.96  Vì vậy, giá trị hàng hóa bằng C cộng V cộng M.
+45.62–49.38  Tỷ suất giá trị thẳng dư, M trên V ở đây là 100%.

@@ -1,6 +1,6 @@
 # «Giá trị thặng dư» – 6 phong cách còn lại
 
-Cùng nội dung, giọng đọc, phụ đề với video vẽ tay `../gia-tri-thang-du/` (53 giây, 8 cảnh), vẽ lại theo 6 phong cách còn lại của skill `dashi-animationstyle`. Cùng với bản vẽ tay là đủ 7 phong cách.
+Cùng nội dung, giọng đọc, phụ đề với video vẽ tay `../gia-tri-thang-du/` (51 giây, 8 cảnh), vẽ lại theo 6 phong cách còn lại của skill `dashi-animationstyle`. Cùng với bản vẽ tay là đủ 7 phong cách.
 
 | Thư mục | Phong cách | Cách vẽ hình | Video |
 |---|---|---|---|
@@ -23,4 +23,4 @@ Render lại một phong cách (từ thư mục gốc repo):
 node .claude/skills/dashi-animationstyle/pipeline/render.mjs video-hoat-hinh/gia-tri-thang-du-7-phong-cach/<phong-cách>/index.html
 ```
 
-Giọng đọc: giọng máy Piper `vi_VN-vais1000-medium` (CC BY 4.0), như bản vẽ tay.
+Giọng đọc: giọng nhân bản của giảng viên (VieNeu-TTS, Apache-2.0), giống bản vẽ tay; xem `../gia-tri-thang-du/README.md`.

@@ -1,13 +1,13 @@
 # Video giảng dạy: Giá trị thặng dư (K. Marx)
 
-53 giây, phong cách vẽ tay (`ve-tay`), làm bằng skill `dashi-animationstyle` trong repo này.
+51 giây, phong cách vẽ tay (`ve-tay`), làm bằng skill `dashi-animationstyle` trong repo này.
 
 | File | Nội dung |
 |---|---|
 | `gia-tri-thang-du.mp4` | Video hoàn chỉnh, có phụ đề |
 | `gia-tri-thang-du_khong-phu-de.mp4` | Bản không phụ đề, để tự dựng (CapCut…); phụ đề rời ở `phu-de.srt` |
 | `loi-thoai.txt` | Lời thoại |
-| `giong-doc.wav` | Giọng đọc (giọng máy, xem phần nguồn) |
+| `giong-doc.wav` | Giọng đọc (giọng nhân bản của giảng viên, xem phần Giọng đọc) |
 | `phu-de.json` / `phu-de.srt` | Phụ đề và thời gian từng từ |
 | `phan-canh.json` | Phân cảnh: 8 cảnh, 34 từ khóa khớp hình với lời |
 | `index.html`, `timeline.js`, `hieu-ung.js` | Trang vẽ (HTML/Canvas) và thời gian; `index.html` là nơi sửa hình |
@@ -36,6 +36,8 @@ node $S/render.mjs $P/index.html
 
 Nếu giọng mới dài hơn hoặc ngắn hơn, sửa `"duration"` trong `phan-canh.json` thành độ dài giọng đọc + khoảng 1 giây trước khi chạy `tao-timeline.mjs`.
 
-## Nguồn giọng đọc
+## Giọng đọc
 
-Giọng máy tạo bằng [Piper](https://github.com/rhasspy/piper), giọng `vi_VN-vais1000-medium` (rhasspy/piper-voices), huấn luyện trên bộ dữ liệu VAIS-1000, giấy phép CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Khi đọc, các ký hiệu c, v, m được đọc là «xê», «vê», «em». Tốc độ: `--length-scale 1.45 --sentence-silence 0.7` (chậm hơn mặc định để kịp đọc phụ đề).
+Giọng tạo bằng máy **bắt chước giọng giảng viên** (theo yêu cầu của giảng viên): mô hình VieNeu-TTS (Apache-2.0), mẫu giọng 13,5 giây cắt từ bản ghi của giảng viên, hạ cao độ khoảng 4% và tăng tốc 7% cho khớp giọng thật; tạo từng câu, mỗi câu được whisper nghe lại để kiểm tra. Mô hình gắn thủy vân âm thanh (không nghe thấy). Các ký hiệu c, v, m được đọc là «xê», «vê», «em». Video dài 50,9 giây.
+
+Giọng nhân bản chỉ dùng cho video của chính giảng viên. Bản trước dùng giọng máy Piper (`vi_VN-vais1000-medium`, CC BY 4.0), xem lịch sử git.
