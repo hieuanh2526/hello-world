@@ -2,7 +2,7 @@
 
 **Bản gốc:** dashi-animationstyle của 《大师的AI小灶》 — https://github.com/chuspeeism/dashi-animationstyle (giấy phép MIT, xem `LICENSE`).
 
-**Bản này (v1.4-vi)** đã sửa so với bản gốc:
+**Bản này (v1.5-vi)** đã sửa so với bản gốc:
 - Chỉ làm lời thoại tiếng Việt và tiếng Anh: phụ đề theo từ (giữ dấu, khoảng trắng), whisper `--lang vi|en`, tìm từ khóa theo cụm từ.
 - Font tiếng Việt kèm theo (`fonts/`), đặt đầu font stack của 7 mẫu; nhãn cố định trên hình theo ngôn ngữ.
 - `install.sh` cài một lệnh (macOS, Linux/cloud); `render.mjs` tự tìm Chromium và chạy được khi là root trên Linux.

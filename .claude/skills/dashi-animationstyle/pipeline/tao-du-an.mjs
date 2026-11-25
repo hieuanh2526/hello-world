@@ -3,7 +3,7 @@
 //
 // Cách dùng:
 //   node tao-du-an.mjs <thư-mục-dự-án> --example token-vi              ví dụ tiếng Việt có sẵn (lần đầu: kiểm tra máy render được)
-//   node tao-du-an.mjs <thư-mục-dự-án> --style ve-tay --audio giong-cua-toi.m4a [--script loi-thoai.txt] --lang vi|en   lời thoại của bạn (chỉ tiếng Việt, tiếng Anh)
+//   node tao-du-an.mjs <thư-mục-dự-án> [--style ve-tay] --audio giong-cua-toi.m4a [--script loi-thoai.txt] --lang vi|en   lời thoại của bạn (chỉ tiếng Việt, tiếng Anh)
 //   node tao-du-an.mjs --list                                              liệt kê các phong cách
 // Thư mục dự án sẽ có: du-an.json (cấu hình), giong-doc.wav, index.html (trang chép từ thư mục phong cách), hieu-ung.js (chuyển cảnh, chuyển động phụ).
 // Nếu thư mục đã có thì chỉ thêm file còn thiếu, không ghi đè (muốn ghi đè trang thì thêm --force).
@@ -69,6 +69,7 @@ if (EXCFG && EXCFG.style) {
   if (o.style && o.style !== EXCFG.style) console.log(`  Ví dụ ${o.example} chỉ có cho phong cách ${EXCFG.style}, dùng ${EXCFG.style} thay cho ${o.style}`);
   o.style = EXCFG.style;
 }
+if (!o.style && !o.help && o._.length) { o.style = 've-tay'; console.log('  Không ghi --style: dùng phong cách mặc định ve-tay (vẽ tay)'); }
 if (o.help || !o._.length || !o.style) {
   console.log(fs.readFileSync(new URL(import.meta.url), 'utf8').split('\n').slice(3, 9).join('\n'));
   process.exit(o.help ? 0 : 1);

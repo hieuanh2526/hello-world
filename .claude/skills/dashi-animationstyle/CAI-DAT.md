@@ -44,6 +44,7 @@ Chỉ làm lời thoại tiếng Việt và tiếng Anh; mỗi lần một đo�
 
 > Làm video giảng dạy 1 phút về «quy luật lượng – chất» (Triết học Mác – Lênin), phong cách vẽ tay, giọng của tôi trong file `ghi-am.m4a`.
 
+Mặc định: phong cách vẽ tay, khung ngang 16:9, giọng kiểu «giảng đường» (nam trung niên, truyền cảm, dõng dạc). Bản dọc TikTok/Shorts chỉ làm khi bạn yêu cầu.
 Claude theo quy trình trong `knowledge/llct-giang-day.md`: soạn lời thoại đúng giáo trình → bạn duyệt → ảnh tĩnh → bạn duyệt → render.
 Thêm: «làm bản dọc cho TikTok», «làm bài 3 phút, chia 4 phần rồi ghép», «tạo giọng đọc từ mẫu giọng của tôi».
 Xem thử: `node pipeline/tao-du-an.mjs ./video-hoat-hinh/gttd --example llct-gia-tri-thang-du`.

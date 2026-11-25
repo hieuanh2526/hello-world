@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """tao-giong.py — tạo giọng đọc tiếng Việt cho một dự án bằng VieNeu-TTS (Apache-2.0).
 
+  python3 tao-giong.py <thư-mục-dự-án> --xu-ly ghi-am-that.m4a                            chỉ chỉnh bản ghi âm thật (không cần vieneu)
   python3 tao-giong.py <thư-mục-dự-án> --mau mau-giong.m4a [--mau-tu 18.5 --mau-den 32]   nhân bản giọng từ mẫu ghi âm
   python3 tao-giong.py <thư-mục-dự-án> --giong "Thiện Minh"                                giọng có sẵn
   python3 tao-giong.py --danh-sach                                                         liệt kê giọng có sẵn
   python3 tao-giong.py <thư-mục-dự-án> --mau mau.wav --chi-cau "Vì vậy, giá trị hàng hóa bằng c cộng v cộng m." -o cau-sua.wav
                                                                                            chỉ tạo một câu (để vá bản ghi thật)
+Kiểu giọng: --kieu giang-duong (MẶC ĐỊNH) = nam trung niên, truyền cảm, dõng dạc, đúng phong cách giảng đường đại học:
+          trầm hơn ~4% (giữ âm sắc), thân giọng ấm hơn, bớt ù, rõ và vang hơn ở dải 2–4 kHz, nén nhẹ cho đều tiếng, chút vang phòng
+          giảng rất nhẹ, nghỉ 0,6 giây giữa câu. --kieu goc: không chỉnh màu giọng (chỉ cắt lặng, chuẩn hóa âm lượng).
 Tùy chọn: --cao-do 0.958 (nhân cao độ; <1 là trầm hơn)  --toc-do 1.07 (nhân tốc độ)  --nghi 0.5 (giây nghỉ giữa câu)
           --cach-doc <json> (mặc định knowledge/llct-cach-doc.json)  --khong-kiem (bỏ bước whisper nghe lại)  -o <file>
 
@@ -24,13 +28,28 @@ SKILL = HERE.parent
 VENV_PY = Path.home() / '.local/share/dashi-tts/venv/bin/python'
 os.environ.setdefault('HF_HUB_DISABLE_XET', '1')   # một số mạng chặn máy chủ xet của Hugging Face; tải thường vẫn được
 
-try:
-    import vieneu  # noqa: F401
-except ImportError:
-    if VENV_PY.exists() and Path(sys.prefix).resolve() != VENV_PY.parent.parent.resolve():
-        os.execv(str(VENV_PY), [str(VENV_PY), *sys.argv])
-    sys.exit('✗ Chưa có vieneu. Cài: bash "' + str(SKILL / 'install.sh') + '" --voice')
-from vieneu import Vieneu
+def load_vieneu():
+    try:
+        from vieneu import Vieneu
+        return Vieneu
+    except ImportError:
+        if VENV_PY.exists() and Path(sys.prefix).resolve() != VENV_PY.parent.parent.resolve():
+            os.execv(str(VENV_PY), [str(VENV_PY), *sys.argv])
+        sys.exit('✗ Chưa có vieneu. Cài: bash "' + str(SKILL / 'install.sh') + '" --voice')
+
+# Kiểu giọng. cao_do/toc_do là mặc định khi người dùng không ghi --cao-do/--toc-do; toc_do_that dùng cho bản ghi thật (--xu-ly).
+KIEU = {
+    'giang-duong': dict(cao_do=0.958, toc_do=1.07, toc_do_that=1.0, nghi=0.6, mau=[
+        'highpass=f=70',
+        'equalizer=f=130:t=q:w=0.9:g=2.5',      # thân giọng, ngực: ấm, chắc
+        'equalizer=f=320:t=q:w=1.2:g=-2',       # bớt ù, bớt «trong hộp»
+        'equalizer=f=2800:t=q:w=1.0:g=2.5',     # rõ chữ, vang, dõng dạc
+        'equalizer=f=7500:t=q:w=1.0:g=-1.5',    # dịu tiếng xì
+        'acompressor=threshold=-21dB:ratio=2.5:attack=12:release=180:makeup=1.5',   # đều tiếng, chắc
+        'aecho=0.9:0.9:28|47:0.07|0.04',        # chút vang phòng giảng, rất nhẹ
+    ]),
+    'goc': dict(cao_do=1.0, toc_do=1.0, toc_do_that=1.0, nghi=0.5, mau=[]),
+}
 
 def die(m): sys.exit('✗ ' + m)
 def run(*a, **k): return subprocess.run(a, check=True, capture_output=True, text=True, **k)
@@ -40,13 +59,39 @@ ap.add_argument('du_an', nargs='?')
 ap.add_argument('--mau'); ap.add_argument('--mau-tu', type=float); ap.add_argument('--mau-den', type=float)
 ap.add_argument('--giong'); ap.add_argument('--danh-sach', action='store_true')
 ap.add_argument('--chi-cau'); ap.add_argument('-o', '--ra')
-ap.add_argument('--cao-do', type=float, default=1.0); ap.add_argument('--toc-do', type=float, default=1.0)
-ap.add_argument('--nghi', type=float, default=0.5)
+ap.add_argument('--xu-ly', help='bản ghi âm thật: chỉ chỉnh theo --kieu, không tạo giọng')
+ap.add_argument('--kieu', choices=list(KIEU), default='giang-duong')
+ap.add_argument('--cao-do', type=float); ap.add_argument('--toc-do', type=float)
+ap.add_argument('--nghi', type=float)
 ap.add_argument('--cach-doc', default=str(SKILL / 'knowledge/llct-cach-doc.json'))
 ap.add_argument('--khong-kiem', action='store_true')
 o = ap.parse_args()
+K = KIEU[o.kieu]
+if o.nghi is None: o.nghi = K['nghi']
+if o.cao_do is None: o.cao_do = K['cao_do']
+if o.toc_do is None: o.toc_do = K['toc_do_that'] if o.xu_ly else K['toc_do']
 
-tts = Vieneu()
+def mau_giong():   # chuỗi lọc: cao độ/tốc độ + màu giọng theo kiểu
+    filters = run('ffmpeg', '-hide_banner', '-filters').stdout
+    fx = []
+    if abs(o.cao_do - 1) > 1e-3 or abs(o.toc_do - 1) > 1e-3:
+        if ' rubberband ' in filters: fx.append(f'rubberband=pitch={o.cao_do}:tempo={o.toc_do}:formant=preserved')
+        else: fx.append(f'asetrate=48000*{o.cao_do},aresample=48000,atempo={o.toc_do / o.cao_do:.4f}')
+    return fx + K['mau']
+
+# ---------- chỉ chỉnh bản ghi âm thật ----------
+if o.xu_ly:
+    if not Path(o.xu_ly).exists(): die(f'không thấy file ghi âm: {o.xu_ly}')
+    out = Path(o.ra) if o.ra else Path(o.du_an or '.') / 'giong-doc.wav'
+    if out.exists() and not o.ra: shutil.copy(out, out.with_name('giong-doc_truoc.wav'))
+    trim = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.3,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.6,areverse'
+    run('ffmpeg', '-v', 'error', '-y', '-i', o.xu_ly, '-af', ','.join(['aresample=48000', trim] + mau_giong() + ['adelay=300|300', 'apad=pad_dur=0.6', 'loudnorm=I=-16:TP=-1.5:LRA=11']),
+        '-ar', '44100', '-ac', '2', str(out))
+    dur = float(run('ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(out)).stdout)
+    print(f'Đã ghi {out} ({dur:.1f} giây, kiểu giọng {o.kieu}, cao độ ×{o.cao_do}, tốc độ ×{o.toc_do}). Bước tiếp: node phu-de.mjs <thư-mục-dự-án>')
+    sys.exit(0)
+
+tts = load_vieneu()()
 if o.danh_sach:
     for desc, name in tts.list_preset_voices(): print(f'  {name:16s} {desc}')
     tts.close(); sys.exit(0)
@@ -113,7 +158,7 @@ def hear(f):
 parts = []
 for i, s in enumerate(sentences):
     say = spoken(s); best = None
-    for temp in (0.6, 0.7, 0.5):
+    for temp in ((0.7, 0.6, 0.5) if o.kieu == 'giang-duong' else (0.6, 0.7, 0.5)):   # 0.7: ngữ điệu có lên xuống, truyền cảm hơn
         f = tmp / f'c{i}_{temp}.wav'; tts.save(tts.infer(text=say, temperature=temp, **kw), str(f))
         if not check: best = (1, f, ''); break
         heard = hear(f); r = difflib.SequenceMatcher(None, norm(say), norm(heard)).ratio()
@@ -126,11 +171,7 @@ for i, s in enumerate(sentences):
 tts.close()
 
 # ---------- hậu kỳ: cao độ, tốc độ, cắt lặng, nghỉ, ghép, âm lượng ----------
-filters = run('ffmpeg', '-hide_banner', '-filters').stdout
-fx = []
-if abs(o.cao_do - 1) > 1e-3 or abs(o.toc_do - 1) > 1e-3:
-    if ' rubberband ' in filters: fx.append(f'rubberband=pitch={o.cao_do}:tempo={o.toc_do}:formant=preserved')
-    else: fx.append(f'asetrate=48000*{o.cao_do},aresample=48000,atempo={o.toc_do / o.cao_do:.4f}')
+fx = mau_giong()
 trim = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse'
 done = []
 for i, f in enumerate(parts):
@@ -142,4 +183,4 @@ lead = '' if o.chi_cau else 'adelay=400,apad=pad_dur=0.8,'
 run('ffmpeg', '-v', 'error', '-y', *ins, '-filter_complex', f'concat=n={len(done)}:v=0:a=1,{lead}loudnorm=I=-16:TP=-1.5:LRA=11', '-ar', '44100', '-ac', '2', str(out))
 dur = float(run('ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(out)).stdout)
 shutil.rmtree(tmp, ignore_errors=True)
-print(f'Đã ghi {out} ({dur:.1f} giây, {len(sentences)} câu). Bước tiếp: node phu-de.mjs <thư-mục-dự-án>' + ('' if o.chi_cau else ''))
+print(f'Đã ghi {out} ({dur:.1f} giây, {len(sentences)} câu, kiểu giọng {o.kieu}). Bước tiếp: node phu-de.mjs <thư-mục-dự-án>')

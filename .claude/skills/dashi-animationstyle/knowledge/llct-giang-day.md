@@ -4,11 +4,16 @@ Dùng khi giảng viên muốn làm video giảng dạy cho 5 môn LLCT bậc đ
 
 ## 1. Quy trình (theo thứ tự, có 2 lần dừng chờ giảng viên duyệt)
 
-1. **Hỏi nhanh** (một lần): môn, bài/chương, khái niệm cần dạy; đối tượng (sinh viên năm mấy, chuyên hay không chuyên); độ dài (một đoạn 45–60 giây, hay 3–5 phút chia phần); giọng (giảng viên tự ghi âm / nhân bản giọng giảng viên / giọng có sẵn); phong cách (mặc định `ve-tay`); có cần bản dọc Shorts/TikTok không.
+1. **Hỏi nhanh** (một lần): môn, bài/chương, khái niệm cần dạy; đối tượng (sinh viên năm mấy, chuyên hay không chuyên); độ dài (một đoạn 45–60 giây, hay 3–5 phút chia phần); giọng (giảng viên tự ghi âm / nhân bản giọng giảng viên / giọng có sẵn). **Không hỏi** phong cách và khung hình: mặc định **vẽ tay (`ve-tay`)** và **ngang 16:9 (1920×1080)**; chỉ đổi khi giảng viên tự nêu.
+
+   **Mặc định cho mọi video LLCT** (giảng viên đã chốt):
+   - **Phong cách: vẽ tay (`ve-tay`)** — `tao-du-an.mjs … --style ve-tay`. Phong cách khác chỉ khi giảng viên yêu cầu (mục 8).
+   - **Khung hình: ngang 16:9**, 1920×1080 — đây là sản phẩm chính. **Bản dọc 9:16 (TikTok, YouTube Shorts) là tùy chọn**: chỉ làm khi giảng viên yêu cầu (mục 7); không tự làm, không hỏi mỗi lần, cuối buổi chỉ nhắc một dòng là có thể làm.
+   - **Giọng: kiểu `giang-duong`** — nam trung niên, truyền cảm, dõng dạc, đúng phong cách giảng đường đại học (mục 5). Áp cho cả giọng thật lẫn giọng nhân bản.
 2. **Viết lời thoại + phân cảnh** theo khung ở mục 2 → **dừng, giảng viên duyệt** (nội dung LLCT phải để giảng viên kiểm, xem mục 4). Đọc lại bằng danh sách kiểm ở mục 4 trước khi đưa.
 3. **Giọng đọc** (mục 5) → `phu-de.mjs` → xem bảng phụ đề (mục 6).
 4. **Vẽ cảnh** từ `mau.html` của phong cách (hoặc chép `examples/llct-gia-tri-thang-du/index.html` khi cùng phong cách `ve-tay`) → **3 ảnh tĩnh, dừng, giảng viên duyệt**.
-5. **Render**, kiểm độ phong phú (`kiem-tra-do-phong-phu.mjs`, cần ≥ 10), bản không phụ đề, bản dọc nếu cần (`xuat-doc.mjs`), ghép phần nếu nhiều phần (`ghep-phan.mjs`).
+5. **Render**, kiểm độ phong phú (`kiem-tra-do-phong-phu.mjs`, cần ≥ 10), bản không phụ đề, bản dọc chỉ khi giảng viên yêu cầu (`xuat-doc.mjs`), ghép phần nếu nhiều phần (`ghep-phan.mjs`).
 
 Một đoạn 45–60 giây mất khoảng 45–90 phút (phần lớn là vẽ cảnh). Bài 3–5 phút: chia 3–5 phần, mỗi phần một thư mục dự án, cùng phong cách, ghép lại ở cuối.
 
@@ -58,6 +63,23 @@ Ba lựa chọn, theo thứ tự ưu tiên:
 
 `tao-giong.py` tạo **từng câu**, cho whisper nghe lại, câu nào lệch thì tạo lại (tối đa 3 lần) — mô hình thỉnh thoảng tự đọc thêm chữ không có trong lời thoại. Ký hiệu và chữ viết tắt được đổi sang cách đọc theo `knowledge/llct-cach-doc.json` (c → «xê», v → «vê», m → «em», T' → «T phẩy», CNXH → «chủ nghĩa xã hội»…); phụ đề vẫn viết theo `loi-thoai.txt`. Chỉnh giọng nhân bản theo nhận xét: `--cao-do 0.958` (trầm hơn ~4%), `--toc-do 1.07` (nhanh hơn 7%) là mức giảng viên đã duyệt ở bài mẫu.
 
+### Kiểu giọng «giảng đường» (mặc định)
+
+Giảng viên đã chốt: giọng **nam trung niên, truyền cảm, dõng dạc, đúng phong cách giảng đường đại học**. `tao-giong.py` mặc định `--kieu giang-duong`:
+
+| Đặc điểm | Cách làm |
+|---|---|
+| Nam trung niên, trầm | hạ cao độ ~4% (`--cao-do 0.958`), giữ âm sắc (formant) để không méo giọng |
+| Thân giọng ấm, chắc | tăng nhẹ dải 130 Hz, giảm dải 320 Hz cho bớt ù |
+| Dõng dạc, rõ chữ | tăng dải 2,8 kHz (độ vang, độ «bật» của phụ âm), nén nhẹ cho các câu đều tiếng; dịu tiếng xì 7,5 kHz |
+| Không khí giảng đường | chút vang phòng rất nhẹ |
+| Truyền cảm, có nhịp | giọng nhân bản tạo với temperature 0,7 trước (ngữ điệu lên xuống), nghỉ 0,6 giây giữa câu; giọng thật giữ nguyên tốc độ |
+
+- **Giọng thật** (giảng viên tự ghi âm): `python3 pipeline/tao-giong.py <dự-án> --xu-ly ghi-am.m4a` → `giong-doc.wav` đã chỉnh (không cần cài vieneu), rồi `phu-de.mjs` như thường.
+- **Giọng nhân bản**: `python3 pipeline/tao-giong.py <dự-án> --mau mau-giong.m4a --mau-tu … --mau-den …` (kiểu giảng đường tự áp, tốc độ ×1,07 như mức đã duyệt).
+- Giảng viên chê «trầm quá / vang quá / nhanh quá»: chỉnh `--cao-do` (0,94–1,0), `--toc-do`, hoặc sửa bảng `KIEU` trong `tao-giong.py`; `--kieu goc` để tắt hẳn.
+- Lời thoại viết cho giọng dõng dạc: câu khẳng định ngắn, có câu hỏi mở đầu, nhấn bằng dấu phẩy trước từ khóa («bí mật nằm ở, một hàng hóa đặc biệt»).
+
 ## 6. Phụ đề, chữ trên hình, nhịp
 
 - `phu-de.mjs` tự dời ranh giới khi một dòng phụ đề ngắn dưới 0,8 giây (whisper hay dồn mấy từ đầu câu vào một thời điểm). Vẫn đọc bảng phụ đề một lượt.
@@ -65,10 +87,13 @@ Ba lựa chọn, theo thứ tự ưu tiên:
 - Chữ viết tay hiện từng ký tự: tối thiểu 0,075 giây/ký tự (khoảng 13 ký tự/giây) — mẫu `ve-tay` đã đặt sẵn (`WRITE_STEP`). Nhanh hơn thì người học không kịp đọc.
 - Phong cách chữ phụ đề to (`cat-giay`, `hoat-hinh-3d`, `cong-nghe-nen-den`): chạy `phu-de.mjs --max 25` để dòng không tràn.
 
-## 7. Bản dọc 9:16 (YouTube Shorts, TikTok)
+## 7. Bản dọc 9:16 (YouTube Shorts, TikTok) — tùy chọn, chỉ khi được yêu cầu
+
+Sản phẩm mặc định là bản ngang 16:9. Bản dọc làm thêm từ dự án ngang đã xong, khi giảng viên nói «làm bản dọc / bản TikTok / Shorts».
+
 
 `node pipeline/xuat-doc.mjs <thư-mục-dự-án> --tieu-de "Giá trị thặng dư" --nhan "Kinh tế chính trị Mác – Lênin" --dong-phu "Bí mật của T – H – T' trong 50 giây"`: render phần hình **chữ to** (`render.mjs --doc`, mẫu `ve-tay` phóng chữ nhỏ ×1,55, chữ vừa ×1,2–1,4), đặt tiêu đề phía trên, phụ đề chữ to ngay dưới hình, tránh vùng nút bên phải và chú thích phía dưới của TikTok/Shorts. Dưới 60 giây để vào Shorts. Ảnh bìa: tránh các thời điểm chuyển cảnh (trang đang lật/tẩy thì trống).
 
-## 8. Nhiều phong cách cho cùng một bài
+## 8. Nhiều phong cách cho cùng một bài — chỉ khi được yêu cầu (mặc định vẽ tay)
 
 `examples/llct-gia-tri-thang-du/gt-scenes.js` + `GT_THEME`: vẽ cảnh một lần trong khung 1640×710, gắn vào `mau.html` của từng phong cách (thay dòng «← 场景入口»), mỗi phong cách một bộ màu/font/kiểu nét (`flat`, `engrave`, `paper`, `collage`, `gloss`, `neon`). Xem `examples/llct-gia-tri-thang-du/README.md` mục «Nhiều phong cách». Video có hạt nhiễu toàn màn hình (`cat-giay`, `hoat-hinh-3d`) rất nặng: nén lại `-crf 26` trước khi đưa lên GitHub (giới hạn 100 MB/file).
