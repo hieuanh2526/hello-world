@@ -5,3 +5,4 @@ node_modules/
 *.mov
 检查/
 旧静帧/
+__pycache__/
