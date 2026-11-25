@@ -1,0 +1,157 @@
+{
+ "说明": "Giá trị thặng dư – phần 4: Ý nghĩa",
+ "duration": 41.39,
+ "标题": "Giá trị thặng dư",
+ "高亮": [
+  {
+   "text": "giá trị thặng dư",
+   "role": "A"
+  },
+  {
+   "text": "sức lao động",
+   "role": "B"
+  }
+ ],
+ "字幕强调": [
+  "hòn đá tảng",
+  "quy luật kinh tế tuyệt đối",
+  "hình thức chuyển hóa",
+  "chiếm không",
+  "lao động làm thuê"
+ ],
+ "marks": [
+  {
+   "name": "Lênin",
+   "cue": 1,
+   "phrase": "Lênin"
+  },
+  {
+   "name": "hòn đá tảng",
+   "cue": 1,
+   "phrase": "hòn đá tảng"
+  },
+  {
+   "name": "kinh tế của Mác",
+   "cue": 2,
+   "phrase": "kinh tế của Mác"
+  },
+  {
+   "name": "Vì sao",
+   "cue": 3,
+   "phrase": "Vì sao"
+  },
+  {
+   "name": "quy luật",
+   "cue": 5,
+   "phrase": "quy luật"
+  },
+  {
+   "name": "tuyệt đối",
+   "cue": 5,
+   "phrase": "tuyệt đối"
+  },
+  {
+   "name": "mục đích",
+   "cue": 6,
+   "phrase": "mục đích"
+  },
+  {
+   "name": "động lực",
+   "cue": 6,
+   "phrase": "động lực"
+  },
+  {
+   "name": "lợi nhuận",
+   "cue": 7,
+   "phrase": "lợi nhuận"
+  },
+  {
+   "name": "lợi tức",
+   "cue": 7,
+   "phrase": "lợi tức"
+  },
+  {
+   "name": "địa tô",
+   "cue": 7,
+   "phrase": "địa tô"
+  },
+  {
+   "name": "chuyển hóa",
+   "cue": 8,
+   "phrase": "chuyển hóa"
+  },
+  {
+   "name": "bản chất",
+   "cue": 9,
+   "phrase": "bản chất"
+  },
+  {
+   "name": "làm thuê",
+   "cue": 10,
+   "phrase": "làm thuê"
+  },
+  {
+   "name": "chiếm không",
+   "cue": 11,
+   "phrase": "chiếm không"
+  },
+  {
+   "name": "Việt Nam",
+   "cue": 13,
+   "phrase": "Việt Nam"
+  },
+  {
+   "name": "khuyến khích đầu tư",
+   "cue": 15,
+   "phrase": "khuyến khích đầu tư"
+  },
+  {
+   "name": "người lao động",
+   "cue": 16,
+   "phrase": "người lao động"
+  }
+ ],
+ "shots": [
+  {
+   "id": 1,
+   "cues": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "id": 2,
+   "cues": [
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "id": 3,
+   "cues": [
+    7,
+    8
+   ]
+  },
+  {
+   "id": 4,
+   "cues": [
+    9,
+    10,
+    11
+   ]
+  },
+  {
+   "id": 5,
+   "cues": [
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  }
+ ]
+}

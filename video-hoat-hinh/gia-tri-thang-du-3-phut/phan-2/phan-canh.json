@@ -1,0 +1,226 @@
+{
+ "说明": "Giá trị thặng dư – phần 2: Bản chất giá trị thặng dư",
+ "duration": 48.82,
+ "标题": "Giá trị thặng dư",
+ "高亮": [
+  {
+   "text": "giá trị thặng dư",
+   "role": "A"
+  },
+  {
+   "text": "sức lao động",
+   "role": "B"
+  }
+ ],
+ "字幕强调": [
+  "Tư bản bất biến",
+  "Tư bản khả biến",
+  "lao động tất yếu",
+  "lao động thặng dư",
+  "chiếm không"
+ ],
+ "marks": [
+  {
+   "name": "sinh ra",
+   "cue": 1,
+   "phrase": "sinh ra"
+  },
+  {
+   "name": "trong sản xuất",
+   "cue": 1,
+   "phrase": "trong sản xuất"
+  },
+  {
+   "name": "hai phần",
+   "cue": 2,
+   "phrase": "hai phần"
+  },
+  {
+   "name": "bất biến",
+   "cue": 3,
+   "phrase": "bất biến"
+  },
+  {
+   "name": "c5",
+   "cue": 3,
+   "phrase": "c"
+  },
+  {
+   "name": "máy móc",
+   "cue": 3,
+   "phrase": "máy móc"
+  },
+  {
+   "name": "nguyên liệu",
+   "cue": 3,
+   "phrase": "nguyên liệu"
+  },
+  {
+   "name": "chuyển nguyên",
+   "cue": 4,
+   "phrase": "chuyển nguyên"
+  },
+  {
+   "name": "sản phẩm",
+   "cue": 4,
+   "phrase": "sản phẩm"
+  },
+  {
+   "name": "khả biến",
+   "cue": 5,
+   "phrase": "khả biến"
+  },
+  {
+   "name": "v8",
+   "cue": 5,
+   "phrase": "v"
+  },
+  {
+   "name": "mua",
+   "cue": 5,
+   "phrase": "mua"
+  },
+  {
+   "name": "công nhân",
+   "cue": 5,
+   "phrase": "công nhân"
+  },
+  {
+   "name": "tám giờ",
+   "cue": 6,
+   "phrase": "tám giờ"
+  },
+  {
+   "name": "bốn giờ",
+   "cue": 7,
+   "phrase": "bốn giờ"
+  },
+  {
+   "name": "giá trị mới",
+   "cue": 8,
+   "phrase": "giá trị mới"
+  },
+  {
+   "name": "ngang với",
+   "cue": 8,
+   "phrase": "ngang với"
+  },
+  {
+   "name": "tất yếu",
+   "cue": 9,
+   "phrase": "tất yếu"
+  },
+  {
+   "name": "còn lại",
+   "cue": 10,
+   "phrase": "còn lại"
+  },
+  {
+   "name": "lao động thặng dư",
+   "cue": 10,
+   "phrase": "lao động thặng dư"
+  },
+  {
+   "name": "chiếm không",
+   "cue": 11,
+   "phrase": "chiếm không"
+  },
+  {
+   "name": "giá trị thặng dư",
+   "cue": 12,
+   "phrase": "giá trị thặng dư"
+  },
+  {
+   "name": "m16",
+   "cue": 12,
+   "phrase": "m"
+  },
+  {
+   "name": "hàng hóa",
+   "cue": 13,
+   "phrase": "hàng hóa"
+  },
+  {
+   "name": "c17",
+   "cue": 13,
+   "phrase": "c"
+  },
+  {
+   "name": "v17",
+   "cue": 13,
+   "phrase": "v"
+  },
+  {
+   "name": "m17",
+   "cue": 13,
+   "phrase": "m"
+  },
+  {
+   "name": "tỷ suất",
+   "cue": 14,
+   "phrase": "tỷ suất"
+  },
+  {
+   "name": "m trên v",
+   "cue": 14,
+   "phrase": "m trên v"
+  },
+  {
+   "name": "một trăm",
+   "cue": 15,
+   "phrase": "một trăm phần trăm"
+  }
+ ],
+ "shots": [
+  {
+   "id": 1,
+   "cues": [
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "cues": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "id": 3,
+   "cues": [
+    5
+   ]
+  },
+  {
+   "id": 4,
+   "cues": [
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": 5,
+   "cues": [
+    10,
+    11,
+    12
+   ]
+  },
+  {
+   "id": 6,
+   "cues": [
+    13
+   ]
+  },
+  {
+   "id": 7,
+   "cues": [
+    14,
+    15
+   ]
+  }
+ ]
+}

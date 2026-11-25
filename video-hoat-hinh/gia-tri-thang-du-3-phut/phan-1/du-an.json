@@ -1,0 +1,10 @@
+{
+  "style": "ve-tay",
+  "audio": "giong-doc.wav",
+  "subtitles": "phu-de.json",
+  "storyboard": "phan-canh.json",
+  "timeline": "timeline.js",
+  "page": "index.html",
+  "output": "phan-1.mp4",
+  "lang": "vi"
+}

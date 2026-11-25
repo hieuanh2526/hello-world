@@ -1,0 +1,16 @@
+Văn bản whisper nghe được (giong-doc.wav, 48.77 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+
+0.00–3.98  Vậy, giá trị thẳng dư sinh ra như thế nào trong sản xuất?
+4.66–6.86  Nhà tư bản ứng trước 2 phần tư bản.
+7.28–10.44  Tư bản bất biến ký hiệu C mua máy móc và nguyên liệu.
+10.88–13.86  Giá trị của nó chỉ chuyển nguyên vào sản phẩm.
+14.44–18.34  Tư bản khả biến ký hiệu V mua sức lao động của công nhân.
+18.76–21.08  Giả sử một ngày lao động là 8 giờ,
+21.50–24.32  chỉ sau 4 giờ công nhân đã tạo ra một lượng giá trị mới
+24.32–26.12  ngang với giá trị sức lao động của mình.
+26.32–28.26  Đó là thời gian lao động tất yếu.
+28.70–30.90  4 giờ lao động còn lại là thời gian lao động thẳng dư.
+31.36–34.24  Giá trị mới do tạo ra trong thời gian này
+34.24–39.58  bị nhà tư bản chiếm không gọi là giá trị thẳng dư ký hiệu M.
+39.98–42.74  Vì vậy, giá trị hàng hóa bằng C cộng V cộng M.
+43.40–48.16  Tỷ suất giá trị thẳng dư M trên V ở đây là 100%.

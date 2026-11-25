@@ -1,0 +1,59 @@
+1
+00:00:00,000 --> 00:00:04,650
+Vậy giá trị thặng dư sinh ra như thế nào trong sản xuất
+
+2
+00:00:04,650 --> 00:00:07,270
+Nhà tư bản ứng trước hai phần tư bản
+
+3
+00:00:07,270 --> 00:00:10,770
+Tư bản bất biến ký hiệu c mua máy móc và nguyên liệu
+
+4
+00:00:10,770 --> 00:00:14,410
+giá trị của nó chỉ chuyển nguyên vào sản phẩm
+
+5
+00:00:14,410 --> 00:00:18,650
+Tư bản khả biến ký hiệu v mua sức lao động của công nhân
+
+6
+00:00:18,650 --> 00:00:21,440
+Giả sử một ngày lao động là tám giờ
+
+7
+00:00:21,440 --> 00:00:22,940
+Chỉ sau bốn giờ công nhân đã tạo ra
+
+8
+00:00:22,940 --> 00:00:26,600
+một lượng giá trị mới ngang với giá trị sức lao động của mình
+
+9
+00:00:26,600 --> 00:00:28,620
+Đó là thời gian lao động tất yếu
+
+10
+00:00:28,620 --> 00:00:31,300
+Bốn giờ lao động còn lại là thời gian lao động thặng dư
+
+11
+00:00:31,300 --> 00:00:35,790
+Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm không
+
+12
+00:00:35,790 --> 00:00:39,320
+gọi là giá trị thặng dư ký hiệu m
+
+13
+00:00:39,320 --> 00:00:43,360
+Vì vậy giá trị hàng hóa bằng c cộng v cộng m
+
+14
+00:00:43,360 --> 00:00:45,870
+Tỷ suất giá trị thặng dư m trên v
+
+15
+00:00:45,870 --> 00:00:48,770
+ở đây là một trăm phần trăm

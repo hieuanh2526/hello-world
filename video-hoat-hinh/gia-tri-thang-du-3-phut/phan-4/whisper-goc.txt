@@ -1,0 +1,9 @@
+Văn bản whisper nghe được (giong-doc.wav, 41.34 giây, model ggml-large-v3-turbo-q5_0.bin). Thời gian tính bằng giây; mỗi lần chạy phu-de.mjs sẽ ghi đè file này.
+
+0.00–5.18  Lê Niên gọi học thuyết giá trị thẳng dư là hòn đá tảng trong học thuyết kinh tế của Mark.
+5.86–6.48  Vì sao vậy?
+7.12–15.12  Thứ nhất, sản xuất giá trị thẳng dư là quy luật kinh tế tuyệt đối của chủ nghĩa tư bản, quyết định mục đích và động lực của nền sản xuất ấy.
+15.82–21.36  Thứ hai, lợi nhuận, lợi tức và địa tô đều là những hình thức chuyển hóa của giá trị thẳng dư.
+21.74–25.04  Thứ ba, học thuyết này vạch rõ bản chất của quan hệ tư bản.
+25.56–30.22  Giá trị mới do lao động làm thuê tạo ra nhưng phần thẳng dư bị nhà tư bản chiếm không?
+30.80–40.14  Câu hỏi thảo luận, trong nền kinh tế thị trường bệnh hướng xã hội chủ nghĩa ở Việt Nam, chúng ta vận dụng lý luận này thế nào để vừa khuyến khích đầu tư, vừa bảo vệ quyền lợi người lao động?

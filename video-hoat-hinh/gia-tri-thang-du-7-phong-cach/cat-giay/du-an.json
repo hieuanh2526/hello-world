@@ -1,0 +1,11 @@
+{
+  "style": "cat-giay",
+  "audio": "giong-doc.wav",
+  "subtitles": "phu-de.json",
+  "storyboard": "phan-canh.json",
+  "timeline": "timeline.js",
+  "page": "index.html",
+  "output": "gttd_cat-giay.mp4",
+  "lang": "vi",
+  "format": "jpeg"
+}

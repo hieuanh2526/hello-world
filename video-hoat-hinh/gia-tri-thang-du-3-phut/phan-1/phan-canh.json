@@ -1,0 +1,204 @@
+{
+ "说明": "Giá trị thặng dư – phần 1: Hàng hóa sức lao động",
+ "duration": 59.7,
+ "标题": "Giá trị thặng dư",
+ "高亮": [
+  {
+   "text": "giá trị thặng dư",
+   "role": "A"
+  },
+  {
+   "text": "sức lao động",
+   "role": "B"
+  }
+ ],
+ "字幕强调": [
+  "hàng hóa đặc biệt",
+  "ngang giá",
+  "hai điều kiện",
+  "hai thuộc tính",
+  "giá trị sử dụng",
+  "tự do về thân thể",
+  "tư liệu sản xuất",
+  "giá trị mới"
+ ],
+ "marks": [
+  {
+   "name": "công thức",
+   "cue": 1,
+   "phrase": "công thức"
+  },
+  {
+   "name": "bỏ tiền",
+   "cue": 2,
+   "phrase": "bỏ tiền"
+  },
+  {
+   "name": "thu về",
+   "cue": 3,
+   "phrase": "thu về"
+  },
+  {
+   "name": "lớn hơn",
+   "cue": 3,
+   "phrase": "lớn hơn"
+  },
+  {
+   "name": "ngang giá",
+   "cue": 4,
+   "phrase": "ngang giá"
+  },
+  {
+   "name": "không tạo ra",
+   "cue": 5,
+   "phrase": "không tạo ra"
+  },
+  {
+   "name": "tăng thêm",
+   "cue": 6,
+   "phrase": "tăng thêm"
+  },
+  {
+   "name": "từ đâu",
+   "cue": 6,
+   "phrase": "từ đâu"
+  },
+  {
+   "name": "Các Mác",
+   "cue": 7,
+   "phrase": "Các Mác"
+  },
+  {
+   "name": "thị trường",
+   "cue": 8,
+   "phrase": "thị trường"
+  },
+  {
+   "name": "hàng hóa đặc biệt",
+   "cue": 8,
+   "phrase": "hàng hóa đặc biệt"
+  },
+  {
+   "name": "sức lao động",
+   "cue": 9,
+   "phrase": "sức lao động"
+  },
+  {
+   "name": "hai điều kiện",
+   "cue": 10,
+   "phrase": "hai điều kiện"
+  },
+  {
+   "name": "tự do",
+   "cue": 11,
+   "phrase": "tự do"
+  },
+  {
+   "name": "không có tư liệu",
+   "cue": 12,
+   "phrase": "không có tư liệu sản xuất"
+  },
+  {
+   "name": "buộc phải bán",
+   "cue": 13,
+   "phrase": "buộc phải bán"
+  },
+  {
+   "name": "hai thuộc tính",
+   "cue": 14,
+   "phrase": "hai thuộc tính"
+  },
+  {
+   "name": "tư liệu sinh hoạt",
+   "cue": 15,
+   "phrase": "tư liệu sinh hoạt"
+  },
+  {
+   "name": "nuôi sống",
+   "cue": 16,
+   "phrase": "nuôi sống"
+  },
+  {
+   "name": "gia đình",
+   "cue": 17,
+   "phrase": "gia đình"
+  },
+  {
+   "name": "đào tạo",
+   "cue": 17,
+   "phrase": "đào tạo"
+  },
+  {
+   "name": "giá trị sử dụng",
+   "cue": 18,
+   "phrase": "giá trị sử dụng"
+  },
+  {
+   "name": "tiêu dùng",
+   "cue": 19,
+   "phrase": "tiêu dùng"
+  },
+  {
+   "name": "giá trị mới",
+   "cue": 20,
+   "phrase": "giá trị mới"
+  },
+  {
+   "name": "lớn hơn giá trị",
+   "cue": 20,
+   "phrase": "lớn hơn giá trị"
+  }
+ ],
+ "shots": [
+  {
+   "id": 1,
+   "cues": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "id": 2,
+   "cues": [
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "id": 3,
+   "cues": [
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": 4,
+   "cues": [
+    10,
+    11,
+    12,
+    13
+   ]
+  },
+  {
+   "id": 5,
+   "cues": [
+    14,
+    15,
+    16,
+    17
+   ]
+  },
+  {
+   "id": 6,
+   "cues": [
+    18,
+    19,
+    20
+   ]
+  }
+ ]
+}

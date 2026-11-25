@@ -1,0 +1,10 @@
+{
+  "style": "so-do-phang",
+  "audio": "giong-doc.wav",
+  "subtitles": "phu-de.json",
+  "storyboard": "phan-canh.json",
+  "timeline": "timeline.js",
+  "page": "index.html",
+  "output": "gttd_so-do-phang.mp4",
+  "lang": "vi"
+}

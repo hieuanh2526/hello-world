@@ -1,0 +1,67 @@
+1
+00:00:00,000 --> 00:00:04,270
+Vì sao nhà tư bản bỏ tiền ra rồi thu về nhiều tiền hơn
+
+2
+00:00:04,270 --> 00:00:06,920
+Theo Các Mác bí mật nằm ở một hàng hóa đặc biệt
+
+3
+00:00:06,920 --> 00:00:08,590
+sức lao động
+
+4
+00:00:08,590 --> 00:00:11,300
+Nhà tư bản ứng trước hai phần tư bản
+
+5
+00:00:11,300 --> 00:00:14,770
+Tư bản bất biến ký hiệu c mua máy móc và nguyên liệu
+
+6
+00:00:14,770 --> 00:00:17,550
+giá trị của nó chỉ chuyển nguyên vào sản phẩm
+
+7
+00:00:17,550 --> 00:00:21,470
+Tư bản khả biến ký hiệu v mua sức lao động của công nhân
+
+8
+00:00:21,470 --> 00:00:24,580
+Giả sử một ngày lao động là tám giờ
+
+9
+00:00:24,580 --> 00:00:25,820
+Chỉ sau bốn giờ công nhân đã tạo ra
+
+10
+00:00:25,820 --> 00:00:30,610
+lượng giá trị mới ngang với giá trị sức lao động của mình
+
+11
+00:00:30,610 --> 00:00:32,920
+Đó là thời gian lao động tất yếu
+
+12
+00:00:32,920 --> 00:00:35,930
+Bốn giờ còn lại là thời gian lao động thặng dư
+
+13
+00:00:35,930 --> 00:00:39,510
+Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm không
+
+14
+00:00:39,510 --> 00:00:42,320
+gọi là giá trị thặng dư ký hiệu m
+
+15
+00:00:42,320 --> 00:00:45,570
+Vì vậy giá trị hàng hóa bằng c cộng v cộng m
+
+16
+00:00:45,570 --> 00:00:47,560
+Tỷ suất giá trị thặng dư m trên v
+
+17
+00:00:47,560 --> 00:00:50,860
+ở đây là một trăm phần trăm

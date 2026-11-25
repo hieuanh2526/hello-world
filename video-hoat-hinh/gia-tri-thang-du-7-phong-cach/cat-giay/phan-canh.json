@@ -1,0 +1,313 @@
+{
+ "说明": "Video giảng dạy: Giá trị thặng dư (K. Marx). Phong cách ve-tay. Thời gian lấy từ phu-de.json.",
+ "duration": 50.91,
+ "标题": "Giá trị thặng dư",
+ "高亮": [
+  {
+   "text": "giá trị thặng dư",
+   "role": "A"
+  },
+  {
+   "text": "sức lao động",
+   "role": "B"
+  }
+ ],
+ "字幕强调": [
+  "Tư bản bất biến",
+  "Tư bản khả biến",
+  "hàng hóa đặc biệt",
+  "lao động tất yếu",
+  "lao động thặng dư",
+  "chiếm không"
+ ],
+ "marks": [
+  {
+   "name": "bỏ tiền",
+   "cue": 1,
+   "phrase": "bỏ tiền"
+  },
+  {
+   "name": "thu về",
+   "cue": 1,
+   "phrase": "thu về"
+  },
+  {
+   "name": "nhiều tiền hơn",
+   "cue": 1,
+   "phrase": "nhiều tiền hơn"
+  },
+  {
+   "name": "Các Mác",
+   "cue": 2,
+   "phrase": "Các Mác"
+  },
+  {
+   "name": "hàng hóa đặc biệt",
+   "cue": 2,
+   "phrase": "hàng hóa đặc biệt"
+  },
+  {
+   "name": "sức lao động",
+   "cue": 3,
+   "phrase": "sức lao động"
+  },
+  {
+   "name": "hai phần",
+   "cue": 4,
+   "phrase": "hai phần"
+  },
+  {
+   "name": "bất biến",
+   "cue": 5,
+   "phrase": "bất biến"
+  },
+  {
+   "name": "c5",
+   "cue": 5,
+   "phrase": "c"
+  },
+  {
+   "name": "máy móc",
+   "cue": 5,
+   "phrase": "máy móc"
+  },
+  {
+   "name": "nguyên liệu",
+   "cue": 5,
+   "phrase": "nguyên liệu"
+  },
+  {
+   "name": "chuyển nguyên",
+   "cue": 6,
+   "phrase": "chuyển nguyên"
+  },
+  {
+   "name": "sản phẩm",
+   "cue": 6,
+   "phrase": "sản phẩm"
+  },
+  {
+   "name": "khả biến",
+   "cue": 7,
+   "phrase": "khả biến"
+  },
+  {
+   "name": "v8",
+   "cue": 7,
+   "phrase": "v"
+  },
+  {
+   "name": "mua",
+   "cue": 7,
+   "phrase": "mua"
+  },
+  {
+   "name": "công nhân",
+   "cue": 7,
+   "phrase": "công nhân"
+  },
+  {
+   "name": "tám giờ",
+   "cue": 8,
+   "phrase": "tám giờ"
+  },
+  {
+   "name": "bốn giờ",
+   "cue": 9,
+   "phrase": "bốn giờ"
+  },
+  {
+   "name": "giá trị mới",
+   "cue": 10,
+   "phrase": "giá trị mới"
+  },
+  {
+   "name": "ngang với",
+   "cue": 10,
+   "phrase": "ngang với"
+  },
+  {
+   "name": "tất yếu",
+   "cue": 11,
+   "phrase": "tất yếu"
+  },
+  {
+   "name": "còn lại",
+   "cue": 12,
+   "phrase": "còn lại"
+  },
+  {
+   "name": "lao động thặng dư",
+   "cue": 12,
+   "phrase": "lao động thặng dư"
+  },
+  {
+   "name": "chiếm không",
+   "cue": 14,
+   "phrase": "chiếm không"
+  },
+  {
+   "name": "giá trị thặng dư",
+   "cue": 15,
+   "phrase": "giá trị thặng dư"
+  },
+  {
+   "name": "m16",
+   "cue": 15,
+   "phrase": "m"
+  },
+  {
+   "name": "hàng hóa",
+   "cue": 16,
+   "phrase": "hàng hóa"
+  },
+  {
+   "name": "c17",
+   "cue": 16,
+   "phrase": "c"
+  },
+  {
+   "name": "v17",
+   "cue": 16,
+   "phrase": "v"
+  },
+  {
+   "name": "m17",
+   "cue": 16,
+   "phrase": "m"
+  },
+  {
+   "name": "tỷ suất",
+   "cue": 17,
+   "phrase": "tỷ suất"
+  },
+  {
+   "name": "m trên v",
+   "cue": 17,
+   "phrase": "m trên v"
+  },
+  {
+   "name": "một trăm",
+   "cue": 18,
+   "phrase": "một trăm phần trăm"
+  }
+ ],
+ "shots": [
+  {
+   "id": 1,
+   "cues": [
+    1
+   ],
+   "title": "Bỏ tiền ra, thu về nhiều hơn?",
+   "时间点": [
+    "bỏ tiền",
+    "thu về",
+    "nhiều tiền hơn"
+   ]
+  },
+  {
+   "id": 2,
+   "cues": [
+    2,
+    3
+   ],
+   "title": "Hàng hóa đặc biệt: sức lao động",
+   "时间点": [
+    "Các Mác",
+    "hàng hóa đặc biệt",
+    "sức lao động"
+   ]
+  },
+  {
+   "id": 3,
+   "cues": [
+    4,
+    5,
+    6
+   ],
+   "title": "Tư bản bất biến c",
+   "时间点": [
+    "hai phần",
+    "bất biến",
+    "c5",
+    "máy móc",
+    "nguyên liệu",
+    "chuyển nguyên",
+    "sản phẩm"
+   ]
+  },
+  {
+   "id": 4,
+   "cues": [
+    7
+   ],
+   "title": "Tư bản khả biến v",
+   "时间点": [
+    "khả biến",
+    "v8",
+    "mua",
+    "công nhân"
+   ]
+  },
+  {
+   "id": 5,
+   "cues": [
+    8,
+    9,
+    10,
+    11
+   ],
+   "title": "Thời gian lao động tất yếu",
+   "时间点": [
+    "tám giờ",
+    "bốn giờ",
+    "giá trị mới",
+    "ngang với",
+    "tất yếu"
+   ]
+  },
+  {
+   "id": 6,
+   "cues": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "title": "Thời gian lao động thặng dư",
+   "时间点": [
+    "còn lại",
+    "lao động thặng dư",
+    "chiếm không",
+    "giá trị thặng dư",
+    "m16"
+   ]
+  },
+  {
+   "id": 7,
+   "cues": [
+    16
+   ],
+   "title": "G = c + v + m",
+   "时间点": [
+    "hàng hóa",
+    "c17",
+    "v17",
+    "m17"
+   ]
+  },
+  {
+   "id": 8,
+   "cues": [
+    17,
+    18
+   ],
+   "title": "m' = m / v",
+   "时间点": [
+    "tỷ suất",
+    "m trên v",
+    "một trăm"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,83 @@
+1
+00:00:00,130 --> 00:00:02,420
+Muốn thu nhiều giá trị thặng dư hơn
+
+2
+00:00:02,420 --> 00:00:04,680
+nhà tư bản dùng hai phương pháp
+
+3
+00:00:04,680 --> 00:00:07,360
+Thứ nhất là sản xuất giá trị thặng dư tuyệt đối
+
+4
+00:00:07,360 --> 00:00:08,490
+kéo dài ngày lao động
+
+5
+00:00:08,490 --> 00:00:11,190
+trong khi thời gian lao động tất yếu không đổi
+
+6
+00:00:11,190 --> 00:00:13,460
+Ngày lao động tăng từ tám lên mười giờ
+
+7
+00:00:13,460 --> 00:00:15,540
+thời gian tất yếu vẫn là bốn giờ
+
+8
+00:00:15,540 --> 00:00:17,810
+thời gian thặng dư tăng lên sáu giờ
+
+9
+00:00:17,810 --> 00:00:19,050
+tỷ suất giá trị thặng dư tăng
+
+10
+00:00:19,050 --> 00:00:21,850
+từ một trăm lên một trăm năm mươi phần trăm
+
+11
+00:00:21,850 --> 00:00:24,220
+Thứ hai là sản xuất giá trị thặng dư tương đối
+
+12
+00:00:24,220 --> 00:00:26,310
+ngày lao động giữ nguyên
+
+13
+00:00:26,310 --> 00:00:28,790
+nhưng rút ngắn thời gian lao động tất yếu
+
+14
+00:00:28,790 --> 00:00:33,280
+nhờ tăng năng suất lao động xã hội làm giảm giá trị tư liệu sinh hoạt
+
+15
+00:00:33,280 --> 00:00:34,390
+Ngày lao động vẫn tám giờ
+
+16
+00:00:34,390 --> 00:00:36,410
+thời gian tất yếu giảm còn hai giờ
+
+17
+00:00:36,410 --> 00:00:38,620
+thời gian thặng dư là sáu giờ
+
+18
+00:00:38,620 --> 00:00:40,790
+tỷ suất lên ba trăm phần trăm
+
+19
+00:00:40,790 --> 00:00:43,310
+Doanh nghiệp nào áp dụng kỹ thuật mới sớm hơn
+
+20
+00:00:43,310 --> 00:00:45,330
+có giá trị cá biệt thấp hơn giá trị xã hội
+
+21
+00:00:45,330 --> 00:00:48,930
+sẽ thu thêm giá trị thặng dư siêu ngạch

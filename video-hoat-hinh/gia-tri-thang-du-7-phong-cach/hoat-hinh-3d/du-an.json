@@ -1,0 +1,11 @@
+{
+  "style": "hoat-hinh-3d",
+  "audio": "giong-doc.wav",
+  "subtitles": "phu-de.json",
+  "storyboard": "phan-canh.json",
+  "timeline": "timeline.js",
+  "page": "index.html",
+  "output": "gttd_hoat-hinh-3d.mp4",
+  "lang": "vi",
+  "format": "jpeg"
+}
