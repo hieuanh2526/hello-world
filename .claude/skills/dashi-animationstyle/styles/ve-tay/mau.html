@@ -38,7 +38,10 @@ const SH = (k) => TL.shots[k - 1];
 const F_HAND = '"Patrick Hand", "Hannotate SC", "HanziPen SC", "PingFang SC", sans-serif';
 const F_ROUND = '"Nunito", "Yuanti SC", "Hannotate SC", "PingFang SC", sans-serif';
 const F_EN = '"Nunito", "Arial Rounded MT Bold", "Hannotate SC", "PingFang SC", sans-serif';
-const hand = (s, w = 700) => `${w} ${s}px ${F_HAND}`;
+// ?doc=1 (render.mjs --doc, bản dọc 9:16): chữ trong hình to hơn — chữ nhỏ tăng nhiều hơn — để vẫn đọc được khi khung ngang thu về 1080 px
+const DOC = /[?&]doc=1/.test(location.search);
+const DOC_K = (s) => (!DOC ? 1 : s < 45 ? 1.55 : s < 60 ? 1.4 : s < 90 ? 1.2 : 1.05);
+const hand = (s, w = 700) => `${w} ${Math.round(s * DOC_K(s))}px ${F_HAND}`;
 const round = (s) => `700 ${s}px ${F_ROUND}`;
 const en = (s) => `400 ${s}px ${F_EN}`;
 

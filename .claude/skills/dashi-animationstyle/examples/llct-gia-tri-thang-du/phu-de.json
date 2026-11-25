@@ -1,0 +1,1404 @@
+{
+ "ghi_chu": "Thời gian tính bằng giây, theo file giọng đọc. start/end là lúc bắt đầu/kết thúc lời nói; show/hide là lúc phụ đề hiện/ẩn trên hình (hiện sớm hơn lời 0,05 giây, giữ đến khi dòng sau hiện). chars là thời gian từng từ.",
+ "phuong_phap": "whisper-cli (ggml-large-v3-turbo-q5_0.bin, thời gian từng từ bằng DTW) + chỉnh chỗ ngắt câu theo khoảng lặng",
+ "nguon": {
+  "am_thanh": "giong-doc.wav",
+  "loi_thoai": "loi-thoai.txt"
+ },
+ "sua_theo_loi_thoai": [
+  "12.10–12.24 giây  xe → c",
+  "18.64–19.04 giây  về một → v mua",
+  "23.32–23.57 giây  8 → tám",
+  "24.49–24.74 giây  4 → bốn",
+  "34.14–34.19 giây  4 → Bốn",
+  "35.95–36.92 giây  thạng dự → thặng dư",
+  "42.09–42.51 giây  thạng → thặng",
+  "43.17–43.67 giây  em → m",
+  "47.12–48.34 giây  em Kỷ → m Tỷ",
+  "49.44–49.92 giây  giữa em → dư m",
+  "50.24–50.40 giây  về → v",
+  "50.88–51.94 giây  100 % → một trăm phần trăm"
+ ],
+ "can_kiem_tra": [
+  "Dòng «Theo Các Mác bí mật nằm» chỉ hiện 0.57 giây: đã dời ranh giới với dòng bên cạnh tới giây 5.79 (theo số chữ)",
+  "Dòng «Tư bản bất biến ký hiệu» chỉ hiện 0.45 giây: đã dời ranh giới với dòng bên cạnh tới giây 12.45 (theo số chữ)",
+  "Dòng «Giá trị mới tạo ra trong» chỉ hiện 0.65 giây: đã dời ranh giới với dòng bên cạnh tới giây 39.12 (theo số chữ)"
+ ],
+ "duration": 52.84,
+ "speech": {
+  "start": 0,
+  "end": 51.74
+ },
+ "text": "Vì sao nhà tư bản bỏ tiền ra, rồi thu về nhiều tiền hơn? Theo Các Mác bí mật nằm, ở một hàng hóa đặc biệt: sức lao động. Nhà tư bản ứng trước hai phần tư bản. Tư bản bất biến ký hiệu, c mua máy móc và nguyên liệu; giá trị của nó chỉ chuyển nguyên vào sản phẩm. Tư bản khả biến ký hiệu v mua, sức lao động của công nhân. Giả sử một ngày lao động là tám giờ. Chỉ sau bốn giờ công nhân đã tạo ra, lượng giá trị mới ngang với, giá trị sức lao động của mình. Đó là thời gian lao động tất yếu. Bốn giờ còn lại là thời gian lao động thặng dư. Giá trị mới tạo ra trong, thời gian này bị nhà tư bản chiếm không, gọi là giá trị thặng dư ký hiệu m. Vì vậy giá trị hàng hóa bằng c cộng v cộng m. Tỷ suất giá trị thặng dư m trên v, ở đây là một trăm phần trăm.",
+ "sentences": [
+  {
+   "id": 1,
+   "text": "Vì sao nhà tư bản bỏ tiền ra rồi thu về nhiều tiền hơn",
+   "start": 0,
+   "end": 3.99,
+   "cues": [
+    1,
+    2
+   ]
+  },
+  {
+   "id": 2,
+   "text": "Theo Các Mác bí mật nằm ở một hàng hóa đặc biệt sức lao động",
+   "start": 4.74,
+   "end": 7.94,
+   "cues": [
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "id": 3,
+   "text": "Nhà tư bản ứng trước hai phần tư bản",
+   "start": 8.69,
+   "end": 10.69,
+   "cues": [
+    6
+   ]
+  },
+  {
+   "id": 4,
+   "text": "Tư bản bất biến ký hiệu c mua máy móc và nguyên liệu giá trị của nó chỉ chuyển nguyên vào sản phẩm",
+   "start": 11.45,
+   "end": 17.24,
+   "cues": [
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": 5,
+   "text": "Tư bản khả biến ký hiệu v mua sức lao động của công nhân",
+   "start": 17.98,
+   "end": 21.08,
+   "cues": [
+    10,
+    11
+   ]
+  },
+  {
+   "id": 6,
+   "text": "Giả sử một ngày lao động là tám giờ",
+   "start": 21.85,
+   "end": 23.99,
+   "cues": [
+    12
+   ]
+  },
+  {
+   "id": 7,
+   "text": "Chỉ sau bốn giờ công nhân đã tạo ra lượng giá trị mới ngang với giá trị sức lao động của mình",
+   "start": 23.99,
+   "end": 30.62,
+   "cues": [
+    13,
+    14,
+    15
+   ]
+  },
+  {
+   "id": 8,
+   "text": "Đó là thời gian lao động tất yếu",
+   "start": 31.35,
+   "end": 33.17,
+   "cues": [
+    16
+   ]
+  },
+  {
+   "id": 9,
+   "text": "Bốn giờ còn lại là thời gian lao động thặng dư",
+   "start": 33.17,
+   "end": 36.92,
+   "cues": [
+    17
+   ]
+  },
+  {
+   "id": 10,
+   "text": "Giá trị mới tạo ra trong thời gian này bị nhà tư bản chiếm không gọi là giá trị thặng dư ký hiệu m",
+   "start": 37.81,
+   "end": 43.86,
+   "cues": [
+    18,
+    19,
+    20
+   ]
+  },
+  {
+   "id": 11,
+   "text": "Vì vậy giá trị hàng hóa bằng c cộng v cộng m",
+   "start": 44.66,
+   "end": 47.46,
+   "cues": [
+    21
+   ]
+  },
+  {
+   "id": 12,
+   "text": "Tỷ suất giá trị thặng dư m trên v ở đây là một trăm phần trăm",
+   "start": 48.24,
+   "end": 51.74,
+   "cues": [
+    22,
+    23
+   ]
+  }
+ ],
+ "cues": [
+  {
+   "id": 1,
+   "text": "Vì sao nhà tư bản bỏ tiền ra",
+   "start": 0,
+   "end": 1.86,
+   "show": 0,
+   "hide": 1.95
+  },
+  {
+   "id": 2,
+   "text": "rồi thu về nhiều tiền hơn",
+   "start": 2,
+   "end": 3.99,
+   "show": 1.95,
+   "hide": 4.69
+  },
+  {
+   "id": 3,
+   "text": "Theo Các Mác bí mật nằm",
+   "start": 4.74,
+   "end": 5.79,
+   "show": 4.69,
+   "hide": 5.79
+  },
+  {
+   "id": 4,
+   "text": "ở một hàng hóa đặc biệt",
+   "start": 5.79,
+   "end": 6.88,
+   "show": 5.79,
+   "hide": 6.89
+  },
+  {
+   "id": 5,
+   "text": "sức lao động",
+   "start": 6.94,
+   "end": 7.94,
+   "show": 6.89,
+   "hide": 8.64
+  },
+  {
+   "id": 6,
+   "text": "Nhà tư bản ứng trước hai phần tư bản",
+   "start": 8.69,
+   "end": 10.69,
+   "show": 8.64,
+   "hide": 11.4
+  },
+  {
+   "id": 7,
+   "text": "Tư bản bất biến ký hiệu",
+   "start": 11.45,
+   "end": 12.45,
+   "show": 11.4,
+   "hide": 12.45
+  },
+  {
+   "id": 8,
+   "text": "c mua máy móc và nguyên liệu",
+   "start": 12.45,
+   "end": 13.73,
+   "show": 12.45,
+   "hide": 13.84
+  },
+  {
+   "id": 9,
+   "text": "giá trị của nó chỉ chuyển nguyên vào sản phẩm",
+   "start": 13.89,
+   "end": 17.24,
+   "show": 13.84,
+   "hide": 17.93
+  },
+  {
+   "id": 10,
+   "text": "Tư bản khả biến ký hiệu v mua",
+   "start": 17.98,
+   "end": 18.87,
+   "show": 17.93,
+   "hide": 18.9
+  },
+  {
+   "id": 11,
+   "text": "sức lao động của công nhân",
+   "start": 18.95,
+   "end": 21.08,
+   "show": 18.9,
+   "hide": 21.8
+  },
+  {
+   "id": 12,
+   "text": "Giả sử một ngày lao động là tám giờ",
+   "start": 21.85,
+   "end": 23.99,
+   "show": 21.8,
+   "hide": 23.99
+  },
+  {
+   "id": 13,
+   "text": "Chỉ sau bốn giờ công nhân đã tạo ra",
+   "start": 23.99,
+   "end": 26.31,
+   "show": 23.99,
+   "hide": 26.31
+  },
+  {
+   "id": 14,
+   "text": "lượng giá trị mới ngang với",
+   "start": 26.31,
+   "end": 27.89,
+   "show": 26.31,
+   "hide": 27.95
+  },
+  {
+   "id": 15,
+   "text": "giá trị sức lao động của mình",
+   "start": 28,
+   "end": 30.62,
+   "show": 27.95,
+   "hide": 31.3
+  },
+  {
+   "id": 16,
+   "text": "Đó là thời gian lao động tất yếu",
+   "start": 31.35,
+   "end": 33.17,
+   "show": 31.3,
+   "hide": 33.17
+  },
+  {
+   "id": 17,
+   "text": "Bốn giờ còn lại là thời gian lao động thặng dư",
+   "start": 33.17,
+   "end": 36.92,
+   "show": 33.17,
+   "hide": 37.76
+  },
+  {
+   "id": 18,
+   "text": "Giá trị mới tạo ra trong",
+   "start": 37.81,
+   "end": 39.12,
+   "show": 37.76,
+   "hide": 39.12
+  },
+  {
+   "id": 19,
+   "text": "thời gian này bị nhà tư bản chiếm không",
+   "start": 39.12,
+   "end": 41.26,
+   "show": 39.12,
+   "hide": 41.32
+  },
+  {
+   "id": 20,
+   "text": "gọi là giá trị thặng dư ký hiệu m",
+   "start": 41.37,
+   "end": 43.86,
+   "show": 41.32,
+   "hide": 44.61
+  },
+  {
+   "id": 21,
+   "text": "Vì vậy giá trị hàng hóa bằng c cộng v cộng m",
+   "start": 44.66,
+   "end": 47.46,
+   "show": 44.61,
+   "hide": 48.19
+  },
+  {
+   "id": 22,
+   "text": "Tỷ suất giá trị thặng dư m trên v",
+   "start": 48.24,
+   "end": 50.39,
+   "show": 48.19,
+   "hide": 50.46
+  },
+  {
+   "id": 23,
+   "text": "ở đây là một trăm phần trăm",
+   "start": 50.51,
+   "end": 51.74,
+   "show": 50.46,
+   "hide": 52.84
+  }
+ ],
+ "chars": [
+  {
+   "text": "Vì",
+   "start": 0,
+   "end": 0.41,
+   "cue": 1
+  },
+  {
+   "text": "sao",
+   "start": 0.41,
+   "end": 0.46,
+   "cue": 1
+  },
+  {
+   "text": "nhà",
+   "start": 0.46,
+   "end": 0.74,
+   "cue": 1
+  },
+  {
+   "text": "tư",
+   "start": 0.74,
+   "end": 0.92,
+   "cue": 1
+  },
+  {
+   "text": "bản",
+   "start": 0.92,
+   "end": 1.29,
+   "cue": 1
+  },
+  {
+   "text": "bỏ",
+   "start": 1.29,
+   "end": 1.38,
+   "cue": 1
+  },
+  {
+   "text": "tiền",
+   "start": 1.38,
+   "end": 1.76,
+   "cue": 1
+  },
+  {
+   "text": "ra",
+   "start": 1.76,
+   "end": 1.86,
+   "cue": 1
+  },
+  {
+   "text": "rồi",
+   "start": 2,
+   "end": 2.23,
+   "cue": 2
+  },
+  {
+   "text": "thu",
+   "start": 2.23,
+   "end": 2.6,
+   "cue": 2
+  },
+  {
+   "text": "về",
+   "start": 2.6,
+   "end": 2.7,
+   "cue": 2
+  },
+  {
+   "text": "nhiều",
+   "start": 2.7,
+   "end": 3.17,
+   "cue": 2
+  },
+  {
+   "text": "tiền",
+   "start": 3.17,
+   "end": 3.55,
+   "cue": 2
+  },
+  {
+   "text": "hơn",
+   "start": 3.55,
+   "end": 3.94,
+   "cue": 2
+  },
+  {
+   "text": "Theo",
+   "start": 4.74,
+   "end": 4.77,
+   "cue": 3
+  },
+  {
+   "text": "Các",
+   "start": 4.74,
+   "end": 4.77,
+   "cue": 3
+  },
+  {
+   "text": "Mác",
+   "start": 4.74,
+   "end": 4.79,
+   "cue": 3
+  },
+  {
+   "text": "bí",
+   "start": 4.79,
+   "end": 5.03,
+   "cue": 3
+  },
+  {
+   "text": "mật",
+   "start": 5.03,
+   "end": 5.2,
+   "cue": 3
+  },
+  {
+   "text": "nằm",
+   "start": 5.2,
+   "end": 5.44,
+   "cue": 3
+  },
+  {
+   "text": "ở",
+   "start": 5.79,
+   "end": 5.81,
+   "cue": 4
+  },
+  {
+   "text": "một",
+   "start": 5.79,
+   "end": 5.81,
+   "cue": 4
+  },
+  {
+   "text": "hàng",
+   "start": 5.79,
+   "end": 6.16,
+   "cue": 4
+  },
+  {
+   "text": "hóa",
+   "start": 6.16,
+   "end": 6.35,
+   "cue": 4
+  },
+  {
+   "text": "đặc",
+   "start": 6.35,
+   "end": 6.72,
+   "cue": 4
+  },
+  {
+   "text": "biệt",
+   "start": 6.72,
+   "end": 6.88,
+   "cue": 4
+  },
+  {
+   "text": "sức",
+   "start": 6.95,
+   "end": 7.2,
+   "cue": 5
+  },
+  {
+   "text": "lao",
+   "start": 7.2,
+   "end": 7.45,
+   "cue": 5
+  },
+  {
+   "text": "động",
+   "start": 7.45,
+   "end": 7.94,
+   "cue": 5
+  },
+  {
+   "text": "Nhà",
+   "start": 8.69,
+   "end": 8.71,
+   "cue": 6
+  },
+  {
+   "text": "tư",
+   "start": 8.69,
+   "end": 8.71,
+   "cue": 6
+  },
+  {
+   "text": "bản",
+   "start": 8.69,
+   "end": 8.98,
+   "cue": 6
+  },
+  {
+   "text": "ứng",
+   "start": 8.98,
+   "end": 9.38,
+   "cue": 6
+  },
+  {
+   "text": "trước",
+   "start": 9.38,
+   "end": 9.47,
+   "cue": 6
+  },
+  {
+   "text": "hai",
+   "start": 9.47,
+   "end": 9.62,
+   "cue": 6
+  },
+  {
+   "text": "phần",
+   "start": 9.62,
+   "end": 9.94,
+   "cue": 6
+  },
+  {
+   "text": "tư",
+   "start": 9.94,
+   "end": 10.12,
+   "cue": 6
+  },
+  {
+   "text": "bản",
+   "start": 10.12,
+   "end": 10.62,
+   "cue": 6
+  },
+  {
+   "text": "Tư",
+   "start": 11.45,
+   "end": 11.49,
+   "cue": 7
+  },
+  {
+   "text": "bản",
+   "start": 11.45,
+   "end": 11.49,
+   "cue": 7
+  },
+  {
+   "text": "bất",
+   "start": 11.45,
+   "end": 11.49,
+   "cue": 7
+  },
+  {
+   "text": "biến",
+   "start": 11.45,
+   "end": 11.6,
+   "cue": 7
+  },
+  {
+   "text": "ký",
+   "start": 11.6,
+   "end": 11.86,
+   "cue": 7
+  },
+  {
+   "text": "hiệu",
+   "start": 11.86,
+   "end": 12.1,
+   "cue": 7
+  },
+  {
+   "text": "c",
+   "start": 12.45,
+   "end": 12.47,
+   "cue": 8
+  },
+  {
+   "text": "mua",
+   "start": 12.45,
+   "end": 12.48,
+   "cue": 8
+  },
+  {
+   "text": "máy",
+   "start": 12.48,
+   "end": 12.73,
+   "cue": 8
+  },
+  {
+   "text": "móc",
+   "start": 12.73,
+   "end": 12.96,
+   "cue": 8
+  },
+  {
+   "text": "và",
+   "start": 12.96,
+   "end": 13.12,
+   "cue": 8
+  },
+  {
+   "text": "nguyên",
+   "start": 13.12,
+   "end": 13.6,
+   "cue": 8
+  },
+  {
+   "text": "liệu",
+   "start": 13.6,
+   "end": 13.73,
+   "cue": 8
+  },
+  {
+   "text": "giá",
+   "start": 13.92,
+   "end": 14.16,
+   "cue": 9
+  },
+  {
+   "text": "trị",
+   "start": 14.16,
+   "end": 14.4,
+   "cue": 9
+  },
+  {
+   "text": "của",
+   "start": 14.4,
+   "end": 14.64,
+   "cue": 9
+  },
+  {
+   "text": "nó",
+   "start": 14.64,
+   "end": 14.8,
+   "cue": 9
+  },
+  {
+   "text": "chỉ",
+   "start": 14.8,
+   "end": 15.04,
+   "cue": 9
+  },
+  {
+   "text": "chuyển",
+   "start": 15.04,
+   "end": 15.54,
+   "cue": 9
+  },
+  {
+   "text": "nguyên",
+   "start": 15.6,
+   "end": 16.1,
+   "cue": 9
+  },
+  {
+   "text": "vào",
+   "start": 16.18,
+   "end": 16.24,
+   "cue": 9
+  },
+  {
+   "text": "sản",
+   "start": 16.24,
+   "end": 16.47,
+   "cue": 9
+  },
+  {
+   "text": "phẩm",
+   "start": 16.47,
+   "end": 16.97,
+   "cue": 9
+  },
+  {
+   "text": "Tư",
+   "start": 17.98,
+   "end": 18.01,
+   "cue": 10
+  },
+  {
+   "text": "bản",
+   "start": 17.98,
+   "end": 18.01,
+   "cue": 10
+  },
+  {
+   "text": "khả",
+   "start": 17.98,
+   "end": 18.01,
+   "cue": 10
+  },
+  {
+   "text": "biến",
+   "start": 17.98,
+   "end": 18.24,
+   "cue": 10
+  },
+  {
+   "text": "ký",
+   "start": 18.24,
+   "end": 18.38,
+   "cue": 10
+  },
+  {
+   "text": "hiệu",
+   "start": 18.38,
+   "end": 18.64,
+   "cue": 10
+  },
+  {
+   "text": "v",
+   "start": 18.64,
+   "end": 18.77,
+   "cue": 10
+  },
+  {
+   "text": "mua",
+   "start": 18.77,
+   "end": 18.87,
+   "cue": 10
+  },
+  {
+   "text": "sức",
+   "start": 19.04,
+   "end": 19.28,
+   "cue": 11
+  },
+  {
+   "text": "lao",
+   "start": 19.28,
+   "end": 19.52,
+   "cue": 11
+  },
+  {
+   "text": "động",
+   "start": 19.52,
+   "end": 19.96,
+   "cue": 11
+  },
+  {
+   "text": "của",
+   "start": 19.96,
+   "end": 20.08,
+   "cue": 11
+  },
+  {
+   "text": "công",
+   "start": 20.08,
+   "end": 20.4,
+   "cue": 11
+  },
+  {
+   "text": "nhân",
+   "start": 20.4,
+   "end": 20.9,
+   "cue": 11
+  },
+  {
+   "text": "Giả",
+   "start": 21.85,
+   "end": 21.89,
+   "cue": 12
+  },
+  {
+   "text": "sử",
+   "start": 21.89,
+   "end": 21.98,
+   "cue": 12
+  },
+  {
+   "text": "một",
+   "start": 21.98,
+   "end": 22.22,
+   "cue": 12
+  },
+  {
+   "text": "ngày",
+   "start": 22.22,
+   "end": 22.56,
+   "cue": 12
+  },
+  {
+   "text": "lao",
+   "start": 22.56,
+   "end": 22.85,
+   "cue": 12
+  },
+  {
+   "text": "động",
+   "start": 22.85,
+   "end": 23.15,
+   "cue": 12
+  },
+  {
+   "text": "là",
+   "start": 23.15,
+   "end": 23.32,
+   "cue": 12
+  },
+  {
+   "text": "tám",
+   "start": 23.32,
+   "end": 23.45,
+   "cue": 12
+  },
+  {
+   "text": "giờ",
+   "start": 23.57,
+   "end": 23.99,
+   "cue": 12
+  },
+  {
+   "text": "Chỉ",
+   "start": 23.99,
+   "end": 24.24,
+   "cue": 13
+  },
+  {
+   "text": "sau",
+   "start": 24.24,
+   "end": 24.49,
+   "cue": 13
+  },
+  {
+   "text": "bốn",
+   "start": 24.49,
+   "end": 24.62,
+   "cue": 13
+  },
+  {
+   "text": "giờ",
+   "start": 24.74,
+   "end": 24.99,
+   "cue": 13
+  },
+  {
+   "text": "công",
+   "start": 24.99,
+   "end": 25.33,
+   "cue": 13
+  },
+  {
+   "text": "nhân",
+   "start": 25.33,
+   "end": 25.83,
+   "cue": 13
+  },
+  {
+   "text": "đã",
+   "start": 25.84,
+   "end": 25.89,
+   "cue": 13
+  },
+  {
+   "text": "tạo",
+   "start": 25.84,
+   "end": 26.26,
+   "cue": 13
+  },
+  {
+   "text": "ra",
+   "start": 26.26,
+   "end": 26.31,
+   "cue": 13
+  },
+  {
+   "text": "lượng",
+   "start": 26.31,
+   "end": 26.68,
+   "cue": 14
+  },
+  {
+   "text": "giá",
+   "start": 26.68,
+   "end": 26.96,
+   "cue": 14
+  },
+  {
+   "text": "trị",
+   "start": 26.96,
+   "end": 27.18,
+   "cue": 14
+  },
+  {
+   "text": "mới",
+   "start": 27.18,
+   "end": 27.43,
+   "cue": 14
+  },
+  {
+   "text": "ngang",
+   "start": 27.43,
+   "end": 27.85,
+   "cue": 14
+  },
+  {
+   "text": "với",
+   "start": 27.85,
+   "end": 27.89,
+   "cue": 14
+  },
+  {
+   "text": "giá",
+   "start": 28.1,
+   "end": 28.35,
+   "cue": 15
+  },
+  {
+   "text": "trị",
+   "start": 28.35,
+   "end": 28.68,
+   "cue": 15
+  },
+  {
+   "text": "sức",
+   "start": 28.68,
+   "end": 28.85,
+   "cue": 15
+  },
+  {
+   "text": "lao",
+   "start": 28.85,
+   "end": 29.15,
+   "cue": 15
+  },
+  {
+   "text": "động",
+   "start": 29.15,
+   "end": 29.44,
+   "cue": 15
+  },
+  {
+   "text": "của",
+   "start": 29.44,
+   "end": 29.69,
+   "cue": 15
+  },
+  {
+   "text": "mình",
+   "start": 29.69,
+   "end": 30.19,
+   "cue": 15
+  },
+  {
+   "text": "Đó",
+   "start": 31.38,
+   "end": 31.43,
+   "cue": 16
+  },
+  {
+   "text": "là",
+   "start": 31.38,
+   "end": 31.43,
+   "cue": 16
+  },
+  {
+   "text": "thời",
+   "start": 31.38,
+   "end": 31.43,
+   "cue": 16
+  },
+  {
+   "text": "gian",
+   "start": 31.38,
+   "end": 31.8,
+   "cue": 16
+  },
+  {
+   "text": "lao",
+   "start": 31.8,
+   "end": 32.04,
+   "cue": 16
+  },
+  {
+   "text": "động",
+   "start": 32.04,
+   "end": 32.35,
+   "cue": 16
+  },
+  {
+   "text": "tất",
+   "start": 32.35,
+   "end": 32.67,
+   "cue": 16
+  },
+  {
+   "text": "yếu",
+   "start": 32.67,
+   "end": 33.17,
+   "cue": 16
+  },
+  {
+   "text": "Bốn",
+   "start": 33.17,
+   "end": 33.66,
+   "cue": 17
+  },
+  {
+   "text": "giờ",
+   "start": 34.14,
+   "end": 34.19,
+   "cue": 17
+  },
+  {
+   "text": "còn",
+   "start": 34.14,
+   "end": 34.19,
+   "cue": 17
+  },
+  {
+   "text": "lại",
+   "start": 34.14,
+   "end": 34.56,
+   "cue": 17
+  },
+  {
+   "text": "là",
+   "start": 34.56,
+   "end": 34.58,
+   "cue": 17
+  },
+  {
+   "text": "thời",
+   "start": 34.58,
+   "end": 34.95,
+   "cue": 17
+  },
+  {
+   "text": "gian",
+   "start": 34.95,
+   "end": 35.43,
+   "cue": 17
+  },
+  {
+   "text": "lao",
+   "start": 35.43,
+   "end": 35.58,
+   "cue": 17
+  },
+  {
+   "text": "động",
+   "start": 35.58,
+   "end": 35.95,
+   "cue": 17
+  },
+  {
+   "text": "thặng",
+   "start": 35.95,
+   "end": 36.55,
+   "cue": 17
+  },
+  {
+   "text": "dư",
+   "start": 36.55,
+   "end": 36.92,
+   "cue": 17
+  },
+  {
+   "text": "Giá",
+   "start": 37.81,
+   "end": 37.83,
+   "cue": 18
+  },
+  {
+   "text": "trị",
+   "start": 37.81,
+   "end": 37.83,
+   "cue": 18
+  },
+  {
+   "text": "mới",
+   "start": 37.81,
+   "end": 37.83,
+   "cue": 18
+  },
+  {
+   "text": "tạo",
+   "start": 37.81,
+   "end": 38.1,
+   "cue": 18
+  },
+  {
+   "text": "ra",
+   "start": 38.1,
+   "end": 38.16,
+   "cue": 18
+  },
+  {
+   "text": "trong",
+   "start": 38.16,
+   "end": 38.53,
+   "cue": 18
+  },
+  {
+   "text": "thời",
+   "start": 39.12,
+   "end": 39.14,
+   "cue": 19
+  },
+  {
+   "text": "gian",
+   "start": 39.12,
+   "end": 39.22,
+   "cue": 19
+  },
+  {
+   "text": "này",
+   "start": 39.22,
+   "end": 39.48,
+   "cue": 19
+  },
+  {
+   "text": "bị",
+   "start": 39.48,
+   "end": 39.74,
+   "cue": 19
+  },
+  {
+   "text": "nhà",
+   "start": 39.74,
+   "end": 39.91,
+   "cue": 19
+  },
+  {
+   "text": "tư",
+   "start": 39.91,
+   "end": 40.07,
+   "cue": 19
+  },
+  {
+   "text": "bản",
+   "start": 40.07,
+   "end": 40.34,
+   "cue": 19
+  },
+  {
+   "text": "chiếm",
+   "start": 40.34,
+   "end": 40.78,
+   "cue": 19
+  },
+  {
+   "text": "không",
+   "start": 40.78,
+   "end": 41.17,
+   "cue": 19
+  },
+  {
+   "text": "gọi",
+   "start": 41.37,
+   "end": 41.42,
+   "cue": 20
+  },
+  {
+   "text": "là",
+   "start": 41.42,
+   "end": 41.59,
+   "cue": 20
+  },
+  {
+   "text": "giá",
+   "start": 41.59,
+   "end": 42.01,
+   "cue": 20
+  },
+  {
+   "text": "trị",
+   "start": 42.01,
+   "end": 42.09,
+   "cue": 20
+  },
+  {
+   "text": "thặng",
+   "start": 42.09,
+   "end": 42.3,
+   "cue": 20
+  },
+  {
+   "text": "dư",
+   "start": 42.51,
+   "end": 42.71,
+   "cue": 20
+  },
+  {
+   "text": "ký",
+   "start": 42.71,
+   "end": 42.86,
+   "cue": 20
+  },
+  {
+   "text": "hiệu",
+   "start": 42.86,
+   "end": 43.17,
+   "cue": 20
+  },
+  {
+   "text": "m",
+   "start": 43.17,
+   "end": 43.86,
+   "cue": 20
+  },
+  {
+   "text": "Vì",
+   "start": 44.66,
+   "end": 44.69,
+   "cue": 21
+  },
+  {
+   "text": "vậy",
+   "start": 44.66,
+   "end": 44.69,
+   "cue": 21
+  },
+  {
+   "text": "giá",
+   "start": 44.66,
+   "end": 44.68,
+   "cue": 21
+  },
+  {
+   "text": "trị",
+   "start": 44.66,
+   "end": 45.06,
+   "cue": 21
+  },
+  {
+   "text": "hàng",
+   "start": 45.06,
+   "end": 45.39,
+   "cue": 21
+  },
+  {
+   "text": "hóa",
+   "start": 45.39,
+   "end": 45.69,
+   "cue": 21
+  },
+  {
+   "text": "bằng",
+   "start": 45.69,
+   "end": 46.1,
+   "cue": 21
+  },
+  {
+   "text": "c",
+   "start": 46.1,
+   "end": 46.2,
+   "cue": 21
+  },
+  {
+   "text": "cộng",
+   "start": 46.2,
+   "end": 46.64,
+   "cue": 21
+  },
+  {
+   "text": "v",
+   "start": 46.64,
+   "end": 46.71,
+   "cue": 21
+  },
+  {
+   "text": "cộng",
+   "start": 46.71,
+   "end": 47.12,
+   "cue": 21
+  },
+  {
+   "text": "m",
+   "start": 47.12,
+   "end": 47.46,
+   "cue": 21
+  },
+  {
+   "text": "Tỷ",
+   "start": 48.24,
+   "end": 48.26,
+   "cue": 22
+  },
+  {
+   "text": "suất",
+   "start": 48.34,
+   "end": 48.58,
+   "cue": 22
+  },
+  {
+   "text": "giá",
+   "start": 48.58,
+   "end": 48.8,
+   "cue": 22
+  },
+  {
+   "text": "trị",
+   "start": 48.8,
+   "end": 49.04,
+   "cue": 22
+  },
+  {
+   "text": "thặng",
+   "start": 49.04,
+   "end": 49.44,
+   "cue": 22
+  },
+  {
+   "text": "dư",
+   "start": 49.44,
+   "end": 49.6,
+   "cue": 22
+  },
+  {
+   "text": "m",
+   "start": 49.6,
+   "end": 49.76,
+   "cue": 22
+  },
+  {
+   "text": "trên",
+   "start": 49.92,
+   "end": 50.24,
+   "cue": 22
+  },
+  {
+   "text": "v",
+   "start": 50.24,
+   "end": 50.32,
+   "cue": 22
+  },
+  {
+   "text": "ở",
+   "start": 50.51,
+   "end": 50.53,
+   "cue": 23
+  },
+  {
+   "text": "đây",
+   "start": 50.52,
+   "end": 50.79,
+   "cue": 23
+  },
+  {
+   "text": "là",
+   "start": 50.79,
+   "end": 50.88,
+   "cue": 23
+  },
+  {
+   "text": "một",
+   "start": 50.88,
+   "end": 51.09,
+   "cue": 23
+  },
+  {
+   "text": "trăm",
+   "start": 51.09,
+   "end": 51.31,
+   "cue": 23
+  },
+  {
+   "text": "phần",
+   "start": 51.31,
+   "end": 51.52,
+   "cue": 23
+  },
+  {
+   "text": "trăm",
+   "start": 51.52,
+   "end": 51.74,
+   "cue": 23
+  }
+ ]
+}

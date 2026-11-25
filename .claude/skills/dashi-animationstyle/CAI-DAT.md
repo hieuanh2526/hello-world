@@ -26,6 +26,7 @@ Skill cho Claude Code: biến một đoạn lời thoại tiếng Việt hoặc 
    ```
 
    Chỉ cần font: thêm `--no-whisper`.
+   Tạo giọng đọc tiếng Việt bằng máy (giọng có sẵn, hoặc nhân bản giọng của chính bạn): thêm `--voice` (cần Python 3.10+, tải thêm khoảng 1 GB).
 
 3. Mở lại Claude Code. Thử: «render ví dụ để xem thử» — ra video 26 giây «AI đọc hiểu một câu thế nào».
 
@@ -38,3 +39,12 @@ Nói với Claude, ví dụ:
 Claude làm phụ đề, đưa bạn duyệt kịch bản phân cảnh và 3 ảnh tĩnh, rồi render mp4. Hỏi «có những phong cách nào?» để xem 7 phong cách. Chi tiết: `SKILL.md`, `README.md`.
 
 Chỉ làm lời thoại tiếng Việt và tiếng Anh; mỗi lần một đoạn 15–60 giây (video dài thì chia phần rồi ghép).
+
+### Video giảng dạy Lý luận chính trị
+
+> Làm video giảng dạy 1 phút về «quy luật lượng – chất» (Triết học Mác – Lênin), phong cách vẽ tay, giọng của tôi trong file `ghi-am.m4a`.
+
+Claude theo quy trình trong `knowledge/llct-giang-day.md`: soạn lời thoại đúng giáo trình → bạn duyệt → ảnh tĩnh → bạn duyệt → render.
+Thêm: «làm bản dọc cho TikTok», «làm bài 3 phút, chia 4 phần rồi ghép», «tạo giọng đọc từ mẫu giọng của tôi».
+Xem thử: `node pipeline/tao-du-an.mjs ./video-hoat-hinh/gttd --example llct-gia-tri-thang-du`.
+

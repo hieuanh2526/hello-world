@@ -250,6 +250,17 @@ if (o.noWhisper) {
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 }
 
+// v1.3-vi: dòng phụ đề quá ngắn (< 0,8 giây — whisper hay dồn mấy từ đầu câu vào một thời điểm): dời ranh giới với dòng kề bên
+// trong cùng câu theo tỉ lệ độ dài chữ, để người xem kịp đọc
+for (let k = 0; k < cues.length; k++) {
+  const c = cues[k]; if (!(c.end - c.start < 0.8)) continue;
+  const nx = cues[k + 1] && cues[k + 1].sid === c.sid ? cues[k + 1] : null, pv = !nx && cues[k - 1] && cues[k - 1].sid === c.sid ? cues[k - 1] : null;
+  const a = nx ? c : pv, b = nx ? nx : c; if (!a) continue;
+  const wa = width(a.us), wb = width(b.us), cut = a.start + (b.end - a.start) * wa / (wa + wb);
+  if (Math.abs(cut - a.end) < 0.05) continue;
+  notes.push(`Dòng «${joinUs(c.us)}» chỉ hiện ${(c.end - c.start).toFixed(2)} giây: đã dời ranh giới với dòng bên cạnh tới giây ${cut.toFixed(2)} (theo số chữ)`);
+  a.end = cut; b.start = cut;
+}
 // ---------- 整理输出：字级时间收进所在字幕条；显示时间比语音早 0.05 秒出现，显示到下一条出现 ----------
 // 条内文字：英文/数字中间的点保留（5.5），其余标点不进字幕
 // 越南语 / 英语：词和词之间留一个空格（v1.3-vi）

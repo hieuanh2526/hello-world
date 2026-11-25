@@ -29,6 +29,8 @@ Tùy chọn:
   -o, --out <file>        file mp4 ra (xem trước thì mặc định thêm «_xem-truoc» vào tên)
   --audio <file>          âm thanh (mặc định như trên); --no-audio: không có tiếng
   --config <du-an.json>   chỉ định file cấu hình dự án (mặc định du-an.json cạnh trang)
+  --doc                   bản dọc 9:16: thêm ?doc=1, mẫu ve-tay phóng to chữ trong hình (dùng qua xuat-doc.mjs)
+  --query <a=1&b=2>       thêm tham số vào địa chỉ trang
   --no-subtitle           không vẽ phụ đề (thêm ?nosub=1 vào địa chỉ trang, công tắc NOSUB trong trang có tác dụng; dùng khi tự thêm phụ đề lúc dựng).
                           Tên file ra tự thêm «_khong-phu-de» (kể cả khi có -o; tên đã có thì không thêm nữa),
                           nên không ghi đè bản có phụ đề; ảnh tĩnh và ảnh kiểm tra cũng thêm «_khong-phu-de»
@@ -68,6 +70,8 @@ function parseArgs(argv) {
       case '--no-audio': o.noAudio = true; break;
       case '--config': o.config = val(); break;
       case '--no-subtitle': case '--nosub': o.noSub = true; break;
+      case '--doc': o.doc = true; break;
+      case '--query': o.query = val(); break;
       case '--fps': o.fps = +val(); break;
       case '--scale': o.scale = +val(); break;
       case '--duration': o.duration = +val(); break;
@@ -368,7 +372,8 @@ async function main() {
     if (mode === 'final' || mode === 'preview') console.log(`  Cạnh trang không có du-an.json cũng không có giong-doc.wav, video ra sẽ không có tiếng (muốn có tiếng dùng --audio <file>)`);
     audio = null;
   }
-  const query = opts.noSub ? '?nosub=1' : '';
+  const qs = [opts.noSub && 'nosub=1', opts.doc && 'doc=1', opts.query].filter(Boolean);
+  const query = qs.length ? '?' + qs.join('&') : '';
 
   const tmp = fs.mkdtempSync(path.join(opts.tmp || os.tmpdir(), 'render-'));
   let chrome = null, cdp = null, ff = null, part = null, userDir = path.join(tmp, 'chrome-profile');

@@ -1,6 +1,6 @@
 ---
 name: dashi-animationstyle
-description: （本仓库版：只做越南语和英语口播）Turn a 15–60 second Vietnamese or English voiceover into a styled explainer animation / Biến một đoạn lời thoại tiếng Việt hoặc tiếng Anh 15–60 giây thành video hoạt hình minh họa. Dùng khi người dùng nói「làm video hoạt hình từ lời thoại này」「dùng phong cách vẽ tay」「có những phong cách nào」「make an animation from this voiceover」. 原说明：把一段 15–60 秒的口播做成某种画风的动画视频（1920×1080、30 帧/秒的 mp4，带口播和字幕，能直接拖进剪映）。画面全部由 Claude 用 HTML/Canvas 代码画、无头 Chrome 逐帧截图合成，不用生图模型。自带 7 套风格：so-do-phang、ve-tay、bao-co、cat-giay、cat-dan-sieu-thuc、hoat-hinh-3d、cong-nghe-nen-den。也能照用户给的一张参考图（或一段视频）做一套新风格（用法二），或按一段文字描述先出 2–3 个方向的静帧给用户挑、再定风格（用法三），附风格词典、讲解动画通用规则和动效知识（转场、次要动作、丰富度检查）。用户说「把这段口播做成动画」「用ve-tay风格做」「有哪些风格」「照这张图的画风做」「我想要黑板报那样的感觉」「检查风格动画的环境」「先渲个例子看看」时使用。
+description: （本仓库版：只做越南语和英语口播）Turn a 15–60 second Vietnamese or English voiceover into a styled explainer animation / Biến một đoạn lời thoại tiếng Việt hoặc tiếng Anh 15–60 giây thành video hoạt hình minh họa. Dùng khi người dùng nói「làm video hoạt hình từ lời thoại này」「dùng phong cách vẽ tay」「có những phong cách nào」「make an animation from this voiceover」; và video giảng dạy Lý luận chính trị (Triết học, KTCT, CNXHKH, Lịch sử Đảng, TTHCM):「video giảng dạy về khái niệm…」「bài giảng 3 phút」「nhân bản giọng tôi」「bản dọc TikTok, Shorts」. 原说明：把一段 15–60 秒的口播做成某种画风的动画视频（1920×1080、30 帧/秒的 mp4，带口播和字幕，能直接拖进剪映）。画面全部由 Claude 用 HTML/Canvas 代码画、无头 Chrome 逐帧截图合成，不用生图模型。自带 7 套风格：so-do-phang、ve-tay、bao-co、cat-giay、cat-dan-sieu-thuc、hoat-hinh-3d、cong-nghe-nen-den。也能照用户给的一张参考图（或一段视频）做一套新风格（用法二），或按一段文字描述先出 2–3 个方向的静帧给用户挑、再定风格（用法三），附风格词典、讲解动画通用规则和动效知识（转场、次要动作、丰富度检查）。用户说「把这段口播做成动画」「用ve-tay风格做」「有哪些风格」「照这张图的画风做」「我想要黑板报那样的感觉」「检查风格动画的环境」「先渲个例子看看」时使用。
 ---
 
 # dashi-animationstyle：风格动画（《大师的AI小灶》出品）
@@ -18,6 +18,21 @@ description: （本仓库版：只做越南语和英语口播）Turn a 15–60 s
 - **whisper**：`install.sh` 装的是 ggml-large-v3-turbo-q5_0（越南语实测：46 个词只有 3 处和稿子不同，都是英文词 Token 的读音）。Linux 上 whisper-cli 装在 `~/.local/bin`，`phu-de.mjs` 会自己找到。越南语每句开头两三个词的字级时间常常挤在一起（DTW 的老毛病，例如「Bộ tách từ」三个词都在 3.80 秒），卡点用的关键词尽量别选句首的词，或者听一下手动改 phu-de.json。英文词在越南语口播里常被识别错（Token → thẻ OKER），**一定给稿子**，按稿子改正。
 - **模板里的固定小字**（报头、「第几版」、标签）按 `TL.lang` 显示越南语或英语（du-an.json 的 `lang` 会写进 timeline.js）。
 - 跟用户说话用他的语言（越南语或英语）。
+
+## Video giảng dạy Lý luận chính trị (LLCT) — đọc trước khi làm
+
+Khi người dùng là giảng viên / người học LLCT, hoặc nội dung thuộc 5 môn (Triết học, KTCT, CNXHKH, Lịch sử Đảng, TTHCM): **đọc `knowledge/llct-giang-day.md` trước**. Tóm tắt (file đó là chuẩn):
+
+- **Quy trình, 2 lần dừng chờ duyệt**: (1) duyệt lời thoại + bảng phân cảnh; (2) duyệt 2–3 ảnh tĩnh. Chỉ render sau khi duyệt.
+- **Khung lời thoại**: câu hỏi mở → khái niệm (đúng giáo trình Bộ GD&ĐT) → ví dụ có số → công thức / sơ đồ → kết hoặc câu hỏi thảo luận. 45–60 giây/phần, khoảng 2,5–3 từ/giây; bài 3–5 phút thì chia 3–5 phần, mỗi phần một dự án.
+- **Kiểm chính xác** trước khi đưa người dùng duyệt: định nghĩa, tên riêng (C. Mác, Ph. Ăngghen, V.I. Lênin), năm, số liệu tính lại; ngày tháng Lịch sử Đảng. Không vẽ chân dung người thật — dùng biểu tượng, mốc thời gian, chữ.
+- **Giọng đọc** (theo thứ tự ưu tiên): giọng thật của giảng viên → nhân bản giọng **chỉ khi chính giảng viên yêu cầu, cho video của họ**, ghi rõ trong README → giọng có sẵn. Công cụ: `python3 "$SKILL/pipeline/tao-giong.py" <dự-án> --mau ghi-am.m4a --mau-tu 18 --mau-den 32 --cao-do 0.958 --toc-do 1.07` (hoặc `--giong "Thiện Minh"`; cài bằng `bash install.sh --voice`). Script đọc `loi-thoai.txt`, đổi ký hiệu sang cách đọc theo `knowledge/llct-cach-doc.json` (c → «xê», m' → «em phẩy», CNXH → «chủ nghĩa xã hội»…), tạo từng câu, nghe lại bằng whisper và tạo lại câu lệch. `--chi-cau "…" -o cau.wav` để vá một câu đọc nhầm trong bản ghi thật. Không đưa giọng / bản ghi của người dùng vào skill hay gói chia sẻ.
+- **Phụ đề**: `phu-de.mjs` giờ tự dời ranh giới khi một dòng hiện dưới 0,8 giây. Dấu phẩy trong `loi-thoai.txt` quyết định chỗ ngắt dòng; phong cách chữ to dùng `--max 25`.
+- **Tốc độ**: người xem là sinh viên — chữ viết tay chậm (mẫu `ve-tay`: WRITE_STEP 0.075, WRITE_DUR 0.18), giọng không nhanh (Piper: `--length-scale 1.45 --sentence-silence 0.7`).
+- **Bài dài nhiều phần**: render từng phần (có và không phụ đề), rồi `node "$SKILL/pipeline/ghep-phan.mjs" <thư-mục-chứa-phan-1..N> -o bai-giang.mp4` → mp4 có / không phụ đề + một `.srt` chung (mốc cộng theo độ dài thật của từng video).
+- **Bản dọc 9:16 (TikTok, Shorts, Reels)**: `node "$SKILL/pipeline/xuat-doc.mjs" <dự-án> --tieu-de "Giá trị thặng dư" --nhan "Kinh tế chính trị Mác – Lênin" --dong-phu "…" --chan "…"`. Render với `?doc=1` (`render.mjs --doc`): trang nào có `const DOC = /[?&]doc=1/…` thì chữ trong hình to lên (mẫu `ve-tay` có sẵn); kiểm ảnh tĩnh xem chữ to có đè nhau không, đè thì dời bằng `DOC ? x1 : x2`. Phụ đề chữ to đặt ngay dưới hình, tránh vùng nút bên phải và chú thích phía dưới của ứng dụng.
+- **Nhiều phong cách cho cùng một bài**: xem `examples/llct-gia-tri-thang-du/` (`gt-scenes.js` vẽ cùng nội dung theo `GT_THEME` của từng phong cách). Phong cách có hạt nhiễu (bao-co, cat-giay, cat-dan-sieu-thuc) nén `-crf 26` để file dưới 100 MB.
+- **Ví dụ đầy đủ**: `node "$SKILL/pipeline/tao-du-an.mjs" ./video-hoat-hinh/gttd --example llct-gia-tri-thang-du` rồi `render.mjs` — bài «Giá trị thặng dư» 53 giây, vẽ tay, đủ 8 cảnh, đọc mã để làm bài khác.
 
 下文 `$SKILL` 指本文件所在的文件夹（装好后一般是 `~/.claude/skills/dashi-animationstyle`）。命令里的路径都要换成实际路径，带空格或中文的路径加引号。
 
