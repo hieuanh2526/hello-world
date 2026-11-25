@@ -1,0 +1,663 @@
+1
+00:00:00,800 --> 00:00:02,936
+Xin chào quý thầy cô và các bạn.
+
+2
+00:00:03,536 --> 00:00:07,159
+Tôi là Nguyễn Trung Hiếu, giảng viên Trường Đại học FPT,
+
+3
+00:00:07,159 --> 00:00:08,970
+cơ sở Thành phố Hồ Chí Minh.
+
+4
+00:00:09,570 --> 00:00:12,139
+Hôm nay tôi trình bày một bài về phương pháp:
+
+5
+00:00:12,139 --> 00:00:15,050
+Từ nguồn gốc bằng chứng đến mức sẵn sàng diễn giải,
+
+6
+00:00:15,050 --> 00:00:19,218
+một khung phương pháp cho kiểm toán đa ngôn ngữ các mô hình ngôn ngữ lớn.
+
+7
+00:00:21,018 --> 00:00:25,549
+Câu hỏi đằng sau rất đơn giản: khi một mô hình trả lời khác nhau ở hai ngôn ngữ,
+
+8
+00:00:25,549 --> 00:00:27,589
+chúng ta được phép kết luận điều gì?
+
+9
+00:00:30,189 --> 00:00:31,687
+Bài trình bày gồm năm bước.
+
+10
+00:00:32,287 --> 00:00:36,437
+Thứ nhất, vấn đề quy nguyên. Thứ hai, hai ví dụ Anh–Việt.
+
+11
+00:00:37,037 --> 00:00:40,444
+Thứ ba, khung phân tích với năm tầng nguồn gốc. Thứ tư,
+
+12
+00:00:40,444 --> 00:00:42,489
+khái niệm mức sẵn sàng diễn giải.
+
+13
+00:00:43,089 --> 00:00:46,421
+Và cuối cùng, phạm vi của bài và cách kiểm chứng khung này.
+
+14
+00:00:49,021 --> 00:00:53,730
+Nhiều nghiên cứu kiểm toán hiện nay đặt cho mô hình ngôn ngữ lớn những câu hỏi
+
+15
+00:00:53,730 --> 00:00:56,628
+chính trị hoặc mang giá trị bằng nhiều ngôn ngữ,
+
+16
+00:00:56,628 --> 00:00:58,077
+rồi so sánh câu trả lời.
+
+17
+00:00:58,677 --> 00:01:00,190
+Cách đọc dễ dãi nhất là:
+
+18
+00:01:00,190 --> 00:01:04,226
+mô hình mang những giá trị khác nhau ở những ngôn ngữ khác nhau.
+
+19
+00:01:06,026 --> 00:01:08,580
+Nhưng chuyển ngôn ngữ không phải là một biến duy nhất.
+
+20
+00:01:09,180 --> 00:01:12,988
+Nó làm thay đổi bản thân câu hỏi: cách diễn đạt, văn phong,
+
+21
+00:01:12,988 --> 00:01:15,763
+những thiết chế mà thuật ngữ quy chiếu đến.
+
+22
+00:01:16,363 --> 00:01:21,231
+Nó có thể thay đổi hành vi của mô hình: mức độ hiểu, cách dùng thang đo,
+
+23
+00:01:21,231 --> 00:01:22,853
+khi nào từ chối trả lời.
+
+24
+00:01:23,453 --> 00:01:27,191
+Và nó có thể thay đổi cả quy trình: định dạng câu trả lời,
+
+25
+00:01:27,191 --> 00:01:30,349
+cách truy cập mô hình, cách thực thi các lần gọi.
+
+26
+00:01:32,149 --> 00:01:34,278
+Vì vậy câu hỏi nghiên cứu của tôi là:
+
+27
+00:01:34,278 --> 00:01:39,917
+khi nào một khác biệt quan sát được giữa các ngôn ngữ mới được xem là bằng chứng về chính mô hình?
+
+28
+00:01:40,517 --> 00:01:45,126
+Chỉ dựa vào điểm số thì không thể tách các thành phần này ra sau khi đã có kết quả.
+
+29
+00:01:45,726 --> 00:01:48,918
+Nếu chỉ đơn giản gọi phần chênh lệch còn lại là bản địa hóa,
+
+30
+00:01:48,918 --> 00:01:51,473
+chúng ta đã thay bằng chứng bằng một câu chuyện.
+
+31
+00:01:54,073 --> 00:01:56,709
+Tôi muốn nói rõ điều gì không còn thiếu.
+
+32
+00:01:56,709 --> 00:01:59,477
+Độ phủ ngôn ngữ không còn là khoảng trống.
+
+33
+00:02:00,077 --> 00:02:04,511
+Helwe và cộng sự đánh giá mười lăm mô hình trên ba mươi ba ngôn ngữ,
+
+34
+00:02:04,511 --> 00:02:06,010
+trong đó có tiếng Việt.
+
+35
+00:02:06,610 --> 00:02:11,347
+Shankar và cộng sự đưa tiếng Việt vào một cuộc kiểm toán về dư luận châu Á.
+
+36
+00:02:11,947 --> 00:02:17,175
+Labat và cộng sự dùng các câu hỏi của Khảo sát Giá trị châu Âu do người dịch,
+
+37
+00:02:17,175 --> 00:02:18,193
+ở tám ngôn ngữ;
+
+38
+00:02:18,193 --> 00:02:23,557
+còn Lim và Röttger xây dựng ba mươi sáu nghìn cặp câu lệnh song song Anh–Trung.
+
+39
+00:02:25,357 --> 00:02:29,968
+Điều khác nhau là cách xử lý tính tương đương: thừa hưởng từ một bộ khảo sát,
+
+40
+00:02:29,968 --> 00:02:33,321
+được khẳng định, hoặc chỉ được kiểm tra ở khâu phía sau.
+
+41
+00:02:33,921 --> 00:02:38,519
+Và việc rà soát ở khâu sau không thể dựng lại một bước phía trước mà không ai ghi lại.
+
+42
+00:02:40,319 --> 00:02:44,584
+Vậy khoảng trống thực sự là thiếu một cách hiểu chung về những hồ sơ và những
+
+43
+00:02:44,584 --> 00:02:47,575
+kiểm định chẩn đoán nào mà một tuyên bố cụ thể cần có.
+
+44
+00:02:50,175 --> 00:02:55,564
+Để cụ thể hóa, tôi dùng hai ví dụ chẩn đoán Anh–Việt do tác giả xây dựng.
+
+45
+00:02:55,564 --> 00:02:59,551
+Đây là ví dụ minh họa, không phải quan sát từ mô hình.
+
+46
+00:03:01,351 --> 00:03:03,741
+Ví dụ thứ nhất là một đối chứng âm.
+
+47
+00:03:03,741 --> 00:03:09,820
+Cụm từ tiếng Anh state–market coordination mô tả một quan hệ có thể thay đổi theo mức độ.
+
+48
+00:03:10,420 --> 00:03:13,892
+Bản dịch trực tiếp là phối hợp giữa nhà nước và thị trường.
+
+49
+00:03:15,692 --> 00:03:20,752
+Nhưng một cụm từ khác, kinh tế thị trường định hướng xã hội chủ nghĩa,
+
+50
+00:03:20,752 --> 00:03:24,945
+khi dịch ngược sẽ thành socialist-oriented market economy.
+
+51
+00:03:25,545 --> 00:03:28,314
+Cụm này gọi tên một mô hình kinh tế chính trị,
+
+52
+00:03:28,314 --> 00:03:30,421
+chứ không phải một mức độ phối hợp.
+
+53
+00:03:32,221 --> 00:03:35,669
+Nếu một nghiên cứu kiểm toán đem cụm này thay cho cụm kia,
+
+54
+00:03:35,669 --> 00:03:41,614
+một câu hỏi về phối hợp nhiều hay ít sẽ biến thành câu hỏi về việc tán thành một mô hình có tên gọi.
+
+55
+00:03:42,214 --> 00:03:45,836
+Giữ nguyên thang đo năm bậc cũng không khôi phục được tính so sánh.
+
+56
+00:03:46,436 --> 00:03:49,524
+Đây là thích nghi cấu trúc khái niệm, không phải là dịch.
+
+57
+00:03:50,124 --> 00:03:54,850
+Một hồ sơ nguồn gốc tốt phải làm lộ ra sự thay thế này trước khi mô hình được hỏi.
+
+58
+00:03:57,450 --> 00:03:59,410
+Ví dụ thứ hai tinh tế hơn.
+
+59
+00:03:59,410 --> 00:04:04,236
+Civil society và xã hội dân sự là một cặp từ tương đương hợp lý.
+
+60
+00:04:04,836 --> 00:04:11,489
+Nhưng một câu hỏi chính sách về việc giao dịch vụ công cho các tổ chức xã hội dân sự vẫn chưa được xác định đủ:
+
+61
+00:04:11,489 --> 00:04:14,426
+những tổ chức nào, và trong phạm vi quốc gia nào?
+
+62
+00:04:15,026 --> 00:04:20,773
+Ngôn ngữ của câu lệnh có thể khiến mô hình hiểu cùng một nhãn theo những bối cảnh thiết chế khác nhau.
+
+63
+00:04:22,573 --> 00:04:26,149
+Tôi không khẳng định hai thuật ngữ này chỉ những thứ khác nhau.
+
+64
+00:04:26,149 --> 00:04:29,612
+Tôi khẳng định đây là một cách giải thích thay thế trọng yếu,
+
+65
+00:04:29,612 --> 00:04:31,031
+và có thể khoanh vùng nó.
+
+66
+00:04:31,631 --> 00:04:33,560
+Một kiểm định là câu hỏi có neo:
+
+67
+00:04:33,560 --> 00:04:37,118
+cùng một định nghĩa và danh sách chủ thể ở cả hai ngôn ngữ,
+
+68
+00:04:37,118 --> 00:04:38,806
+xếp ngẫu nhiên cùng bản gốc.
+
+69
+00:04:39,406 --> 00:04:41,934
+Một kiểm định khác là phép thử năng lực:
+
+70
+00:04:41,934 --> 00:04:46,233
+mô hình có phân loại các chủ thể đó giống nhau ở hai ngôn ngữ không?
+
+71
+00:04:48,033 --> 00:04:49,975
+Nếu chưa có những bằng chứng đó,
+
+72
+00:04:49,975 --> 00:04:54,041
+tuyên bố được phép chỉ dừng ở mức khác biệt giữa các dạng ngôn ngữ,
+
+73
+00:04:54,041 --> 00:04:56,287
+chứ chưa phải khác biệt về chuẩn mực.
+
+74
+00:04:58,887 --> 00:05:04,132
+Khung tôi đề xuất có tên là Khung kiểm toán đa ngôn ngữ có kiểm soát nguồn gốc,
+
+75
+00:05:04,132 --> 00:05:05,261
+viết tắt là PCAF.
+
+76
+00:05:05,861 --> 00:05:09,277
+Một kết quả kiểm toán được tạo ra qua một chuỗi biến đổi;
+
+77
+00:05:09,277 --> 00:05:12,932
+mỗi tầng gọi tên một biến đổi và nêu rõ cần ghi lại những gì.
+
+78
+00:05:14,732 --> 00:05:18,958
+Tầng một là câu lệnh: nguồn của câu hỏi và toàn văn câu lệnh thực tế.
+
+79
+00:05:19,558 --> 00:05:23,778
+Tầng hai là dịch thuật: phương pháp hoặc người dịch, chiều dịch, loại biến đổi,
+
+80
+00:05:23,778 --> 00:05:25,595
+và cách kiểm tra tính tương đương.
+
+81
+00:05:26,195 --> 00:05:31,013
+Tầng ba là mô hình: mã định danh cụ thể nhất, điểm truy cập, thời gian truy cập.
+
+82
+00:05:31,613 --> 00:05:36,308
+Tầng bốn là thực thi: tham số sinh văn bản, số lần lặp, cách xếp ngẫu nhiên,
+
+83
+00:05:36,308 --> 00:05:37,976
+cách phân tích câu trả lời,
+
+84
+00:05:37,976 --> 00:05:43,536
+và điều quan trọng là giữ lại các trường hợp từ chối hoặc câu trả lời lỗi như một kết quả.
+
+85
+00:05:45,336 --> 00:05:48,833
+Tầng năm khác về bản chất: đó là các sản phẩm được lưu giữ,
+
+86
+00:05:48,833 --> 00:05:52,151
+cho phép người khác kiểm tra hoặc tính lại bốn tầng đầu.
+
+87
+00:05:54,751 --> 00:05:55,728
+Về mặt hình thức,
+
+88
+00:05:55,728 --> 00:06:00,553
+câu trả lời quan sát được ở một ngôn ngữ là kết quả của việc hợp thành các bước này,
+
+89
+00:06:00,553 --> 00:06:03,540
+từ đặc tả câu hỏi đến câu trả lời đã được phân tích.
+
+90
+00:06:04,140 --> 00:06:08,970
+Một biến đổi bằng chứng là bất kỳ bước nào có thể làm thay đổi dữ liệu hoặc nhiệm vụ.
+
+91
+00:06:10,770 --> 00:06:12,082
+Nguồn gốc có hai chiều.
+
+92
+00:06:12,082 --> 00:06:17,614
+Nguồn gốc khái niệm cho biết cấu trúc khái niệm nào được đặt ra và điều gì xảy ra khi chuyển ngữ.
+
+93
+00:06:18,214 --> 00:06:22,799
+Nguồn gốc truy cập cho biết mô hình nào được hỏi, khi nào, theo cơ chế nào.
+
+94
+00:06:22,799 --> 00:06:25,245
+Chiều này không thay thế được chiều kia.
+
+95
+00:06:27,045 --> 00:06:29,437
+Và nguồn gốc không phải là tính hiệu lực.
+
+96
+00:06:29,437 --> 00:06:32,763
+Một bước được ghi chép đầy đủ vẫn có thể là một bước sai.
+
+97
+00:06:33,363 --> 00:06:35,329
+Hồ sơ giúp kiểm tra được con đường;
+
+98
+00:06:35,329 --> 00:06:40,271
+còn kiểm định chẩn đoán mới quyết định một biến đổi có thể giải thích kết quả hay không.
+
+99
+00:06:42,871 --> 00:06:46,644
+Điều này dẫn đến ý tưởng trung tâm: mức sẵn sàng diễn giải.
+
+100
+00:06:47,244 --> 00:06:52,376
+Một kết quả sẵn sàng để diễn giải cho một tuyên bố C cụ thể khi đủ ba điều kiện.
+
+101
+00:06:52,976 --> 00:06:56,273
+Một, các hồ sơ cần cho C có thể kiểm tra được.
+
+102
+00:06:56,873 --> 00:06:57,140
+Hai,
+
+103
+00:06:57,140 --> 00:07:03,816
+mỗi cách giải thích thay thế trọng yếu đều đã bị loại trừ hoặc bị khoanh vùng đủ chặt để giữ được C.
+
+104
+00:07:04,416 --> 00:07:08,015
+Ba, phần bất định còn lại được nêu rõ trong chính tuyên bố.
+
+105
+00:07:09,815 --> 00:07:13,285
+Nếu bằng chứng chỉ đủ cho một tuyên bố hẹp hơn, C′,
+
+106
+00:07:13,285 --> 00:07:16,688
+thì tuyên bố hẹp đó phải được đánh giá lại từ đầu.
+
+107
+00:07:18,488 --> 00:07:21,989
+Thế nào là một cách giải thích thay thế trọng yếu?
+
+108
+00:07:21,989 --> 00:07:26,331
+Đó là một cơ chế gắn với thiết kế, có thể làm đổi dấu, độ lớn,
+
+109
+00:07:26,331 --> 00:07:28,572
+thứ tự hay ý nghĩa của tuyên bố.
+
+110
+00:07:29,172 --> 00:07:34,024
+Ví dụ: loại bỏ câu trả lời không hợp lệ làm thay đổi tập hợp được so sánh.
+
+111
+00:07:34,624 --> 00:07:39,756
+Một đối tượng quy chiếu thiết chế còn mở khiến nhiệm vụ ở hai ngôn ngữ có thể khác nhau.
+
+112
+00:07:40,356 --> 00:07:46,242
+Và sự thay đổi phiên bản mô hình sẽ quan trọng khi các khối ngôn ngữ được chạy ở những thời điểm khác nhau.
+
+113
+00:07:48,842 --> 00:07:51,188
+PCAF phân biệt bốn họ tuyên bố.
+
+114
+00:07:51,788 --> 00:07:56,165
+O là quan sát có thể tính lại: dữ liệu được lưu nói đúng như nó nói.
+
+115
+00:07:56,765 --> 00:07:58,085
+R là khác biệt lặp lại:
+
+116
+00:07:58,085 --> 00:08:02,163
+khác biệt tái hiện trong một cơ chế truy cập và thực thi được ghi chép.
+
+117
+00:08:02,763 --> 00:08:07,234
+N là khác biệt chuẩn mực theo ngôn ngữ, tuyên bố diễn giải mạnh nhất,
+
+118
+00:08:07,234 --> 00:08:10,797
+đòi hỏi thêm kiểm định về tính tương đương và năng lực.
+
+119
+00:08:11,397 --> 00:08:16,529
+Và E là sự tương đồng với một tham chiếu bên ngoài, ví dụ một quần thể khảo sát.
+
+120
+00:08:18,329 --> 00:08:20,326
+Điểm quan trọng nằm ở cấu trúc.
+
+121
+00:08:22,126 --> 00:08:25,624
+Đây không phải bốn nấc thang nối tiếp. E tách ra từ quan sát;
+
+122
+00:08:25,624 --> 00:08:29,237
+nó không đòi hỏi phải có khác biệt chuẩn mực giữa các ngôn ngữ.
+
+123
+00:08:29,837 --> 00:08:34,052
+Hai ngôn ngữ có thể cho kết quả như nhau và cùng giống một tham chiếu.
+
+124
+00:08:34,652 --> 00:08:39,505
+Mũi tên nét đứt cho biết chỉ tuyên bố tương đồng lặp lại mới cần thêm bằng chứng của R.
+
+125
+00:08:40,105 --> 00:08:44,284
+Các mũi tên là yêu cầu về bằng chứng, không phải quan hệ nhân quả.
+
+126
+00:08:46,884 --> 00:08:50,425
+Trong thực tế, khung này làm thay đổi cách phát biểu kết luận.
+
+127
+00:08:51,025 --> 00:08:56,259
+Helwe và cộng sự tổng hợp các câu trả lời hợp lệ và loại bỏ các nhãn sai;
+
+128
+00:08:56,259 --> 00:08:59,199
+điều này được báo cáo ở Phụ lục B của họ.
+
+129
+00:08:59,799 --> 00:09:04,768
+Một tuyên bố rộng sẽ nói về khác biệt chuẩn mực trên toàn bộ phân phối câu trả lời.
+
+130
+00:09:06,568 --> 00:09:11,152
+Nhưng tỉ lệ câu trả lời không hợp lệ có thể khác nhau giữa các ngôn ngữ,
+
+131
+00:09:11,152 --> 00:09:16,245
+làm thay đổi tập hợp được so sánh. Đó là một cách giải thích thay thế trọng yếu.
+
+132
+00:09:16,845 --> 00:09:19,920
+Tuyên bố hẹp hơn có thể bảo vệ được, C′,
+
+133
+00:09:19,920 --> 00:09:23,532
+chỉ nói về các câu trả lời hợp lệ được giữ lại.
+
+134
+00:09:24,132 --> 00:09:29,229
+Nó đạt mức O, và đạt R nếu hồ sơ về mô hình và thực thi đủ.
+
+135
+00:09:31,029 --> 00:09:35,522
+Nó không đạt được N: tính tương đương của bản dịch chưa được xử lý,
+
+136
+00:09:35,522 --> 00:09:41,490
+và việc chỉ giữ câu trả lời hợp lệ có thể chọn ra những câu hỏi khác nhau ở mỗi ngôn ngữ.
+
+137
+00:09:43,290 --> 00:09:45,820
+Tôi muốn nhấn mạnh điều này không phải là gì.
+
+138
+00:09:45,820 --> 00:09:48,462
+Đây là sự thay đổi về cách phát biểu được phép.
+
+139
+00:09:49,062 --> 00:09:51,351
+Nó không phải là một hiệu ứng được tính lại,
+
+140
+00:09:51,351 --> 00:09:54,264
+và cũng không phải là đánh giá chất lượng nghiên cứu đó.
+
+141
+00:09:56,864 --> 00:10:01,305
+Tôi xin nói rõ giới hạn của bài. Không có mô hình nào được truy vấn.
+
+142
+00:10:01,905 --> 00:10:05,295
+Hai ví dụ Anh–Việt là các chẩn đoán do tác giả xây dựng.
+
+143
+00:10:05,895 --> 00:10:09,873
+Bốn nghiên cứu kiểm toán được chọn có chủ đích và do một tác giả đọc,
+
+144
+00:10:09,873 --> 00:10:14,254
+nên bài không đưa ra kết luận về mức phổ biến và không chấm điểm chất lượng.
+
+145
+00:10:14,854 --> 00:10:18,418
+Và PCAF đánh giá mức độ bằng chứng ủng hộ một tuyên bố;
+
+146
+00:10:18,418 --> 00:10:22,111
+nó không phán xét thiên lệch hay hệ tư tưởng của mô hình,
+
+147
+00:10:22,111 --> 00:10:24,444
+và không phải là công cụ chứng nhận.
+
+148
+00:10:26,244 --> 00:10:28,207
+Vì vậy bước tiếp theo là kiểm chứng,
+
+149
+00:10:28,207 --> 00:10:30,934
+và bài đề xuất hai nghiên cứu chưa được thực hiện.
+
+150
+00:10:31,534 --> 00:10:34,986
+Một là nghiên cứu mã hóa độc lập: ít nhất hai người rà soát,
+
+151
+00:10:34,986 --> 00:10:37,862
+bộ mã được cố định trước, quy trình hai giai đoạn,
+
+152
+00:10:37,862 --> 00:10:40,451
+và hệ số đồng thuận có hiệu chỉnh ngẫu nhiên.
+
+153
+00:10:41,051 --> 00:10:45,091
+Hai là thử nghiệm mô hình có thiết kế trước: câu hỏi ghép cặp,
+
+154
+00:10:45,091 --> 00:10:49,848
+thứ tự xếp ngẫu nhiên, giữ lại toàn bộ kết quả gốc kể cả các lần từ chối,
+
+155
+00:10:49,848 --> 00:10:51,152
+và đo lường chi phí.
+
+156
+00:10:51,752 --> 00:10:56,059
+Chỉ những nghiên cứu này mới cho biết khung có đáng tin cậy và hữu ích hay không.
+
+157
+00:10:58,659 --> 00:10:59,228
+Để kết luận.
+
+158
+00:11:01,028 --> 00:11:04,418
+Độ phủ ngôn ngữ không giải quyết được vấn đề quy nguyên.
+
+159
+00:11:05,018 --> 00:11:09,906
+PCAF tách nguồn gốc của các biến đổi bằng chứng ra khỏi các kiểm định chẩn đoán,
+
+160
+00:11:09,906 --> 00:11:13,632
+và tách cả hai khỏi mức sẵn sàng diễn giải của từng tuyên bố.
+
+161
+00:11:15,432 --> 00:11:17,083
+Quy tắc thực hành rất đơn giản:
+
+162
+00:11:17,083 --> 00:11:22,249
+hãy để những cách giải thích thay thế chưa được giải quyết hiện rõ trong cách phát biểu tuyên bố,
+
+163
+00:11:22,249 --> 00:11:25,870
+thay vì biến sự đầy đủ của hồ sơ thành một điểm số về tính hiệu lực.
+
+164
+00:11:27,670 --> 00:11:32,062
+Bộ mã hóa và mẫu sổ kiểm toán trống được công bố mở trên Zenodo,
+
+165
+00:11:32,062 --> 00:11:33,846
+theo đường dẫn trên slide.
+
+166
+00:11:34,446 --> 00:11:39,015
+Xin cảm ơn quý vị đã lắng nghe. Tôi rất sẵn lòng nhận câu hỏi.
