@@ -18,6 +18,9 @@ trỏ tới đâu.
 Claude Code tìm skill trong `.claude/skills/`, không phải `.agents/skills/`.
 Nếu dùng Claude Code, tạo thêm symlink hoặc bản sao ở `.claude/skills/<name>/`.
 
+Bản tiếng Anh đã được cài sẵn vào bản sao các demo trong
+[`../course/demos/`](../course/README.md), kèm symlink `.claude/skills/`.
+
 ## Đã sửa gì
 
 ### `regression-table`

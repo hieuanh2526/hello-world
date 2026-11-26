@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+._*
+
+# Obsidian: keep vault config if desired, ignore per-machine state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
+
+# Editor and OS noise
+*.swp
+*~
+*.tmp
+
+# Secrets — never commit these (see general/agent/MEMORY_POLICY.md)
+.env
+.env.*
+secrets/
+*.pem
+*.key
