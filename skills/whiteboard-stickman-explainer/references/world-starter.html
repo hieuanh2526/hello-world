@@ -1,0 +1,294 @@
+<!doctype html>
+<!--
+  world-starter.html — whiteboard-stickman-explainer
+
+  Template độc lập để thử bố cục trong trình duyệt:
+    - ?theme=chalkboard   đổi theme
+    - ?t=3.2              đứng yên ở giây 3.2 (dùng khi chụp contact sheet)
+    - phím Space          phát / dừng; window.seek(t) để tua bằng code
+  Mỗi cảnh: <section class="scene" data-sid data-start data-end>; mỗi phần tử
+  xuất hiện dần: data-in="<giây tuyệt đối>" (lấy từ mốc cụm trong words.json).
+
+  ExplainerStage: template KHÔNG giả định API của video-explainer. Ở các chỗ
+  đánh dấu "<!- - ExplainerStage: ... - ->", nối theo đúng hướng dẫn trong
+  ~/.gemini/config/skills/video-explainer/SKILL.md (ví dụ: thay vòng lặp
+  requestAnimationFrame bên dưới bằng clock của stage để render khung-chính-xác).
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whiteboard Stickman Starter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Itim&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBFAF7; --ink: #1B1B1F; --ink-soft: #6B6B73; --grid: #EEEAE2;
+    --role-a: #2F6FDE; --role-b: #E08A1E; --role-c: #7A4FD0;
+    --up: #1E9E5A; --down: #D64545; --accent: #F2C230;
+    --board: #1F3A33; --chalk: #F3F1E7; --frame: #8A6A45;
+    --font: "Patrick Hand", "Itim", "Comic Neue", sans-serif;
+  }
+  :root[data-theme="chalkboard"] {
+    --bg: #1F3A33; --ink: #F3F1E7; --ink-soft: #B9C2BC; --grid: #25443C;
+  }
+  html, body { margin: 0; height: 100%; background: #111; }
+  /* ExplainerStage: thay #stage bằng phần tử gốc mà stage yêu cầu, giữ 1920×1080 */
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: var(--bg); color: var(--ink); font-family: var(--font);
+    transform-origin: 0 0;
+  }
+  .scene { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .scene.on { opacity: 1; }
+  [data-in] { opacity: 0; transform: translateY(12px); transition: opacity .35s, transform .35s; }
+  [data-in].shown { opacity: 1; transform: none; }
+  .write { clip-path: inset(0 100% 0 0); transition: clip-path 1s linear; opacity: 1; transform: none; }
+  .write.shown { clip-path: inset(0 0 0 0); }
+  .dim { opacity: .35 !important; }
+
+  .title  { position: absolute; font-size: 84px; line-height: 1.1; }
+  .label  { position: absolute; font-size: 44px; }
+  .small  { position: absolute; font-size: 34px; color: var(--ink-soft); }
+  .center { left: 0; right: 0; text-align: center; }
+
+  .chalkboard {
+    position: absolute; left: 310px; top: 170px; width: 1300px; height: 560px;
+    background: var(--board); color: var(--chalk); border: 18px solid var(--frame);
+    border-radius: 10px; box-sizing: border-box; padding: 56px 72px;
+    box-shadow: 0 8px 0 rgba(0,0,0,.12);
+  }
+  .chalkboard .key { font-size: 84px; color: var(--accent); }
+  .chalkboard .def { font-size: 56px; line-height: 1.3; margin-top: 18px; }
+
+  .figure { position: absolute; overflow: visible; }
+  .figure.talking .body { animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-4px); } }
+  .figure .eyes { animation: blink 4.2s infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes blink { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(.1); } }
+
+  svg .ink { stroke: var(--ink); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+  svg .head { fill: var(--bg); stroke: var(--ink); stroke-width: 7; }
+  svg .face { fill: var(--ink); }
+  svg .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200); transition: stroke-dashoffset 1s ease-out; }
+  svg .draw.shown { stroke-dashoffset: 0; }
+
+  .node { position: absolute; padding: 18px 30px; border: 7px solid var(--ink); border-radius: 26px;
+          font-size: 44px; background: var(--bg); }
+  .divider { position: absolute; left: 957px; top: 140px; bottom: 170px; border-left: 6px dashed var(--ink-soft); }
+  .badge { position: absolute; width: 120px; height: 120px; border-radius: 50%; border: 7px solid var(--ink);
+           display: grid; place-items: center; font-size: 64px; background: var(--bg); }
+
+  /* phụ đề (dải an toàn y 960–1040) */
+  #caption { position: absolute; left: 160px; right: 160px; bottom: 40px; min-height: 60px;
+             text-align: center; font-size: 42px; color: var(--ink); text-shadow: 0 0 6px var(--bg), 0 0 12px var(--bg); }
+  #caption .now { color: var(--role-a); }
+
+  #hud { position: fixed; right: 12px; top: 12px; color: #ddd; font: 13px/1.4 system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<!-- ===================== thư viện nhân vật que (SVG symbols) ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- gốc toạ độ: điểm giữa hai bàn chân (0,0); đầu ở y≈-268 -->
+    <g id="pose-stand">
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:9" d="M0 -222 V -72 M0 -190 L -62 -118 M0 -190 L 62 -118 M0 -72 L -48 0 M0 -72 L 48 0"/>
+    </g>
+    <g id="pose-point-right">
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:9" d="M0 -222 V -72 M0 -190 L -58 -116 M0 -190 L 92 -200 M0 -72 L -48 0 M0 -72 L 48 0"/>
+    </g>
+    <g id="pose-think">
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:9" d="M0 -222 V -72 M0 -190 L -60 -118 M0 -190 L 44 -168 L 22 -232 M0 -72 L -48 0 M0 -72 L 48 0"/>
+    </g>
+    <g id="pose-shrug">
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:9" d="M0 -222 V -72 M0 -190 L -60 -170 L -84 -220 M0 -190 L 60 -170 L 84 -220 M0 -72 L -48 0 M0 -72 L 48 0"/>
+    </g>
+    <g id="pose-cheer">
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:9" d="M0 -222 V -72 M0 -190 L -70 -270 M0 -190 L 70 -270 M0 -72 L -48 0 M0 -72 L 48 0"/>
+    </g>
+    <!-- đầu + biểu cảm (tâm đầu ở 0,-268) -->
+    <g id="face-neutral">
+      <g class="eyes"><ellipse style="fill:var(--ink)" cx="-16" cy="-276" rx="5" ry="7"/><ellipse style="fill:var(--ink)" cx="16" cy="-276" rx="5" ry="7"/></g>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:6" d="M-14 -248 H 14"/>
+    </g>
+    <g id="face-happy">
+      <g class="eyes"><ellipse style="fill:var(--ink)" cx="-16" cy="-276" rx="5" ry="7"/><ellipse style="fill:var(--ink)" cx="16" cy="-276" rx="5" ry="7"/></g>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:6" d="M-18 -254 Q 0 -236 18 -254"/>
+    </g>
+    <g id="face-curious">
+      <g class="eyes"><ellipse style="fill:var(--ink)" cx="-14" cy="-280" rx="5" ry="7"/><ellipse style="fill:var(--ink)" cx="18" cy="-280" rx="5" ry="7"/></g>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:5" d="M8 -298 L 28 -304"/>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:6" d="M-8 -248 Q 4 -252 14 -246"/>
+    </g>
+    <g id="face-worried">
+      <g class="eyes"><ellipse style="fill:var(--ink)" cx="-16" cy="-274" rx="5" ry="7"/><ellipse style="fill:var(--ink)" cx="16" cy="-274" rx="5" ry="7"/></g>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:5" d="M-26 -292 L -8 -298 M26 -292 L 8 -298"/>
+      <path style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:6" d="M-16 -246 Q 0 -258 16 -246"/>
+    </g>
+    <g id="face-surprised">
+      <g class="eyes"><circle style="fill:var(--ink)" cx="-16" cy="-278" r="8"/><circle style="fill:var(--ink)" cx="16" cy="-278" r="8"/></g>
+      <ellipse style="fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-width:6" cx="0" cy="-248" rx="8" ry="10"/>
+    </g>
+    <g id="face-explain">
+      <g class="eyes"><ellipse style="fill:var(--ink)" cx="-16" cy="-276" rx="5" ry="7"/><ellipse style="fill:var(--ink)" cx="16" cy="-276" rx="5" ry="7"/></g>
+      <path style="fill:var(--ink)" d="M-14 -254 Q 0 -232 14 -254 Z"/>
+    </g>
+    <!-- phụ kiện nhận diện (fill = màu vai trò qua currentColor).
+         Lưu ý: bản sao <use> không nhận class CSS bên ngoài trong Chrome, nên mọi nét trong defs dùng style inline. -->
+    <g id="acc-scarf">
+      <path fill="currentColor" stroke="var(--ink)" stroke-width="5" d="M-30 -222 Q 0 -206 30 -222 L 30 -206 Q 0 -192 -30 -206 Z M14 -206 L 24 -160 L 6 -164 L 4 -204 Z"/>
+    </g>
+    <g id="acc-cap">
+      <path fill="currentColor" stroke="var(--ink)" stroke-width="5" d="M-44 -290 Q -40 -330 0 -330 Q 40 -330 44 -290 Z M30 -294 L 76 -290 L 76 -282 L 30 -284 Z"/>
+    </g>
+    <g id="acc-glasses">
+      <g fill="none" stroke="currentColor" stroke-width="5"><circle cx="-17" cy="-276" r="14"/><circle cx="17" cy="-276" r="14"/><path d="M-3 -278 H 3"/></g>
+    </g>
+    <g id="acc-tie">
+      <path fill="currentColor" stroke="var(--ink)" stroke-width="4" d="M-8 -220 H 8 L 4 -210 L 12 -150 L 0 -138 L -12 -150 L -4 -210 Z"/>
+    </g>
+  </defs>
+</svg>
+
+<!--
+  Cách ghép một nhân vật (đổi pose/face/acc và màu vai trò):
+  <svg class="figure talking" style="left:..;top:..;width:320px;height:350px;color:var(--role-a)"
+       viewBox="-160 -340 320 350" overflow="visible">
+    <g class="body"><use href="#pose-think"/><circle class="head" cx="0" cy="-268" r="46"/>
+      <use href="#face-curious"/><use href="#acc-scarf"/></g></svg>
+-->
+
+<!-- ExplainerStage: phần tử gốc của stage -->
+<div id="stage" aria-label="Khung dựng video">
+
+  <!-- s01 · hook -->
+  <section class="scene" data-sid="s01" data-start="0" data-end="4.967">
+    <div class="title center write" style="top:110px" data-in="0.1">Cổ phiếu là gì?</div>
+    <svg class="figure talking" style="left:220px;top:440px;width:420px;height:460px;color:var(--role-a)"
+         viewBox="-160 -340 320 350" overflow="visible" data-in="0.3">
+      <g class="body"><use href="#pose-think"/><circle class="head" cx="0" cy="-268" r="46"/>
+        <use href="#face-curious"/><use href="#acc-scarf"/></g>
+    </svg>
+    <svg style="position:absolute;left:640px;top:420px;width:560px;height:260px" viewBox="0 0 560 260" overflow="visible">
+      <path class="ink draw" style="--len:640" d="M20 200 C 160 230, 380 210, 520 60 M470 66 L 522 58 L 516 112" data-in="1.5"/>
+    </svg>
+    <div class="badge" style="left:1300px;top:330px;width:260px;height:260px;font-size:200px;color:var(--accent)" data-in="1.0">?</div>
+  </section>
+
+  <!-- s02 · chalkboard-definition -->
+  <section class="scene" data-sid="s02" data-start="4.967" data-end="10.0">
+    <div class="chalkboard" data-in="4.97">
+      <div class="key write" data-in="5.0">Cổ phiếu</div>
+      <div class="def" data-in="5.6">= một phần quyền sở hữu công ty.</div>
+      <div class="def" style="color:var(--up)" data-in="7.65">Người nắm giữ → cổ đông</div>
+    </div>
+    <svg class="figure talking" style="left:1500px;top:600px;width:300px;height:330px;color:var(--role-b)"
+         viewBox="-160 -340 320 350" overflow="visible" data-in="5.2">
+      <g class="body"><use href="#pose-point-right" transform="scale(-1,1)"/><circle class="head" cx="0" cy="-268" r="46"/>
+        <use href="#face-explain"/><use href="#acc-cap" transform="scale(-1,1)"/></g>
+    </svg>
+  </section>
+
+  <!-- s03 · split-metaphor (mẫu, không có trong script ví dụ) -->
+  <section class="scene" data-sid="s03" data-start="10.0" data-end="15.0">
+    <div class="label" style="left:240px;top:150px;color:var(--role-c)" data-in="10.1">Khái niệm</div>
+    <div class="label" style="left:1220px;top:150px;color:var(--role-a)" data-in="10.8">Đời thường</div>
+    <div class="divider" data-in="10.0"></div>
+    <div class="node" style="left:220px;top:420px" data-in="10.4">1 cổ phần = 1% công ty</div>
+    <div class="node" style="left:1180px;top:420px" data-in="11.2">1 miếng = 1/100 cái bánh</div>
+    <div class="badge" style="left:897px;top:420px" data-in="12.0">≈</div>
+  </section>
+
+  <!-- s04 · causal-diagram (mẫu) -->
+  <section class="scene" data-sid="s04" data-start="15.0" data-end="20.0">
+    <div class="node" style="left:150px;top:420px" data-in="15.1">Lợi nhuận ↑</div>
+    <div class="node" style="left:780px;top:420px" data-in="16.0">Kỳ vọng ↑</div>
+    <div class="node" style="left:1400px;top:420px;border-color:var(--up)" data-in="17.0">Giá cổ phiếu ↑</div>
+    <svg style="position:absolute;left:0;top:0;width:1920px;height:1080px" viewBox="0 0 1920 1080">
+      <path class="ink draw" style="--len:260" d="M520 470 H 760 M735 450 L 762 470 L 735 490" data-in="15.6"/>
+      <path class="ink draw" style="--len:260" d="M1140 470 H 1380 M1355 450 L 1382 470 L 1355 490" data-in="16.6"/>
+    </svg>
+    <div class="small" style="left:600px;top:380px;color:var(--up)" data-in="15.7">+</div>
+    <div class="small" style="left:1240px;top:380px;color:var(--up)" data-in="16.7">+</div>
+  </section>
+
+  <!-- s05 · recap (mẫu) -->
+  <section class="scene" data-sid="s05" data-start="20.0" data-end="25.0">
+    <div class="title center" style="top:110px" data-in="20.0">Tóm tắt</div>
+    <div class="badge" style="left:330px;top:330px" data-in="20.4">①</div>
+    <div class="label" style="left:240px;top:480px" data-in="20.4">Sở hữu</div>
+    <div class="badge" style="left:900px;top:330px" data-in="21.2">②</div>
+    <div class="label" style="left:820px;top:480px" data-in="21.2">Mua – bán</div>
+    <div class="badge" style="left:1470px;top:330px" data-in="22.0">③</div>
+    <div class="label" style="left:1400px;top:480px" data-in="22.0">Cổ tức</div>
+    <div class="label center" style="top:700px;color:var(--role-b)" data-in="23.0">Tự hỏi: cổ đông được gì khi công ty có lãi?</div>
+  </section>
+
+  <div id="caption" aria-live="off"></div>
+</div>
+<div id="hud"></div>
+
+<script>
+(() => {
+  const qs = new URLSearchParams(location.search);
+  if (qs.get("theme")) document.documentElement.dataset.theme = qs.get("theme");
+
+  const stage = document.getElementById("stage");
+  const scenes = [...stage.querySelectorAll(".scene")];
+  const items = [...stage.querySelectorAll("[data-in]")];
+  const cap = document.getElementById("caption");
+  const hud = document.getElementById("hud");
+  const DURATION = Math.max(...scenes.map(s => +s.dataset.end));
+
+  // Phụ đề: nạp words.json nếu có (cùng thư mục) — [{word,start,end,scene}]
+  let words = [];
+  fetch("words.json").then(r => r.ok ? r.json() : []).then(w => { words = w; render(t); }).catch(() => {});
+
+  function captionAt(time) {
+    const sc = scenes.find(s => time >= +s.dataset.start && time < +s.dataset.end);
+    if (!sc || !words.length) return "";
+    const ws = words.filter(w => w.scene === sc.dataset.sid);
+    // hiển thị cụm hiện tại (ngắt tại dấu câu), tô từ đang đọc
+    let chunk = [], out = [];
+    for (const w of ws) {
+      chunk.push(w);
+      if (/[.,;:!?…]$/.test(w.word)) { out.push(chunk); chunk = []; }
+    }
+    if (chunk.length) out.push(chunk);
+    const cur = out.find(c => time >= c[0].start - 0.15 && time <= c[c.length - 1].end + 0.25);
+    if (!cur) return "";
+    return cur.map(w => {
+      const span = document.createElement("span");
+      span.textContent = w.word;
+      if (time >= w.start && time < w.end) span.className = "now";
+      return span.outerHTML;
+    }).join(" ");
+  }
+
+  // ExplainerStage: thay hàm này bằng callback khung của stage (render(t) theo giây)
+  function render(time) {
+    for (const s of scenes) s.classList.toggle("on", time >= +s.dataset.start && time < +s.dataset.end);
+    for (const el of items) el.classList.toggle("shown", time >= +el.dataset.in);
+    cap.innerHTML = captionAt(time);
+    hud.textContent = `t=${time.toFixed(2)}s / ${DURATION.toFixed(2)}s · Space: phát/dừng`;
+  }
+
+  function fit() {
+    const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = `scale(${k})`;
+  }
+  addEventListener("resize", fit); fit();
+
+  let t = parseFloat(qs.get("t") || "0") || 0, playing = !qs.has("t"), last = performance.now();
+  window.seek = (x) => { t = Math.max(0, Math.min(DURATION, x)); render(t); };
+  addEventListener("keydown", e => { if (e.code === "Space") { playing = !playing; e.preventDefault(); } });
+  function loop(now) {
+    if (playing) { t += (now - last) / 1000; if (t >= DURATION) t = 0; render(t); }
+    last = now; requestAnimationFrame(loop);
+  }
+  render(t); requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
